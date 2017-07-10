@@ -6,11 +6,12 @@
  */
 
 #include "fsl_gpio.h"
+#include "fsl_adc16.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
 
-#include "heartrate.h"
+#include "pressuresensor.h"
 
 void
 motor_on(void)
@@ -36,11 +37,17 @@ void
 motor_task(void *params)
 {
 	motor_off();
-	//every ten seconds toggle the motor on/off
+
 	for (;;) {
-		motor_toggle();
-		//vTaskDelay(2000); //two seconds
-		vTaskDelay(led_delay_time > 0 ? led_delay_time : 3000);
+		float psi = pressure::get_psi();
+
+		if (psi > 4.0) {
+			motor_off();
+		}
+		if (psi < 2.5) {
+			motor_on();
+		}
+		vTaskDelay(20);
 	}
 	vTaskSuspend(NULL);
 }

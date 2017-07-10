@@ -4,23 +4,29 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../source/flowsensor.cpp \
 ../source/heartrate.cpp \
 ../source/main.cpp \
 ../source/motorcontrol.cpp \
+../source/pressuresensor.cpp \
 ../source/solenoid.cpp \
 ../source/spi_proto_slave.cpp 
 
 OBJS += \
+./source/flowsensor.o \
 ./source/heartrate.o \
 ./source/main.o \
 ./source/motorcontrol.o \
+./source/pressuresensor.o \
 ./source/solenoid.o \
 ./source/spi_proto_slave.o 
 
 CPP_DEPS += \
+./source/flowsensor.d \
 ./source/heartrate.d \
 ./source/main.d \
 ./source/motorcontrol.d \
+./source/pressuresensor.d \
 ./source/solenoid.d \
 ./source/spi_proto_slave.d 
 
