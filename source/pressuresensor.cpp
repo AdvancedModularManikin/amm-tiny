@@ -59,15 +59,15 @@ float
 get_MPa(void)
 {
 	//convert to voltage
-		uint32_t max = 4096;
+	uint32_t max = 4096;
 
-		float top = 5;
-		float bot = 1;
-		float frac = ((float) raw_pressure)/((float) max);
-		// this is not actually volts, but it is what the sensor originally returned
-		float volts = frac * top;
-		float adj = (volts-1)/4; //linear from 1 to 5
-		return frac;//adj; // multiply by 1MPa/1 for units
+	float top = 5;
+	float bot = 1;
+	float frac = ((float) raw_pressure)/((float) max);
+	// this is not actually volts, but it is what the sensor originally returned
+	float volts = frac * top;
+	float adj = (volts-1)/4; //linear from 1 to 5
+	return adj; // multiply by 1MPa/1 for units
 }
 float
 get_psi(void)
