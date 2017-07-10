@@ -43,21 +43,21 @@ struct spi_proto {
 
 
 int
-slave_get_message(struct spi_proto *p, unsigned char *buf, int len);
+slave_get_message(struct spi_proto &p, unsigned char *buf, int len);
 int
-slave_send_message(struct spi_proto *p, unsigned char *buf, int len);
+slave_send_message(struct spi_proto &p, unsigned char *buf, int len);
 //int
 //slave_handle_spi_interrupt();
 int
-slave_do_tick(struct spi_proto *p);
+slave_do_tick(struct spi_proto &p);
 
 int
-pop(spi_proto::msg_queue *q, msg *m);
+pop(spi_proto::msg_queue &q, msg &m);
 int
-push(spi_proto::msg_queue *q, struct msg *m);
+push(spi_proto::msg_queue &q, struct msg &m);
 
 int
-reset(spi_proto::msg_queue *q);
+reset(spi_proto::msg_queue &q);
 
 }
 

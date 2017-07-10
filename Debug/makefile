@@ -50,38 +50,38 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 SECONDARY_FLASH += \
-spi_protocol.hex \
+amm-tiny.hex \
 
 SECONDARY_SIZE += \
-spi_protocol.siz \
+amm-tiny.siz \
 
 
 # All Target
-all: spi_protocol.elf secondary-outputs
+all: amm-tiny.elf secondary-outputs
 
 # Tool invocations
-spi_protocol.elf: $(OBJS) $(USER_OBJS)
+amm-tiny.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross ARM C++ Linker'
-	arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -T "../MK66FN2M0xxx18_flash.ld" -Xlinker --gc-sections -Wl,-Map,"spi_protocol.map" -specs=nosys.specs -specs=nano.specs -Xlinker -z -Xlinker muldefs -o "spi_protocol.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -T "../MK66FN2M0xxx18_flash.ld" -Xlinker --gc-sections -Wl,-Map,"amm-tiny.map" -specs=nosys.specs -specs=nano.specs -Xlinker -z -Xlinker muldefs -o "amm-tiny.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-spi_protocol.hex: spi_protocol.elf
+amm-tiny.hex: amm-tiny.elf
 	@echo 'Invoking: Cross ARM GNU Create Flash Image'
-	arm-none-eabi-objcopy -O ihex "spi_protocol.elf"  "spi_protocol.hex"
+	arm-none-eabi-objcopy -O ihex "amm-tiny.elf"  "amm-tiny.hex"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-spi_protocol.siz: spi_protocol.elf
+amm-tiny.siz: amm-tiny.elf
 	@echo 'Invoking: Cross ARM GNU Print Size'
-	arm-none-eabi-size --format=berkeley "spi_protocol.elf"
+	arm-none-eabi-size --format=berkeley "amm-tiny.elf"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(SECONDARY_SIZE)$(C++_DEPS)$(OBJS)$(C_DEPS)$(ASM_DEPS)$(CC_DEPS)$(SECONDARY_FLASH)$(CPP_DEPS)$(CXX_DEPS)$(C_UPPER_DEPS)$(S_UPPER_DEPS) spi_protocol.elf
+	-$(RM) $(SECONDARY_SIZE)$(C++_DEPS)$(OBJS)$(C_DEPS)$(ASM_DEPS)$(CC_DEPS)$(SECONDARY_FLASH)$(CPP_DEPS)$(CXX_DEPS)$(C_UPPER_DEPS)$(S_UPPER_DEPS) amm-tiny.elf
 	-@echo ' '
 
 secondary-outputs: $(SECONDARY_FLASH) $(SECONDARY_SIZE)

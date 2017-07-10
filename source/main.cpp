@@ -134,7 +134,7 @@ spi_proto_task(void *pvParameters)
 
 	spi_proto::spi_proto p;
 	// init p, set up buffers and len
-	spi_proto::reset(&p.queue);
+	spi_proto::reset(p.queue);
 	p.buflen = TRANSFER_SIZE;
 	p.sendbuf = slaveSendBuffer;
 	p.getbuf = slaveReceiveBuffer;
@@ -166,8 +166,10 @@ spi_proto_task(void *pvParameters)
 	 * using the response
 	 */
 	for (;;) {
-		slaveSendBuffer[0]=0x03;
-		slave_do_tick(&p); // handles at least the functions below up to the semaphore
+		//slaveSendBuffer[0]=0x03;
+		unsigned char msgbuf[1] = {0x03};
+		slave_send_message(p, msgbuf, 1);
+		slave_do_tick(p); // handles at least the functions below up to the semaphore
 		//TODO check if there is any data to send. If so put in into slaveSendBuffer
 		/*Set slave transfer ready to receive/send data*/
 		slaveXfer.txData = slaveSendBuffer;
@@ -182,7 +184,7 @@ spi_proto_task(void *pvParameters)
 		PRINTF("SPI recvd\n");
 		//TODO handle the received message
 
-		slave_get_message(&p, slaveReceiveBuffer, TRANSFER_SIZE);
+		slave_get_message(p, slaveReceiveBuffer, TRANSFER_SIZE);
 	}
 	vTaskSuspend(NULL);
 }
