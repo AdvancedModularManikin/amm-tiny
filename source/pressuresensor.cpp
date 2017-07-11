@@ -39,7 +39,7 @@ polling_init(void) {
 uint32_t raw_pressure = 0;
 uint32_t unfiltered_pressure;
 
-float ratio = 0.90;
+float ratio = 0.95;
 
 void
 polling_task(void *params)
@@ -69,11 +69,14 @@ get_MPa(void)
 
 	float top = 5;
 	float bot = 1;
+	float val_bot = -0.1;
+	float val_top = 0.1;
 	float frac = ((float) raw_pressure)/((float) max);
 	// this is not actually volts, but it is what the sensor originally returned
 	float volts = frac * top;
-	float adj = (volts-1)/4; //linear from 1 to 5
-	return adj; // multiply by 1MPa/1 for units
+	float adj = (volts-bot)/(top-bot); //linear from 1 to 5
+
+	return val_bot + adj*(val_top-val_bot); // multiply by 1MPa/1 for units
 }
 float
 get_psi(void)
