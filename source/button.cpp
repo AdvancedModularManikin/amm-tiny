@@ -29,6 +29,7 @@ button_task(void *params)
 	//strangely no SW2 defines in board.h
 	GPIO_PinInit(GPIOD, 11U, &sw2_config);
 
+	vTaskDelay(500);
 	PRINTF("Buttons ready\r\n");
 	for (;;) {
 		if (!spi_proto::ready) continue;
@@ -41,11 +42,10 @@ button_task(void *params)
 
 		//notify SPI thread
 		unsigned char message = sw2_down | (sw3_down<<1);
-		//if (message != last_message) {
-		//slaveSendBuffer[0] = message;
-		slave_send_message(spi_proto::p, &message, 1);
-		//	last_message = message;
-		//}
+		if (message != last_message) {
+			slave_send_message(spi_proto::p, &message, 1);
+			last_message = message;
+		}
 
 		PRINTF("sending button: %02x\r\n", message);
 

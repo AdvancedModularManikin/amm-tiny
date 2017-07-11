@@ -6,6 +6,7 @@
  */
 #include "board.h"
 #include "fsl_gpio.h"
+#include "fsl_debug_console.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -37,6 +38,13 @@ void
 hemorrhage_toggle(void) {GPIO_TogglePinsOutput(GPIOC, 1 << 10U);}
 
 void
+swelling_on(void) {GPIO_SetPinsOutput(GPIOC, 1 << 11U);}
+void
+swelling_off(void) {GPIO_ClearPinsOutput(GPIOC, 1 << 11U);}
+void
+swelling_toggle(void) {GPIO_TogglePinsOutput(GPIOC, 1 << 11U);}
+
+void
 solenoid_task(void *params)
 {
 	for (;;) {
@@ -44,6 +52,7 @@ solenoid_task(void *params)
 		if (spi_proto::spi_transactions > 0) {
 			tourniquet_on ? hemorrhage_off() : hemorrhage_toggle();
 		}
+		swelling_toggle();
 		vTaskDelay(led_delay_time > 0 ? led_delay_time : 1000);
 		//vTaskDelay(3000);
 	}

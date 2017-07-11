@@ -53,8 +53,8 @@ polling_task(void *params)
 		unfiltered_pressure = ADC16_GetChannelConversionValue(ADC1, 0U);
 		raw_pressure = raw_pressure * ratio + unfiltered_pressure * (1-ratio);
 
-		PRINTF("ADC Value: %d\r\n", raw_pressure);
-		PRINTF("ADC PSI  : %f\r\n", pressure::get_psi());
+		//PRINTF("ADC Value: %d\r\n", raw_pressure);
+		//PRINTF("ADC PSI  : %f\r\n", pressure::get_psi());
 		vTaskDelay(20);
 	}
 	vTaskSuspend(NULL);
