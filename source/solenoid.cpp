@@ -11,6 +11,7 @@
 #include "task.h"
 
 #include "heartrate.h"
+#include "spi_proto_slave.h"
 #include "solenoid.h"
 
 
@@ -40,7 +41,9 @@ solenoid_task(void *params)
 {
 	for (;;) {
 		//solenoids_toggle();
-		tourniquet_on ? hemorrhage_off() : hemorrhage_toggle();
+		if (spi_proto::spi_transactions > 0) {
+			tourniquet_on ? hemorrhage_off() : hemorrhage_toggle();
+		}
 		vTaskDelay(led_delay_time > 0 ? led_delay_time : 1000);
 		//vTaskDelay(3000);
 	}

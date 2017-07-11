@@ -186,6 +186,7 @@ spi_proto_task(void *pvParameters)
 		PRINTF("SPI transfer started");
 		xSemaphoreTake(cb_msg.sem, portMAX_DELAY);
 		PRINTF("SPI recvd\n");
+		spi_proto::spi_transactions++;
 		//TODO handle the received message
 
 		slave_get_message(p, slaveReceiveBuffer, TRANSFER_SIZE);

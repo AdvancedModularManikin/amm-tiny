@@ -40,6 +40,7 @@ struct spi_proto {
 	struct msg_queue queue;
 };
 
+uint32_t spi_transactions = 0;
 struct spi_proto p;
 volatile bool ready;
 

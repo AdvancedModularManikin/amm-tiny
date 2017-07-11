@@ -12,6 +12,7 @@
 #include "task.h"
 
 #include "pressuresensor.h"
+#include "spi_proto_slave.h"
 
 void
 motor_on(void)
@@ -78,11 +79,13 @@ motor_task(void *params)
 		//TODO this needs to be debounced
 		float psi = pressure::get_psi();
 
-		if (psi > 4.0) {
-			motor_off();
-		}
-		if (psi < 2.5) {
-			motor_on();
+		if (spi_proto::spi_transactions > 0) {
+			if (psi > 4.0) {
+				motor_off();
+			}
+			if (psi < 2.5) {
+				motor_on();
+			}
 		}
 		vTaskDelay(20);
 	}
