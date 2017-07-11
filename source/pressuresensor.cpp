@@ -25,6 +25,7 @@ int
 polling_init(void) {
 
 	ADC16_GetDefaultConfig(&config);
+	config.longSampleMode = kADC16_LongSampleCycle24;
 	ADC16_Init(ADC1, &config);
 	ADC16_EnableHardwareTrigger(ADC1, false);
 	ADC16_DoAutoCalibration(ADC1); // can't do much with any errors

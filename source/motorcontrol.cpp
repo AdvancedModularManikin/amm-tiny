@@ -39,6 +39,7 @@ motor_task(void *params)
 	motor_off();
 
 	for (;;) {
+		//TODO this needs to be debounced
 		float psi = pressure::get_psi();
 
 		if (psi > 4.0) {
