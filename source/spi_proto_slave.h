@@ -40,7 +40,8 @@ struct spi_proto {
 	struct msg_queue queue;
 };
 
-
+struct spi_proto p;
+volatile bool ready;
 
 int
 slave_get_message(struct spi_proto &p, unsigned char *buf, int len);

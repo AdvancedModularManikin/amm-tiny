@@ -59,6 +59,7 @@
 #include "motorcontrol.h"
 #include "solenoid.h"
 #include "pressuresensor.h"
+#include "button.h"
 
 /* Task priorities. */
 #define hello_task_PRIORITY (configMAX_PRIORITIES - 1)
@@ -125,17 +126,19 @@ dspi_slave_config_t slaveConfig = {
 //*/
 
 
+
 static void
 spi_proto_task(void *pvParameters)
 {
+	using namespace spi_proto;
 	//setup SPI
 	dspi_transfer_t slaveXfer;
 	uint32_t i;
 	callback_message_t cb_msg;
 
-	spi_proto::spi_proto p;
 	// init p, set up buffers and len
-	spi_proto::reset(p.queue);
+	spi_proto::reset(spi_proto::p.queue);
+	spi_proto::ready = true;
 	p.buflen = TRANSFER_SIZE;
 	p.sendbuf = slaveSendBuffer;
 	p.getbuf = slaveReceiveBuffer;
@@ -232,6 +235,7 @@ int main(void) {
   //xTaskCreate(pressure_task, "Hello_task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
   //xTaskCreate(flow_task, "Hello_task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
   xTaskCreate(polling_task, "polling task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
+  xTaskCreate(button_task, "button task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
 
 
   vTaskStartScheduler();

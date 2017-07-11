@@ -29,11 +29,19 @@ solenoids_toggle(void)
 }
 
 void
+hemorrhage_on(void) {GPIO_SetPinsOutput(GPIOC, 1 << 10U);}
+void
+hemorrhage_off(void) {GPIO_ClearPinsOutput(GPIOC, 1 << 10U);}
+void
+hemorrhage_toggle(void) {GPIO_TogglePinsOutput(GPIOC, 1 << 10U);}
+
+void
 solenoid_task(void *params)
 {
 	for (;;) {
-		solenoids_toggle();
-		vTaskDelay(led_delay_time > 0 ? led_delay_time : 3000);
+		//solenoids_toggle();
+		tourniquet_on ? hemorrhage_off() : hemorrhage_toggle();
+		vTaskDelay(led_delay_time > 0 ? led_delay_time : 1000);
 		//vTaskDelay(3000);
 	}
 	vTaskSuspend(NULL);

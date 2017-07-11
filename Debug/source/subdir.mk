@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../source/button.cpp \
 ../source/flowsensor.cpp \
 ../source/heartrate.cpp \
 ../source/main.cpp \
@@ -13,6 +14,7 @@ CPP_SRCS += \
 ../source/spi_proto_slave.cpp 
 
 OBJS += \
+./source/button.o \
 ./source/flowsensor.o \
 ./source/heartrate.o \
 ./source/main.o \
@@ -22,6 +24,7 @@ OBJS += \
 ./source/spi_proto_slave.o 
 
 CPP_DEPS += \
+./source/button.d \
 ./source/flowsensor.d \
 ./source/heartrate.d \
 ./source/main.d \

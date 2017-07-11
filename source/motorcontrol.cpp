@@ -33,6 +33,42 @@ motor_toggle(void)
 	GPIO_TogglePinsOutput(GPIOC, 1<<2U);
 }
 
+#define MOTOR_SPEED_LEVELS 128
+
+int motor_level;
+
+void
+motor_speed_up(void)
+{
+	//TODO
+	//enable CS
+	//U/~D to HI
+	//pulse CLK, must last 25 ns
+	//turn CLK off
+	//disable CS
+	motor_level++;
+	if (motor_level >= MOTOR_SPEED_LEVELS) motor_level = MOTOR_SPEED_LEVELS-1;
+}
+
+void
+motor_speed_down(void)
+{
+	//TODO
+	//enable CS
+	//U/~D to LOW
+	//pulse CLK, must last 25 ns
+	//turn CLK off
+	//disable CS
+	motor_level--;
+	if (motor_level < 0) motor_level = 0;
+}
+
+void
+motor_speed_init(void)
+{
+	for (int i = 0; i < MOTOR_SPEED_LEVELS;i++) motor_speed_down();
+	motor_level = 0;
+}
 void
 motor_task(void *params)
 {

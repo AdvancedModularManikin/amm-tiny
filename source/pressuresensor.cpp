@@ -54,14 +54,14 @@ polling_task(void *params)
 		raw_pressure = raw_pressure * ratio + unfiltered_pressure * (1-ratio);
 
 		PRINTF("ADC Value: %d\r\n", raw_pressure);
-		PRINTF("ADC Value: %f\r\n", pressure::get_MPa());
+		PRINTF("ADC PSI  : %f\r\n", pressure::get_psi());
 		vTaskDelay(20);
 	}
 	vTaskSuspend(NULL);
 }
 
 namespace pressure {
-float
+/*float
 get_MPa(void)
 {
 	//convert to voltage
@@ -78,9 +78,22 @@ get_MPa(void)
 
 	return val_bot + adj*(val_top-val_bot); // multiply by 1MPa/1 for units
 }
+*/
 float
 get_psi(void)
 {
-	return 145.038*get_MPa();
+	//convert to voltage
+	uint32_t max = 4096;
+
+	float top = 1.0377 ;
+	float bot = 0.9303 ;
+	float val_bot = 0.0;
+	float val_top = 4.2;
+	float frac = ((float) raw_pressure)/((float) max);
+	// this is not actually volts, but it is what the sensor originally returned
+	float volts = frac * 5.0;
+	float adj = (volts-bot)/(top-bot);
+
+	return val_bot + adj*(val_top-val_bot); // multiply by 1PSI/1 for units
 }
 }
