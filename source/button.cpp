@@ -5,6 +5,8 @@
  *      Author: gus
  */
 
+#include "fsl_debug_console.h"
+#include "fsl_gpio.h"
 #include "board.h"
 
 #include "FreeRTOS.h"
@@ -27,22 +29,27 @@ button_task(void *params)
 	//strangely no SW2 defines in board.h
 	GPIO_PinInit(GPIOD, 11U, &sw2_config);
 
+	PRINTF("Buttons ready\r\n");
 	for (;;) {
 		if (!spi_proto::ready) continue;
 		//check buttons
 		sw2_down = GPIO_ReadPinInput(GPIOD, 11);
 		sw3_down = GPIO_ReadPinInput(BOARD_SW3_GPIO,BOARD_SW3_GPIO_PIN);
-		//DONE do stuff to debounce presses and ensure we only send the change event
+		//TODO (undone) do stuff to debounce presses and ensure we only send the change event
 
 		if (sw2_down) tourniquet_on = true;
 
 		//notify SPI thread
 		unsigned char message = sw2_down | (sw3_down<<1);
-		if (message != last_message) {
-			slave_send_message(spi_proto::p, &message, 1);
-			last_message = message;
-		}
+		//if (message != last_message) {
+		//slaveSendBuffer[0] = message;
+		slave_send_message(spi_proto::p, &message, 1);
+		//	last_message = message;
+		//}
+
+		PRINTF("sending button: %02x\r\n", message);
 
 		vTaskDelay(delay_time);
 	}
+	vTaskSuspend(NULL);
 }

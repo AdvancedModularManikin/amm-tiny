@@ -32,6 +32,7 @@
 #include "fsl_port.h"
 #include "fsl_gpio.h"
 #include "pin_mux.h"
+#include "board.h"
 
 /*******************************************************************************
  * Code
@@ -106,5 +107,15 @@ void BOARD_InitPins(void)
     PORT_SetPinMux(PORTD, 1U, kPORT_MuxAlt2);
     PORT_SetPinMux(PORTD, 2U, kPORT_MuxAlt2);
     PORT_SetPinMux(PORTD, 3U, kPORT_MuxAlt2);
+
+    //buttons
+    port_pin_config_t button_settings = {0};
+    button_settings.pullSelect = kPORT_PullUp;
+    button_settings.mux = kPORT_MuxAsGpio;
+
+    CLOCK_EnableClock(kCLOCK_PortA);
+    PORT_SetPinConfig(BOARD_SW3_PORT, BOARD_SW3_GPIO_PIN, &button_settings);
+    //strangely no SW2 defines in board.h
+    PORT_SetPinConfig(PORTD, 11U, &button_settings);
 
 }

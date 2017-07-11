@@ -125,8 +125,6 @@ dspi_slave_config_t slaveConfig = {
 }
 //*/
 
-
-
 static void
 spi_proto_task(void *pvParameters)
 {
@@ -138,10 +136,10 @@ spi_proto_task(void *pvParameters)
 
 	// init p, set up buffers and len
 	spi_proto::reset(spi_proto::p.queue);
-	spi_proto::ready = true;
 	p.buflen = TRANSFER_SIZE;
 	p.sendbuf = slaveSendBuffer;
 	p.getbuf = slaveReceiveBuffer;
+	spi_proto::ready = true;
 
 	cb_msg.sem = xSemaphoreCreateBinary();
 	dspi_sem = cb_msg.sem;
@@ -170,11 +168,12 @@ spi_proto_task(void *pvParameters)
 	 * using the response
 	 */
 	for (;;) {
-		//slaveSendBuffer[0]=0x03;
-		unsigned char msgbuf[1] = {0x03};
-		slave_send_message(p, msgbuf, 1);
+		//unsigned char buf[1] = {0x04};
+		//slave_send_message(p, buf, 1);
+
 		slave_do_tick(p); // handles at least the functions below up to the semaphore
 		//TODO check if there is any data to send. If so put in into slaveSendBuffer
+
 		/*Set slave transfer ready to receive/send data*/
 		slaveXfer.txData = slaveSendBuffer;
 		slaveXfer.rxData = slaveReceiveBuffer;
@@ -202,8 +201,9 @@ static void hello_task(void *pvParameters) {
   for (;;) {
 	/*PRINTF("Hello world.\r\n");*/
 	/* Add your code here */
-    vTaskSuspend(NULL);
+    //vTaskSuspend(NULL);
   }
+  vTaskSuspend(NULL);
 }
 
 /*!
@@ -225,19 +225,26 @@ int main(void) {
   motor_off();
 
   polling_init();
+  BaseType_t ret;
   /* Create RTOS task */
-  xTaskCreate(hello_task, "Hello_task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
-  xTaskCreate(pin_hr_task, "pin heartrate task", configMINIMAL_STACK_SIZE+200, NULL, hello_task_PRIORITY, NULL);
+  ret = xTaskCreate(hello_task, "Hello_task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
+  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  ret = xTaskCreate(pin_hr_task, "pin heartrate task", configMINIMAL_STACK_SIZE+200, NULL, hello_task_PRIORITY, NULL);
+  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
 
   //below are TODO
-  xTaskCreate(spi_proto_task, "spi proto task", configMINIMAL_STACK_SIZE+200, NULL, hello_task_PRIORITY, NULL);
-  xTaskCreate(solenoid_task, "solenoid task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
-  xTaskCreate(motor_task, "motor task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
+  ret = xTaskCreate(spi_proto_task, "spi proto task", configMINIMAL_STACK_SIZE+200, NULL, hello_task_PRIORITY, NULL);
+  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  ret = xTaskCreate(button_task, "button task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
+  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  ret = xTaskCreate(solenoid_task, "solenoid task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
+  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  ret = xTaskCreate(motor_task, "motor task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
+  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   //xTaskCreate(pressure_task, "Hello_task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
   //xTaskCreate(flow_task, "Hello_task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
-  xTaskCreate(polling_task, "polling task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
-  xTaskCreate(button_task, "button task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
-
+  ret = xTaskCreate(polling_task, "polling task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
+  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
 
   vTaskStartScheduler();
 
