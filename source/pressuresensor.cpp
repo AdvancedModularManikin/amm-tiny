@@ -36,7 +36,10 @@ polling_init(void) {
 	return 0;
 }
 
-uint32_t raw_pressure;
+uint32_t raw_pressure = 0;
+uint32_t unfiltered_pressure;
+
+float ratio = 0.90;
 
 void
 polling_task(void *params)
@@ -47,7 +50,9 @@ polling_task(void *params)
 				ADC16_GetChannelStatusFlags(ADC1, 0U)))
 		{
 		}
-		raw_pressure = ADC16_GetChannelConversionValue(ADC1, 0U);
+		unfiltered_pressure = ADC16_GetChannelConversionValue(ADC1, 0U);
+		raw_pressure = raw_pressure * ratio + unfiltered_pressure * (1-ratio);
+
 		PRINTF("ADC Value: %d\r\n", raw_pressure);
 		PRINTF("ADC Value: %f\r\n", pressure::get_MPa());
 		vTaskDelay(20);

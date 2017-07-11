@@ -22,8 +22,8 @@ solenoids_toggle(void)
 	GPIO_TogglePinsOutput(GPIOA, 1 << 25U);
 	GPIO_TogglePinsOutput(GPIOB, 1 << 18U);
 	GPIO_TogglePinsOutput(GPIOB, 1 << 19U);
-	GPIO_TogglePinsOutput(GPIOC, 1 << 10U);
-	GPIO_TogglePinsOutput(GPIOC, 1 << 11U);
+	//GPIO_TogglePinsOutput(GPIOC, 1 << 10U);
+	//GPIO_TogglePinsOutput(GPIOC, 1 << 11U);
 
 	return 0;
 }
