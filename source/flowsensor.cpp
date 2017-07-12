@@ -18,7 +18,7 @@
 //make the interrupt add numbers
 //set up recurring task to take the added-up count and put it somewhere useful
 
-uint32_t pulsecounts;
+volatile uint32_t pulsecounts;
 float flow_rate;
 
 const float TICKS_PER_LITER = 1934;
@@ -26,7 +26,11 @@ const float TICKS_PER_LITER = 1934;
 int
 init(void)
 {
-	PORT_SetPinMux(PORTB, 4U, kPORT_MuxAsGpio);
+	CLOCK_EnableClock(kCLOCK_PortB);
+	port_pin_config_t flow_pin_settings = {0};
+	flow_pin_settings.pullSelect = kPORT_PullDown;
+	flow_pin_settings.mux = kPORT_MuxAsGpio;
+	PORT_SetPinConfig(PORTB, 4U, &flow_pin_settings);
 	gpio_pin_config_t settings = {kGPIO_DigitalInput, 0};
 	GPIO_PinInit(GPIOB, 4U, &settings);
 	EnableIRQ(PORTB_IRQn);
