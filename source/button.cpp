@@ -38,7 +38,7 @@ button_task(void *params)
 		sw3_down = GPIO_ReadPinInput(BOARD_SW3_GPIO,BOARD_SW3_GPIO_PIN);
 		//TODO (undone) do stuff to debounce presses and ensure we only send the change event
 
-		if (sw2_down) tourniquet_on = true;
+		if (!sw2_down) tourniquet_on = true;
 
 		//notify SPI thread
 		unsigned char message = sw2_down | (sw3_down<<1);
