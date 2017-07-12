@@ -9,7 +9,15 @@
 #define SOURCE_FLOWSENSOR_H_
 
 
+int
+init(void);
 
+//not sure that this needs to be in a header
+void
+PORTB_IRQHandler(void);
+
+void
+flow_sensor_task(void *params);
 
 
 #endif /* SOURCE_FLOWSENSOR_H_ */

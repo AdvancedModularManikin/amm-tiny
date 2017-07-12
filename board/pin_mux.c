@@ -70,7 +70,7 @@ void BOARD_InitPins(void)
     //TODO more elegant way to handle pin initialization
 
     //TODO enable pins on sheet as GPIOs and ADCs
-    //TODO PORTB 7:4 as ADCs
+    //TODO PORTB 7:5 as ADCs
     //TODO PORTD 3:0 as SPI (done below)
     //TODO PORTC 5:2 as GPIO for motor control
     CLOCK_EnableClock(kCLOCK_PortC);
