@@ -42,6 +42,7 @@
 /* freescale drivers */
 #include "fsl_dspi.h"
 #include "fsl_dspi_freertos.h"
+#include "fsl_adc16.h"
 //#include "fsl_common.h"
 //#include "fsl_gpio.h"
 //#include "fsl_port.h"

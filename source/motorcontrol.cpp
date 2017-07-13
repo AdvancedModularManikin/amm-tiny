@@ -77,7 +77,7 @@ motor_task(void *params)
 
 	for (;;) {
 		//TODO this needs to be debounced
-		float psi = pressure::get_psi();
+		float psi = pressure::get_psi_1();
 
 		if (spi_proto::spi_transactions > 0) {
 			if (psi > 4.0) {
