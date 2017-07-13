@@ -41,10 +41,11 @@ button_task(void *params)
 		if (!sw2_down) tourniquet_on = true;
 
 		//notify SPI thread
-		unsigned char message = sw2_down | (sw3_down<<1);
-		if (message != last_message) {
-			slave_send_message(spi_proto::p, &message, 1);
-			last_message = message;
+		unsigned char message[4];
+		message[0] = (!sw2_down) | ((!sw3_down)<<1); // down, down = 3
+		if (message[0] != last_message) {
+			slave_send_message(spi_proto::p, message, 4);
+			last_message = message[0];
 		}
 
 		PRINTF("sending button: %02x\r\n", message);

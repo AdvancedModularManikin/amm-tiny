@@ -25,6 +25,7 @@ struct solenoid {
 #endif
 
 volatile bool tourniquet_on = false;
+volatile bool hemorrhage_enabled = false;
 
 int
 solenoids_toggle(void);

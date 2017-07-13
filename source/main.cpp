@@ -71,7 +71,6 @@
 #define EXAMPLE_DSPI_SLAVE_BASEADDR ((SPI_Type *)EXAMPLE_DSPI_SLAVE_BASE)
 #define EXAMPLE_SPI_SLAVE_IRQ SPI0_IRQn
 
-#define TRANSFER_SIZE (1)         /*! Transfer size */
 #define TRANSFER_BAUDRATE (8388608U) /*! Transfer baudrate - 500k */
 
 /* SPI data structures and functions */
@@ -235,15 +234,14 @@ int main(void) {
   ret = xTaskCreate(pin_hr_task, "pin heartrate task", configMINIMAL_STACK_SIZE+200, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
 
-  //below are TODO
   ret = xTaskCreate(spi_proto_task, "spi proto task", configMINIMAL_STACK_SIZE+200, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   ret = xTaskCreate(button_task, "button task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   ret = xTaskCreate(solenoid_task, "solenoid task", configMINIMAL_STACK_SIZE+1000, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  ret = xTaskCreate(motor_task, "motor task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
-  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  //ret = xTaskCreate(motor_task, "motor task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
+  //assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   ret = xTaskCreate(polling_task, "polling task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   ret = xTaskCreate(flow_sensor_task, "flow sensor task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);

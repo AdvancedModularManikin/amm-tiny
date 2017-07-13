@@ -10,6 +10,7 @@ CPP_SRCS += \
 ../source/main.cpp \
 ../source/motorcontrol.cpp \
 ../source/pressuresensor.cpp \
+../source/seattle_demo.cpp \
 ../source/solenoid.cpp \
 ../source/spi_proto_slave.cpp 
 
@@ -20,6 +21,7 @@ OBJS += \
 ./source/main.o \
 ./source/motorcontrol.o \
 ./source/pressuresensor.o \
+./source/seattle_demo.o \
 ./source/solenoid.o \
 ./source/spi_proto_slave.o 
 
@@ -30,6 +32,7 @@ CPP_DEPS += \
 ./source/main.d \
 ./source/motorcontrol.d \
 ./source/pressuresensor.d \
+./source/seattle_demo.d \
 ./source/solenoid.d \
 ./source/spi_proto_slave.d 
 

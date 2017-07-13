@@ -7,6 +7,7 @@
 
 #ifndef SOURCE_SPI_PROTO_SLAVE_HPP_
 #define SOURCE_SPI_PROTO_SLAVE_HPP_
+#define TRANSFER_SIZE 4
 namespace spi_proto {
 
 struct msg {

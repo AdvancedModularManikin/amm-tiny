@@ -50,7 +50,9 @@ solenoid_task(void *params)
 	for (;;) {
 		//solenoids_toggle();
 		if (spi_proto::spi_transactions > 0) {
-			tourniquet_on ? hemorrhage_off() : hemorrhage_toggle();
+			hemorrhage_enabled ?
+				tourniquet_on ? hemorrhage_off() : hemorrhage_toggle()
+					: hemorrhage_off();
 		}
 		swelling_toggle();
 		vTaskDelay(led_delay_time > 0 ? led_delay_time : 1000);

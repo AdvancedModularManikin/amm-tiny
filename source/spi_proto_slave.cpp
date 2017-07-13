@@ -11,6 +11,7 @@
 
 #include "heartrate.h"
 #include "spi_proto_slave.h"
+#include "solenoid.h"
 
 namespace spi_proto {
 
@@ -24,6 +25,12 @@ slave_get_message(struct spi_proto &p, unsigned char *buf, int len)
 	//led_delay_time = 0.5/(((float)slaveReceiveBuffer[0]) * (1.0/60.0) * 0.001);
 	led_delay_time = 0.5/(((float)(p.getbuf[0])) * (1.0/60.0) * 0.001);
 
+	//tourniquet is second byte
+	if (p.getbuf[1]){
+		//set tourniquet on, so stop bleeding
+		tourniquet_on = true;
+	}
+
 	//TODO make this control solenoid stuff
 	return 0;
 
@@ -36,7 +43,7 @@ slave_send_message(struct spi_proto &p, unsigned char *buf, int len)
 
 	msg m;
 	//TODO but buf and len into m
-	if (len == 1) { // TODO remove magic number (it's TRANSFER_SIZE, for reference)
+	if (len <= TRANSFER_SIZE) { // TODO remove magic number (it's TRANSFER_SIZE, for reference)
 		//TODO remove extra copy
 		memcpy(m.buf, buf, len);
 		m.len = len;
