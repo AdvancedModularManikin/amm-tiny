@@ -33,6 +33,7 @@ polling_init(void) {
 	ADC16_EnableHardwareTrigger(ADC1, false);
 	ADC16_DoAutoCalibration(ADC1); // can't do much with any errors
 
+	//TODO move this into a static initialization
 	sensors[0].channel_config.channelNumber = 13U; // B7
 	sensors[0].channel_config.enableInterruptOnConversionCompleted = false;
 	sensors[0].channel_config.enableDifferentialConversion = false;
@@ -62,9 +63,9 @@ polling_task(void *params)
 			sensors[i].raw_pressure = sensors[i].raw_pressure * ratio + sensors[i].unfiltered_pressure * (1-ratio);
 		}
 
-		PRINTF("ADC Value: %d \t\t %d\r\n", sensors[0].raw_pressure, sensors[1].raw_pressure);
+		//PRINTF("ADC Value: %d \t\t %d\r\n", sensors[0].raw_pressure, sensors[1].raw_pressure);
 		//PRINTF("ADC Value: %d\r\n", sensors[1].raw_pressure);
-		//PRINTF("ADC PSI  : %f\r\n", pressure::get_psi());
+		PRINTF("ADC PSI  : %f\t%f\r\n", pressure::get_psi_1(),pressure::get_psi_2());
 		vTaskDelay(20);
 	}
 	vTaskSuspend(NULL);
@@ -89,12 +90,12 @@ get_psi_1(void)
 	return val_bot + adj*(val_top-val_bot); // multiply by 1PSI/1 for units
 }
 
-float
+float // TODO change to bool that checks >= 15.0
 get_psi_2(void)
 {
 	//convert to voltage
 	uint32_t max = 4096;
-	//TODO pressure sensor, 0-5v (we divide it 0-3.3v) range is 2.2-16.7PSI on PB6
+	//pressure sensor, 0-5v (we divide it 0-3.3v) range is 2.2-16.7PSI on PB6
 
 	float top = 5.0 ;
 	float bot = 0.0 ;

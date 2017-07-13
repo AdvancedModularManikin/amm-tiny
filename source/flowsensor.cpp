@@ -41,11 +41,8 @@ init(void)
 	PORT_SetPinInterruptConfig(PORT, PIN, kPORT_InterruptEitherEdge);
 	NVIC_SetPriority(PORTB_IRQn, 5);
 	pulsecounts = 0;
-	//TODO blip B18
 
-	GPIO_SetPinsOutput(GPIOB, 1 << 18U);
-	GPIO_ClearPinsOutput(GPIOB, 1 << 18U);
-	LED_GREEN_OFF();
+	//TODO almost certain this doesn't matter
 	__enable_irq();
 }
 
@@ -53,10 +50,6 @@ extern "C" {
 void
 PORTB_IRQHandler(void)
 {
-	//TODO blip B19
-	GPIO_SetPinsOutput(GPIOB, 1 << 19U);
-
-	LED_GREEN_ON();
 	PORT_ClearPinsInterruptFlags(PORT, 1<<PIN);
 	//uint32_t iflags = PORT_GetPinsInterruptFlags(PORTB);
 	//if (iflags & (1<<4U)) {
@@ -64,8 +57,6 @@ PORTB_IRQHandler(void)
 	//}
 	//FIXME currently clears all flags, is this the correct approach?
 	//interrupt flags must be written with 1 to clear them
-
-	GPIO_ClearPinsOutput(GPIOB, 1 << 19U);
 }
 }
 
@@ -75,12 +66,6 @@ flow_sensor_task(void *params)
 	init();
 	//TODO every so often reset the tick counter and store the number of ticks in another value somewhere
 	for (;;) {
-		//TODO blip A25
-		GPIO_SetPinsOutput(GPIOA, 1 << 25U);
-		GPIO_ClearPinsOutput(GPIOA, 1 << 25U);
-		LED_GREEN_OFF();
-
-
 		float ticks = pulsecounts;
 		pulsecounts = 0;
 		//TODO change to mL/min
