@@ -30,7 +30,7 @@ button_task(void *params)
 	GPIO_PinInit(GPIOD, 11U, &sw2_config);
 
 	vTaskDelay(500);
-	PRINTF("Buttons ready\r\n");
+	//PRINTF("Buttons ready\r\n");
 	for (;;) {
 		if (!spi_proto::ready) continue;
 		//check buttons
@@ -48,7 +48,7 @@ button_task(void *params)
 			last_message = message[0];
 		}
 
-		PRINTF("sending button: %02x\r\n", message);
+		//PRINTF("sending button: %02x\r\n", message);
 
 		vTaskDelay(delay_time);
 	}

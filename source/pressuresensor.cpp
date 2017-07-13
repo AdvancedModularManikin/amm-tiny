@@ -65,7 +65,7 @@ polling_task(void *params)
 
 		//PRINTF("ADC Value: %d \t\t %d\r\n", sensors[0].raw_pressure, sensors[1].raw_pressure);
 		//PRINTF("ADC Value: %d\r\n", sensors[1].raw_pressure);
-		PRINTF("ADC PSI  : %f\t%f\r\n", pressure::get_psi_1(),pressure::get_psi_2());
+		//PRINTF("ADC PSI  : %f\t%f\r\n", pressure::get_psi_1(),pressure::get_psi_2());
 		vTaskDelay(20);
 	}
 	vTaskSuspend(NULL);

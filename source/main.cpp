@@ -162,7 +162,7 @@ spi_proto_task(void *pvParameters)
 	/* Set up slave first */
 	DSPI_SlaveTransferCreateHandle(EXAMPLE_DSPI_SLAVE_BASEADDR, &g_s_handle, DSPI_SlaveUserCallback, &cb_msg);
 
-	PRINTF("SPI set up\n");
+	//PRINTF("SPI set up\n");
 
 	/* of course only the relative order matters, but conceptually it is better
 	 * to think of checking for info to send, preparing the message, and then
@@ -180,9 +180,9 @@ spi_proto_task(void *pvParameters)
 
 		DSPI_SlaveTransferNonBlocking(EXAMPLE_DSPI_SLAVE_BASEADDR, &g_s_handle, &slaveXfer);
 
-		PRINTF("SPI transfer started");
+		//PRINTF("SPI transfer started");
 		xSemaphoreTake(cb_msg.sem, portMAX_DELAY);
-		PRINTF("SPI recvd\n");
+		//PRINTF("SPI recvd\n");
 		spi_proto::spi_transactions++;
 		//TODO handle the received message
 
