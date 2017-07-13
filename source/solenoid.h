@@ -32,5 +32,7 @@ solenoids_toggle(void);
 
 void
 solenoid_task(void *params);
+void
+lung_task(void *params);
 
 #endif /* SOURCE_SOLENOID_H_ */

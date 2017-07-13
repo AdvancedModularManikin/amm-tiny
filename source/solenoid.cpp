@@ -45,8 +45,20 @@ void
 swelling_toggle(void) {GPIO_TogglePinsOutput(GPIOC, 1 << 11U);}
 
 void
+lungs_on(void) {GPIO_SetPinsOutput(GPIOB, 1 << 19U);}
+void
+lungs_off(void) {GPIO_ClearPinsOutput(GPIOB, 1 << 19U);}
+void
+lungs_toggle(void) {GPIO_TogglePinsOutput(GPIOB, 1 << 19U);}
+
+//TODO make a task that waits on the first of any of a number of times
+void
 solenoid_task(void *params)
 {
+
+	hemorrhage_off();
+	swelling_off();
+
 	for (;;) {
 		//solenoids_toggle();
 		if (spi_proto::spi_transactions > 0) {
@@ -57,6 +69,18 @@ solenoid_task(void *params)
 		swelling_toggle();
 		vTaskDelay(led_delay_time > 0 ? led_delay_time : 1000);
 		//vTaskDelay(3000);
+	}
+	vTaskSuspend(NULL);
+}
+
+void
+lung_task(void *params)
+{
+	lungs_off();
+
+	for (;;) {
+		lungs_toggle();
+		vTaskDelay(breath_delay_time > 0 ? breath_delay_time : 4000);
 	}
 	vTaskSuspend(NULL);
 }

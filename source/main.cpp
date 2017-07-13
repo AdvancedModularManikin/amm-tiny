@@ -242,6 +242,8 @@ int main(void) {
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   ret = xTaskCreate(flow_sensor_task, "flow sensor task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  ret = xTaskCreate(lung_task, "lung task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
+  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
 
   vTaskStartScheduler();
 
