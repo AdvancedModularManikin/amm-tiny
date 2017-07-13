@@ -169,10 +169,6 @@ spi_proto_task(void *pvParameters)
 	 * using the response
 	 */
 	for (;;) {
-		//unsigned char buf[1] = {0x04};
-		//slave_send_message(p, buf, 1);
-		slaveSendBuffer[0] = 0x03; //FIXME this is presend for the duration that we are using the old spi host endpoint. it needs to receive 3 or it does the wrong thing.
-
 		slave_do_tick(p); // handles at least the functions below up to the semaphore
 		//TODO check if there is any data to send. If so put in into slaveSendBuffer
 
