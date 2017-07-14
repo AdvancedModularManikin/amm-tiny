@@ -74,7 +74,7 @@ flow_sensor_task(void *params)
 		//to get mL/min, multiply L/s * mL/L * m/s = 1000/60
 		flow_rate = (ticks / TICKS_PER_LITER) * 10.0 * 1000.0 * 60.0;
 
-		PRINTF("flow_rate: %f\r\n", flow_rate);
+		//PRINTF("flow_rate: %f\r\n", flow_rate);
 		vTaskDelay(100);
 	}
 
