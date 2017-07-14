@@ -23,10 +23,12 @@ slave_get_message(struct spi_proto &p, unsigned char *buf, int len)
 {
 	//TODO parses the message and does any required processing
 
+	/* //for debugging SPI
 	for (int i = 0; i < len; i++) {
 		PRINTF("%02x ", buf[i]);
 	}
 	PRINTF("\r\n");
+	*/
 	//if it's heartrate,
 	//led_delay_time = 0.5/(((float)slaveReceiveBuffer[0]) * (1.0/60.0) * 0.001);
 	led_delay_time = 0.5/(((float)(p.getbuf[0])) * (1.0/60.0) * 0.001);
