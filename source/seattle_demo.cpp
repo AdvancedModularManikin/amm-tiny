@@ -17,7 +17,7 @@
 void
 seattle_init(void)
 {
-	//TODO initialize switch GPIO B5
+	//initialize switch GPIO B5
 	CLOCK_EnableClock(kCLOCK_PortB);
 	port_pin_config_t start_switch_settings = {0};
 	start_switch_settings.pullSelect = kPORT_PullUp;
@@ -36,11 +36,9 @@ seattle_task(void *params)
 		//monitor switch
 		//if switch pressed, low = pressed
 		if (GPIO_ReadPinInput(GPIOB, 5U) == 0){
-			//TODO send start message
 
 			//TODO send hemorrhage message
 			unsigned char buf[4];
-			buf[2] = 1; // start
 			buf[1] = 1; // hemorrhage
 			spi_proto::slave_send_message(spi_proto::p, buf, 4);
 			//TODO start bleeding (in time with heartrate
