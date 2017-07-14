@@ -170,6 +170,7 @@ spi_proto_task(void *pvParameters)
 	 * using the response
 	 */
 	for (;;) {
+		memset(slaveSendBuffer, 0, TRANSFER_SIZE);
 		slave_do_tick(p); // handles at least the functions below up to the semaphore
 		//TODO check if there is any data to send. If so put in into slaveSendBuffer
 
