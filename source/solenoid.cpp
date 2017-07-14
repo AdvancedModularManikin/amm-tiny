@@ -79,7 +79,8 @@ lung_task(void *params)
 	lungs_off();
 
 	for (;;) {
-		if (breath_delay_time > 0) {
+		//TODO use a system like this for heartrate too
+		if (breath_rate != 0 && breath_delay_time > 0) {
 			lungs_toggle();
 			vTaskDelay(breath_delay_time);
 		} else {

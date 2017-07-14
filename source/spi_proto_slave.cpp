@@ -31,14 +31,20 @@ slave_get_message(struct spi_proto &p, unsigned char *buf, int len)
 	*/
 	//if it's heartrate,
 	//led_delay_time = 0.5/(((float)slaveReceiveBuffer[0]) * (1.0/60.0) * 0.001);
+	heart_rate = p.getbuf[0];
 	led_delay_time = 0.5/(((float)(p.getbuf[0])) * (1.0/60.0) * 0.001);
 	//second 1/2 is because rate counts inhales and exhales
+	breath_rate = p.getbuf[1];
 	breath_delay_time = 0.5 * 0.5/(((float)(p.getbuf[1])) * (1.0/60.0) * 0.001);
 
 	//tourniquet is second byte
 	if (p.getbuf[2]){
 		//set tourniquet on, so stop bleeding
 		tourniquet_on = true;
+	}
+	if (p.getbuf[3]) {
+		//start bleeding
+		hemorrhage_enabled = true;
 	}
 
 	//TODO make this control solenoid stuff
