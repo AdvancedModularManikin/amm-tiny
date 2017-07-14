@@ -79,8 +79,13 @@ lung_task(void *params)
 	lungs_off();
 
 	for (;;) {
-		lungs_toggle();
-		vTaskDelay(breath_delay_time > 0 ? breath_delay_time : 4000);
+		if (breath_delay_time > 0) {
+			lungs_toggle();
+			vTaskDelay(breath_delay_time);
+		} else {
+			lungs_off();
+			vTaskDelay(5000);
+		}
 	}
 	vTaskSuspend(NULL);
 }
