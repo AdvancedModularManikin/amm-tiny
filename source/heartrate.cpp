@@ -17,10 +17,10 @@ void
 pin_hr_task(void *pvParameters)
 {
 	for (;;) {
-		if (led_delay_time > 0) {
+		if (heart_delay_time > 0) {
 			LED_GREEN_TOGGLE();
 		}
-		vTaskDelay(led_delay_time > 0 ? led_delay_time : 1000);
+		vTaskDelay(heart_delay_time > 0 ? heart_delay_time : 1000);
 	}
 	vTaskSuspend(NULL);
 }

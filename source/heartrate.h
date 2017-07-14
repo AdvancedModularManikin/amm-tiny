@@ -11,7 +11,7 @@
 volatile unsigned char heart_rate = 60;
 volatile unsigned char breath_rate = 15;
 
-volatile TickType_t led_delay_time = 1000 / portTICK_PERIOD_MS;
+volatile TickType_t heart_delay_time = 1000 / portTICK_PERIOD_MS;
 volatile TickType_t breath_delay_time = 2000 / portTICK_PERIOD_MS;
 
 void

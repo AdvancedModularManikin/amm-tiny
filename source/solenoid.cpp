@@ -67,7 +67,7 @@ solenoid_task(void *params)
 					: hemorrhage_off();
 		}
 		swelling_toggle();
-		vTaskDelay(led_delay_time > 0 ? led_delay_time : 1000);
+		vTaskDelay(heart_delay_time > 0 ? heart_delay_time : 1000);
 		//vTaskDelay(3000);
 	}
 	vTaskSuspend(NULL);
