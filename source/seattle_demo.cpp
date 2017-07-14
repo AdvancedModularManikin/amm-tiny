@@ -39,15 +39,23 @@ seattle_task(void *params)
 		//if switch pressed, low = pressed
 		if (GPIO_ReadPinInput(GPIOB, 5U)){
 
-			//TODO send hemorrhage message
-			unsigned char buf[4];
-			buf[1] = 1; // hemorrhage
-			spi_proto::slave_send_message(spi_proto::p, buf, 4);
-			//this is instead enabled in response to a hemorrhage message
-			//received over SPI, which is triggered by DDS received in response
-			//to the message triggered by the message we just sent.
-			//hemorrhage_enabled = true;
-			break;
+			vTaskDelay(20);
+			if (GPIO_ReadPinInput(GPIOB, 5U)) {
+				vTaskDelay(20);
+				if (GPIO_ReadPinInput(GPIOB, 5U)) {
+					//40ms of success
+					//TODO send hemorrhage message
+					unsigned char buf[4];
+					buf[1] = 1; // hemorrhage
+					spi_proto::slave_send_message(spi_proto::p, buf, 4);
+					//this is instead enabled in response to a hemorrhage message
+					//received over SPI, which is triggered by DDS received in response
+					//to the message triggered by the message we just sent.
+					//hemorrhage_enabled = true;
+					break;
+				}
+			}
+
 		}
 		vTaskDelay(200);
 	}
