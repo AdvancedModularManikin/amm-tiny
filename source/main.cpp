@@ -62,6 +62,7 @@
 #include "pressuresensor.h"
 #include "button.h"
 #include "flowsensor.h"
+#include "seattle_demo.h"
 
 /* Task priorities. */
 #define hello_task_PRIORITY (configMAX_PRIORITIES - 1)
@@ -243,6 +244,8 @@ int main(void) {
   ret = xTaskCreate(flow_sensor_task, "flow sensor task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   ret = xTaskCreate(lung_task, "lung task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
+  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  ret = xTaskCreate(seattle_task, "seattle task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
 
   vTaskStartScheduler();
