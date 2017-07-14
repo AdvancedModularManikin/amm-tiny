@@ -78,6 +78,7 @@ slave_do_tick(struct spi_proto &p)
 		if (p.buflen >= m.len) {
 			//enough space, we can proceed
 			memcpy(p.sendbuf, &m.buf, m.len);
+			memset(m.buf, 0, m.len);
 			//not copying len because it's a buffer
 			//TODO need additional lengths so that spi_proto knows how many bytes of message contain real info
 			return 0;

@@ -21,7 +21,7 @@ seattle_init(void)
 	//initialize switch GPIO B5
 	CLOCK_EnableClock(kCLOCK_PortB);
 	port_pin_config_t start_switch_settings = {0};
-	start_switch_settings.pullSelect = kPORT_PullUp;
+	start_switch_settings.pullSelect = kPORT_PullDown;
 	start_switch_settings.mux = kPORT_MuxAsGpio;
 	PORT_SetPinConfig(PORTB, 5U, &start_switch_settings);
 	gpio_pin_config_t gpioconfig = {kGPIO_DigitalInput, 0};
@@ -37,7 +37,7 @@ seattle_task(void *params)
 		PRINTF("B5: %d\r\n", GPIO_ReadPinInput(GPIOB, 5U));
 		//monitor switch
 		//if switch pressed, low = pressed
-		if (GPIO_ReadPinInput(GPIOB, 5U) == 0){
+		if (GPIO_ReadPinInput(GPIOB, 5U)){
 
 			//TODO send hemorrhage message
 			unsigned char buf[4];
