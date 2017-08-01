@@ -37,7 +37,7 @@ seattle_task(void *params)
 		PRINTF("B5: %d\r\n", GPIO_ReadPinInput(GPIOB, 5U));
 		//monitor switch
 		//if switch pressed, low = pressed
-		if (GPIO_ReadPinInput(GPIOB, 5U)){
+		if (GPIO_ReadPinInput(GPIOB, 5U)) {
 
 			vTaskDelay(20);
 			if (GPIO_ReadPinInput(GPIOB, 5U)) {
