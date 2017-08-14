@@ -58,14 +58,14 @@ slave_send_message(struct spi_proto &p, unsigned char *buf, int len)
 	//TODO assert len less than max spi msg len
 
 	msg m;
-	//TODO but buf and len into m
-	if (len <= TRANSFER_SIZE) { // TODO remove magic number (it's TRANSFER_SIZE, for reference)
+	if (len <= TRANSFER_SIZE) {
 		//TODO remove extra copy
 		memcpy(m.buf, buf, len);
 		m.len = len;
 		push(p.queue, m);
 		return 0;
 	}
+	return -1;
 
 }
 
@@ -99,7 +99,7 @@ slave_do_tick(struct spi_proto &p)
 
 //PRE both parameters not null, all messages in q have valid lengths
 int
-pop(spi_proto::msg_queue &q, struct msg &m)
+pop(msg_queue &q, struct msg &m)
 {
 	//TODO
 	if (!q.occupancy) return -1;
@@ -116,7 +116,7 @@ pop(spi_proto::msg_queue &q, struct msg &m)
 	return 0;
 }
 int
-push(spi_proto::msg_queue &q, struct msg &m)
+push(msg_queue &q, struct msg &m)
 {
 	//TODO
 	if (!(q.occupancy < q.capacity)) return -1;
@@ -135,7 +135,7 @@ push(spi_proto::msg_queue &q, struct msg &m)
 }
 
 int
-reset(spi_proto::msg_queue &q)
+reset(msg_queue &q)
 {
 	q.capacity = 10;
 	q.first_empty = 0;

@@ -16,6 +16,22 @@
 #include "solenoid.h"
 
 
+void
+solenoid::on(struct solenoid &s) {
+	GPIO_SetPinsOutput(s.base, 1 << s.pin_ix);
+}
+
+void
+solenoid::off(struct solenoid &s) {
+	GPIO_ClearPinsOutput(s.base, 1 << s.pin_ix);
+}
+
+void
+solenoid::toggle(struct solenoid &s) {
+	GPIO_TogglePinsOutput(s.base, 1 << s.pin_ix);
+}
+
+
 int
 solenoids_toggle(void)
 {

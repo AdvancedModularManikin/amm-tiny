@@ -14,15 +14,23 @@ struct solenoid {
 	void (*on)(void);
 	void (*off)(void);
 };
-
-//on and off functions just trigger pins. possibly instead store pin info in the struct?
-
-struct solenoid {
-	int port;
-	int pin;
-	int clock; //TODO other stuff that's needed
-};
 #endif
+//on and off functions just trigger pins. possibly instead store pin info in the struct?
+namespace solenoid {
+struct solenoid {
+	GPIO_Type *base;
+	uint8_t pin_ix; // the mask is 1 << pin_ix
+	//int clock; //TODO other stuff that's needed
+};
+
+//it's possible that extend/contract would be better, but on/off will do
+	void
+	on(struct solenoid &s);
+	void
+	off(struct solenoid &s);
+	void
+	toggle(struct solenoid &s);
+}
 
 volatile bool tourniquet_on = false;
 volatile bool hemorrhage_enabled = false;

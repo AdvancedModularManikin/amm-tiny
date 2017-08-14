@@ -14,7 +14,7 @@ struct msg {
 	uint8_t buf[16];
 	int len;
 };
-/*
+//*
 struct msg_queue {
 	short first_empty;
 	short first_full;
@@ -22,7 +22,7 @@ struct msg_queue {
 	short occupancy;
 	msg que[10];
 };
-*/
+//*/
 //TODO figure out how to have msg_queue declared separately
 //TODO once variable-length messages exist bufer lengths become nontrivial
 //specifically as to how buffer length negotiation works
@@ -31,6 +31,7 @@ struct spi_proto {
 	uint8_t *getbuf;
 	int buflen;
 	//two queues, one of empty messages and one of pending messages. this is an object pool
+    /*
 	struct msg_queue {
 		short first_empty;
 		short first_full;
@@ -38,6 +39,7 @@ struct spi_proto {
 		short occupancy;
 		msg que[10];
 	};
+     //*/
 	struct msg_queue queue;
 };
 
@@ -55,12 +57,12 @@ int
 slave_do_tick(struct spi_proto &p);
 
 int
-pop(spi_proto::msg_queue &q, msg &m);
+pop(msg_queue &q, msg &m);
 int
-push(spi_proto::msg_queue &q, struct msg &m);
+push(msg_queue &q, struct msg &m);
 
 int
-reset(spi_proto::msg_queue &q);
+reset(msg_queue &q);
 
 }
 

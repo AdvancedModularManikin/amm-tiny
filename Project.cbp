@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Project"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/gus/workspace.kds/amm-tiny"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/gus/workspace.kds/amm-tiny"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/gus/workspace.kds/amm-tiny"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="amm-tiny.elf">
+				<Option output="/Users/gus/workspace.kds/amm-tiny/debug/amm-tiny.elf" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/gus/workspace.kds/amm-tiny/debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/source"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/CMSIS"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/startup"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/board"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/utilities"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/.."/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/freertos/Source/portable/GCC/ARM_CM4F"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/freertos/Source/include"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/../../../../../CMSIS/Include"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/../../../../../devices"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/drivers"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/../../../../../devices/MK66F18/utilities"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/freertos/Source"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/../../.."/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/../../../../../devices/MK66F18"/>
+					<Add directory="/Users/gus/code/gcc-arm-none-eabi-6-2017-q1-update/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/include/c++/6.3.1"/>
+					<Add directory="/Users/gus/code/gcc-arm-none-eabi-6-2017-q1-update/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/include/c++/6.3.1/arm-none-eabi"/>
+					<Add directory="/Users/gus/code/gcc-arm-none-eabi-6-2017-q1-update/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/include/c++/6.3.1/backward"/>
+					<Add directory="/Users/gus/code/gcc-arm-none-eabi-6-2017-q1-update/bin/../lib/gcc/arm-none-eabi/6.3.1/include"/>
+					<Add directory="/Users/gus/code/gcc-arm-none-eabi-6-2017-q1-update/bin/../lib/gcc/arm-none-eabi/6.3.1/include-fixed"/>
+					<Add directory="/Users/gus/code/gcc-arm-none-eabi-6-2017-q1-update/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 amm-tiny.elf"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="amm-tiny.elf/fast">
+				<Option output="/Users/gus/workspace.kds/amm-tiny/debug/amm-tiny.elf" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/gus/workspace.kds/amm-tiny/debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/source"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/CMSIS"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/startup"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/board"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/utilities"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/.."/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/freertos/Source/portable/GCC/ARM_CM4F"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/freertos/Source/include"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/../../../../../CMSIS/Include"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/../../../../../devices"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/drivers"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/../../../../../devices/MK66F18/utilities"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/freertos/Source"/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/../../.."/>
+					<Add directory="/Users/gus/workspace.kds/amm-tiny/../../../../../devices/MK66F18"/>
+					<Add directory="/Users/gus/code/gcc-arm-none-eabi-6-2017-q1-update/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/include/c++/6.3.1"/>
+					<Add directory="/Users/gus/code/gcc-arm-none-eabi-6-2017-q1-update/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/include/c++/6.3.1/arm-none-eabi"/>
+					<Add directory="/Users/gus/code/gcc-arm-none-eabi-6-2017-q1-update/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/include/c++/6.3.1/backward"/>
+					<Add directory="/Users/gus/code/gcc-arm-none-eabi-6-2017-q1-update/bin/../lib/gcc/arm-none-eabi/6.3.1/include"/>
+					<Add directory="/Users/gus/code/gcc-arm-none-eabi-6-2017-q1-update/bin/../lib/gcc/arm-none-eabi/6.3.1/include-fixed"/>
+					<Add directory="/Users/gus/code/gcc-arm-none-eabi-6-2017-q1-update/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 amm-tiny.elf/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/gus/workspace.kds/amm-tiny/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/board/board.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/board/board.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/board/clock_config.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/board/clock_config.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/board/pin_mux.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/board/pin_mux.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_adc16.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_adc16.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_clock.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_clock.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_common.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_common.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_dspi.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_dspi.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_dspi_freertos.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_dspi_freertos.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_gpio.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_gpio.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_lpuart.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_lpuart.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_port.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_smc.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_smc.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_uart.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_uart.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/croutine.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/event_groups.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/include/FreeRTOS.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/include/StackMacros.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/include/croutine.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/include/event_groups.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/include/list.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/include/mpu_wrappers.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/include/portable.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/include/projdefs.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/include/queue.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/include/semphr.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/include/task.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/include/timers.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/list.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/portable/GCC/ARM_CM4F/port.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/portable/GCC/ARM_CM4F/portmacro.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/portable/MemMang/heap_4.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/queue.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/tasks.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/freertos/Source/timers.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/FreeRTOSConfig.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/button.cpp">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/button.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/flowsensor.cpp">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/flowsensor.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/heartrate.cpp">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/heartrate.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/main.cpp">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/motorcontrol.cpp">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/motorcontrol.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/pressure_adc.cpp">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/pressure_adc.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/pressuresensor.cpp">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/pressuresensor.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/seattle_demo.cpp">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/seattle_demo.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/solenoid.cpp">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/solenoid.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/spi_proto_slave.cpp">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/spi_proto_slave.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/startup/startup_MK66F18.S">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/startup/system_MK66F18.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/startup/system_MK66F18.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/utilities/fsl_debug_console.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/utilities/fsl_debug_console.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/utilities/fsl_sbrk.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/armgcc.cmake">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

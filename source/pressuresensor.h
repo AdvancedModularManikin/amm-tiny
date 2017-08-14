@@ -8,14 +8,14 @@
 #ifndef SOURCE_PRESSURESENSOR_H_
 #define SOURCE_PRESSURESENSOR_H_
 
-extern "C" {
+//extern "C" {
 struct pressure_sensor {
 	//adc16_config_t config; // only need one per ADC
 	adc16_channel_config_t channel_config;
-	uint32_t raw_pressure = 0;
+	uint32_t raw_pressure;
 	uint32_t unfiltered_pressure;
 };
-}
+//}
 
 int
 polling_init(void);

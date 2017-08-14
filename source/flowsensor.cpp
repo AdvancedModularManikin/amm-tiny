@@ -50,6 +50,7 @@ extern "C" {
 void
 PORTB_IRQHandler(void)
 {
+	//TODO re-enable the flag checking (to prepare for multiple pin interrupts) and then TODO test it
 	PORT_ClearPinsInterruptFlags(PORT, 1<<PIN);
 	//uint32_t iflags = PORT_GetPinsInterruptFlags(PORTB);
 	//if (iflags & (1<<4U)) {

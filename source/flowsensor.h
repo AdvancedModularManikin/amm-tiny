@@ -9,7 +9,7 @@
 #define SOURCE_FLOWSENSOR_H_
 
 
-int
+void
 init(void);
 
 //not sure that this needs to be in a header

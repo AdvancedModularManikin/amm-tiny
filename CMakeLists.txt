@@ -340,7 +340,7 @@ include_directories(${ProjDirPath}/../../..)
 
 include_directories(${ProjDirPath}/../../../../../devices/MK66F18)
 
-add_executable(freertos_hello.elf 
+add_executable(amm-tiny.elf 
 "${ProjDirPath}/startup/startup_MK66F18.S"
 "${ProjDirPath}/freertos/Source/portable/GCC/ARM_CM4F/port.c"
 "${ProjDirPath}/freertos/Source/portable/GCC/ARM_CM4F/portmacro.h"
@@ -380,6 +380,8 @@ add_executable(freertos_hello.elf
 "${ProjDirPath}/drivers/fsl_adc16.c"
 "${ProjDirPath}/drivers/fsl_dspi.h"
 "${ProjDirPath}/drivers/fsl_dspi.c"
+"${ProjDirPath}/drivers/fsl_dspi_freertos.h"
+"${ProjDirPath}/drivers/fsl_dspi_freertos.c"
 "${ProjDirPath}/utilities/fsl_debug_console.c"
 "${ProjDirPath}/utilities/fsl_debug_console.h"
 "${ProjDirPath}/startup/system_MK66F18.c"
@@ -409,29 +411,29 @@ add_executable(freertos_hello.elf
 "${ProjDirPath}/board/clock_config.h"
 "${ProjDirPath}/drivers/fsl_smc.h"
 "${ProjDirPath}/drivers/fsl_smc.c"
-)
+        source/pressure_adc.cpp source/pressure_adc.h)
 
 
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -T${ProjDirPath}/MK66FN2M0xxx18_flash.ld -static")
 
 set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -T${ProjDirPath}/MK66FN2M0xxx18_flash.ld -static")
 
-TARGET_LINK_LIBRARIES(freertos_hello.elf -Wl,--start-group)
-target_link_libraries(freertos_hello.elf debug m)
+TARGET_LINK_LIBRARIES(amm-tiny.elf -Wl,--start-group)
+target_link_libraries(amm-tiny.elf debug m)
 
-target_link_libraries(freertos_hello.elf debug c)
+target_link_libraries(amm-tiny.elf debug c)
 
-target_link_libraries(freertos_hello.elf debug gcc)
+target_link_libraries(amm-tiny.elf debug gcc)
 
-target_link_libraries(freertos_hello.elf debug nosys)
+target_link_libraries(amm-tiny.elf debug nosys)
 
-target_link_libraries(freertos_hello.elf optimized m)
+target_link_libraries(amm-tiny.elf optimized m)
 
-target_link_libraries(freertos_hello.elf optimized c)
+target_link_libraries(amm-tiny.elf optimized c)
 
-target_link_libraries(freertos_hello.elf optimized gcc)
+target_link_libraries(amm-tiny.elf optimized gcc)
 
-target_link_libraries(freertos_hello.elf optimized nosys)
+target_link_libraries(amm-tiny.elf optimized nosys)
 
-TARGET_LINK_LIBRARIES(freertos_hello.elf -Wl,--end-group)
+TARGET_LINK_LIBRARIES(amm-tiny.elf -Wl,--end-group)
 

@@ -32,8 +32,6 @@
  * This is template for main module created by New Kinetis SDK 2.x Project Wizard. Enjoy!
  **/
 
-//#include <string.h> //todo get rid of this
-
 #include "board.h"
 #include "pin_mux.h"
 #include "clock_config.h"
@@ -218,7 +216,7 @@ int main(void) {
   /* Add your code here */
   //TODO create spi_proto struct and mark it as unused
   //TODO setup flow interrupt
-  //LED_GREEN_INIT(0);
+
   gpio_pin_config_t digital_out = {kGPIO_DigitalOutput, (0)};
   GPIO_PinInit(BOARD_LED_GREEN_GPIO, BOARD_LED_GREEN_GPIO_PIN, &digital_out);
 

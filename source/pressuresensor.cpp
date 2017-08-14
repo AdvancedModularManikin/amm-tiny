@@ -14,14 +14,30 @@
 #include "pressuresensor.h"
 
 
-//changing to polling. TODO figure out what the problem with the interrupts was
+//changing to polling.
 //possible problems: lack of proper pin configuration, issue with priority
 //(i.e. what NVIC_SetPriority changes)
 //the problem was lack of extern "C" TODO go back to interrupt based
 
 
 #define NUMBER_OF_PRESSURE_SENSORS 2
-struct pressure_sensor sensors[NUMBER_OF_PRESSURE_SENSORS];
+//extern "C" {
+struct pressure_sensor sensors[NUMBER_OF_PRESSURE_SENSORS] = {
+		{
+				.channel_config = {
+						.channelNumber = 13U, // B7
+						.enableInterruptOnConversionCompleted = false,
+						.enableDifferentialConversion = false
+				}
+		}, {
+				.channel_config = {
+						.channelNumber = 12U, // B6
+						.enableInterruptOnConversionCompleted = false,
+						.enableDifferentialConversion = false
+				}
+		}
+};
+//};
 adc16_config_t config;
 
 int
@@ -33,14 +49,6 @@ polling_init(void) {
 	ADC16_EnableHardwareTrigger(ADC1, false);
 	ADC16_DoAutoCalibration(ADC1); // can't do much with any errors
 
-	//TODO move this into a static initialization
-	sensors[0].channel_config.channelNumber = 13U; // B7
-	sensors[0].channel_config.enableInterruptOnConversionCompleted = false;
-	sensors[0].channel_config.enableDifferentialConversion = false;
-
-	sensors[1].channel_config.channelNumber = 12U; // B6
-	sensors[1].channel_config.enableInterruptOnConversionCompleted = false;
-	sensors[1].channel_config.enableDifferentialConversion = false;
 	return 0;
 }
 
