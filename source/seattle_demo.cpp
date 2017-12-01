@@ -13,6 +13,7 @@
 #include "task.h"
 
 #include "solenoid.h"
+#include "spi_proto.h"
 #include "spi_proto_slave.h"
 
 void

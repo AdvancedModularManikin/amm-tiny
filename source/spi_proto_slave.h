@@ -10,59 +10,33 @@
 #define TRANSFER_SIZE 4
 namespace spi_proto {
 
-struct msg {
-	uint8_t buf[16];
-	int len;
-};
-//*
-struct msg_queue {
-	short first_empty;
-	short first_full;
-	short capacity;
-	short occupancy;
-	msg que[10];
-};
-//*/
-//TODO figure out how to have msg_queue declared separately
-//TODO once variable-length messages exist bufer lengths become nontrivial
-//specifically as to how buffer length negotiation works
-struct spi_proto {
+//variable-length messages junked
+struct slave_spi_proto {
 	uint8_t *sendbuf;
 	uint8_t *getbuf;
 	int buflen;
-	//two queues, one of empty messages and one of pending messages. this is an object pool
-    /*
-	struct msg_queue {
-		short first_empty;
-		short first_full;
-		short capacity;
-		short occupancy;
-		msg que[10];
-	};
-     //*/
-	struct msg_queue queue;
+
+	struct spi_state proto;
 };
 
 uint32_t spi_transactions = 0;
-struct spi_proto p;
+struct slave_spi_proto p;
 volatile bool ready;
 
 int
-slave_get_message(struct spi_proto &p, unsigned char *buf, int len);
+slave_get_message(struct slave_spi_proto &p, unsigned char *buf, int len);
 int
-slave_send_message(struct spi_proto &p, unsigned char *buf, int len);
+slave_send_message(struct slave_spi_proto &p, unsigned char *buf, int len);
 //int
 //slave_handle_spi_interrupt();
 int
-slave_do_tick(struct spi_proto &p);
+slave_do_tick(struct slave_spi_proto &p);
+int
+slave_spi_proto_rcv_msg(struct slave_spi_proto &p, unsigned char *buf, int len);
 
-int
-pop(msg_queue &q, msg &m);
-int
-push(msg_queue &q, struct msg &m);
+void
+spi_proto_slave_initialize(struct slave_spi_proto *s);
 
-int
-reset(msg_queue &q);
 
 }
 

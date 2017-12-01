@@ -12,6 +12,7 @@
 #include "task.h"
 
 #include "pressuresensor.h"
+#include "spi_proto.h"
 #include "spi_proto_slave.h"
 
 void

@@ -257,6 +257,9 @@
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/button.h">
 			<Option target="amm-tiny.elf"/>
 		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/crc16.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/flowsensor.cpp">
 			<Option target="amm-tiny.elf"/>
 		</Unit>
@@ -300,6 +303,12 @@
 			<Option target="amm-tiny.elf"/>
 		</Unit>
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/solenoid.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/spi_proto.cpp">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/spi_proto.h">
 			<Option target="amm-tiny.elf"/>
 		</Unit>
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/spi_proto_slave.cpp">

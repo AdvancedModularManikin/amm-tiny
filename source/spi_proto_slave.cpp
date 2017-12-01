@@ -12,14 +12,16 @@
 #include "FreeRTOS.h" // required for heartrate.h
 
 #include "heartrate.h"
+#include "spi_proto.h"
 #include "spi_proto_slave.h"
 #include "solenoid.h"
 
 namespace spi_proto {
 
 //this is a simple protocol, that doesn't support arbitrary length messages
+//TODO this contains seattle demo code fold it into the rewritten receive function
 int
-slave_get_message(struct spi_proto &p, unsigned char *buf, int len)
+slave_get_message(struct slave_spi_proto &p, unsigned char *buf, int len)
 {
 	//TODO parses the message and does any required processing
 
@@ -53,20 +55,9 @@ slave_get_message(struct spi_proto &p, unsigned char *buf, int len)
 }
 
 int
-slave_send_message(struct spi_proto &p, unsigned char *buf, int len)
+slave_send_message(struct slave_spi_proto &p, unsigned char *buf, int len)
 {
-	//TODO assert len less than max spi msg len
-
-	msg m;
-	if (len <= TRANSFER_SIZE) {
-		//TODO remove extra copy
-		memcpy(m.buf, buf, len);
-		m.len = len;
-		push(p.queue, m);
-		return 0;
-	}
-	return -1;
-
+	return spi_proto_send_msg(&p.proto, buf, len);
 }
 
 //do the things the normal interrupt handler did
@@ -74,73 +65,29 @@ slave_send_message(struct spi_proto &p, unsigned char *buf, int len)
 //slave_handle_spi_interrupt(){}
 
 int
-slave_do_tick(struct spi_proto &p)
+slave_do_tick(struct slave_spi_proto &p)
 {
 	//handles once-per-message-cycle events such as moving data in and out of buffers.
-	if (p.queue.occupancy) {
-		//pop message and push into outgoing buffer to be sent
-		msg m;
-		pop(p.queue, m);
-		if (p.buflen >= m.len) {
-			//enough space, we can proceed
-			memcpy(p.sendbuf, &m.buf, m.len);
-			memset(m.buf, 0, m.len);
-			//not copying len because it's a buffer
-			//TODO need additional lengths so that spi_proto knows how many bytes of message contain real info
-			return 0;
-		}
-		return 1;
 
-	} else {
-		//no messages in queue, do nothing
-		return 0;
-	}
-}
-
-//PRE both parameters not null, all messages in q have valid lengths
-int
-pop(msg_queue &q, struct msg &m)
-{
-	//TODO
-	if (!q.occupancy) return -1;
-	//TODO lock
-	//copy data
-	memcpy(m.buf, q.que[q.first_full].buf, q.que[q.first_full].len);
-	m.len = q.que[q.first_full].len;
-	//advance first_full, wrap it
-	q.first_full++;
-	q.first_full %= q.capacity;
-	//decrement occupancy
-	q.occupancy--;
-	//TODO unlock
-	return 0;
-}
-int
-push(msg_queue &q, struct msg &m)
-{
-	//TODO
-	if (!(q.occupancy < q.capacity)) return -1;
-	//TODO lock
-	//check data length validity? no, precondition. TODO more principled look at message length management
-	//copy data
-	memcpy(q.que[q.first_empty].buf, m.buf, m.len);
-	q.que[q.first_empty].len = m.len;
-	//advance first_empty, wrap it
-	q.first_empty++;
-	q.first_empty %= q.capacity;
-	//increment occupancy
-	q.occupancy++;
-	//TODO unlock
-	return 0;
+	spi_proto_prep_msg(&p.proto, p.sendbuf, TRANSFER_SIZE);
 }
 
 int
-reset(msg_queue &q)
+slave_spi_proto_rcv_msg(struct slave_spi_proto &p, unsigned char *buf, int len)
 {
-	q.capacity = 10;
-	q.first_empty = 0;
-	q.first_full = 0;
-	q.occupancy = 0;
+	//TODO parse an spi_packet out of getbuf
+
+	struct spi_packet pack;
+
+	spi_msg_callback_t seattle_msg_callback;
+	spi_proto_rcv_msg(&p.proto, &pack, seattle_msg_callback);
 	return 0;
+}
+
+void
+spi_proto_slave_initialize(struct slave_spi_proto *s)
+{
+	//TODO initialize the rest of slave_spi_proto (buffers, length)
+	spi_proto_initialize(&s->proto);
 }
 }

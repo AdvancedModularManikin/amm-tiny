@@ -12,6 +12,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
+#include "spi_proto.h"
 #include "spi_proto_slave.h"
 #include "solenoid.h"
 

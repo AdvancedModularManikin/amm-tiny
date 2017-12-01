@@ -53,6 +53,7 @@
 #include "timers.h"
 
 /* entropic */
+#include "spi_proto.h"
 #include "spi_proto_slave.h"
 #include "heartrate.h"
 #include "motorcontrol.h"
@@ -135,7 +136,7 @@ spi_proto_task(void *pvParameters)
 	callback_message_t cb_msg;
 
 	// init p, set up buffers and len
-	spi_proto::reset(spi_proto::p.queue);
+	spi_proto_slave_initialize(&spi_proto::p);
 	p.buflen = TRANSFER_SIZE;
 	p.sendbuf = slaveSendBuffer;
 	p.getbuf = slaveReceiveBuffer;
@@ -182,11 +183,13 @@ spi_proto_task(void *pvParameters)
 
 		//PRINTF("SPI transfer started");
 		xSemaphoreTake(cb_msg.sem, portMAX_DELAY);
+		//TODO replace send buffer with an invalid message, so that an early transaction at least won't screw up the protocol
 		//PRINTF("SPI recvd\n");
 		spi_proto::spi_transactions++;
-		//TODO handle the received message
 
-		slave_get_message(p, slaveReceiveBuffer, TRANSFER_SIZE);
+		//TODO handle the received message
+		slave_spi_proto_rcv_msg(p, p.getbuf, p.buflen);
+		//slave_get_message(p, slaveReceiveBuffer, TRANSFER_SIZE);
 	}
 	vTaskSuspend(NULL);
 }

@@ -368,6 +368,8 @@ add_executable(amm-tiny.elf
 "${ProjDirPath}/source/seattle_demo.h"
 "${ProjDirPath}/source/solenoid.cpp"
 "${ProjDirPath}/source/solenoid.h"
+"${ProjDirPath}/source/spi_proto.cpp"
+"${ProjDirPath}/source/spi_proto.h"
 "${ProjDirPath}/source/spi_proto_slave.cpp"
 "${ProjDirPath}/source/spi_proto_slave.h"
 "${ProjDirPath}/board/pin_mux.c"
@@ -411,6 +413,7 @@ add_executable(amm-tiny.elf
 "${ProjDirPath}/board/clock_config.h"
 "${ProjDirPath}/drivers/fsl_smc.h"
 "${ProjDirPath}/drivers/fsl_smc.c"
+"${ProjDirPath}/source/crc16.c"
         source/pressure_adc.cpp source/pressure_adc.h)
 
 

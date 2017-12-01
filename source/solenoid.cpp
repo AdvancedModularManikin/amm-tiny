@@ -12,6 +12,7 @@
 #include "task.h"
 
 #include "heartrate.h"
+#include "spi_proto.h"
 #include "spi_proto_slave.h"
 #include "solenoid.h"
 
