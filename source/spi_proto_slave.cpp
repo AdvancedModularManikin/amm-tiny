@@ -72,6 +72,13 @@ slave_do_tick(struct slave_spi_proto &p)
 	spi_proto_prep_msg(&p.proto, p.sendbuf, TRANSFER_SIZE);
 }
 
+void
+spi_proto_echo(struct spi_packet *pack)
+{
+	//TODO send the message back
+	spi_proto_send_msg(&spi_proto::p.proto, pack->msg, SPI_MSG_PAYLOAD_LEN);
+}
+
 int
 slave_spi_proto_rcv_msg(struct slave_spi_proto &p, unsigned char *buf, int len)
 {
@@ -79,7 +86,7 @@ slave_spi_proto_rcv_msg(struct slave_spi_proto &p, unsigned char *buf, int len)
 
 	struct spi_packet pack;
 
-	spi_msg_callback_t seattle_msg_callback;
+	spi_msg_callback_t seattle_msg_callback = spi_proto_echo;
 	spi_proto_rcv_msg(&p.proto, &pack, seattle_msg_callback);
 	return 0;
 }

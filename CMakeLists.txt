@@ -413,8 +413,10 @@ add_executable(amm-tiny.elf
 "${ProjDirPath}/board/clock_config.h"
 "${ProjDirPath}/drivers/fsl_smc.h"
 "${ProjDirPath}/drivers/fsl_smc.c"
-"${ProjDirPath}/source/crc16.c"
-        source/pressure_adc.cpp source/pressure_adc.h)
+"${ProjDirPath}/source/crc16.cpp"
+"${ProjDirPath}/source/misc/crc16.h"
+"${ProjDirPath}/source/pressure_adc.cpp"
+"${ProjDirPath}/source/pressure_adc.h")
 
 
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -T${ProjDirPath}/MK66FN2M0xxx18_flash.ld -static")

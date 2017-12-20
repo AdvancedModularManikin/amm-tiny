@@ -7,7 +7,7 @@
 
 #ifndef SOURCE_SPI_PROTO_SLAVE_HPP_
 #define SOURCE_SPI_PROTO_SLAVE_HPP_
-#define TRANSFER_SIZE 4
+#define TRANSFER_SIZE SPI_PACKET_LEN
 namespace spi_proto {
 
 //variable-length messages junked

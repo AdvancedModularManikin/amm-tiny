@@ -150,7 +150,7 @@ spi_proto_task(void *pvParameters)
 	}
 	/*Set up the transfer data*/
 	for (i = 0; i < TRANSFER_SIZE; i++) {
-		slaveSendBuffer[i] = 0; /* this should be set by another process that needs to send something */
+		slaveSendBuffer[i] = 0xaa; /* this should be set by another process that needs to send something */
 		slaveReceiveBuffer[i] = 0;
 	}
 
@@ -169,14 +169,12 @@ spi_proto_task(void *pvParameters)
 	 * using the response
 	 */
 	for (;;) {
-		memset(slaveSendBuffer, 0, TRANSFER_SIZE);
 		slave_do_tick(p); // handles at least the functions below up to the semaphore
-		//TODO check if there is any data to send. If so put in into slaveSendBuffer
 
 		/*Set slave transfer ready to receive/send data*/
 		slaveXfer.txData = slaveSendBuffer;
 		slaveXfer.rxData = slaveReceiveBuffer;
-		slaveXfer.dataSize = TRANSFER_SIZE;
+		slaveXfer.dataSize = 36;assert(TRANSFER_SIZE == 36);//TRANSFER_SIZE; TODO fix this hardwiring
 		slaveXfer.configFlags = kDSPI_SlaveCtar0;
 
 		DSPI_SlaveTransferNonBlocking(EXAMPLE_DSPI_SLAVE_BASEADDR, &g_s_handle, &slaveXfer);

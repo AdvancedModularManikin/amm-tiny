@@ -2,10 +2,14 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#ifdef CPP
 extern "C" {
+#endif
 #include "config.h"
 #include "misc/crc16.h"
+#ifdef CPP
 }
+#endif
 
 #include "spi_proto.h"
 
