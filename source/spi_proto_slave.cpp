@@ -70,6 +70,7 @@ slave_do_tick(struct slave_spi_proto &p)
 	//handles once-per-message-cycle events such as moving data in and out of buffers.
 
 	spi_proto_prep_msg(&p.proto, p.sendbuf, TRANSFER_SIZE);
+	return 0;
 }
 
 void
@@ -82,9 +83,11 @@ spi_proto_echo(struct spi_packet *pack)
 int
 slave_spi_proto_rcv_msg(struct slave_spi_proto &p, unsigned char *buf, int len)
 {
-	//TODO parse an spi_packet out of getbuf
+	//parse an spi_packet out of getbuf
 
-	struct spi_packet pack;
+	//TODO confirm that any values larger than 16 bits are appropriately encoded to network order
+	if (len < sizeof(struct spi_packet)) return -1;
+	struct spi_packet pack = *((struct spi_packet *)buf);
 
 	spi_msg_callback_t seattle_msg_callback = spi_proto_echo;
 	spi_proto_rcv_msg(&p.proto, &pack, seattle_msg_callback);

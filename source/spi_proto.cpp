@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include "fsl_debug_console.h"
+
 #ifdef CPP
 extern "C" {
 #endif
@@ -82,7 +84,13 @@ spi_proto_rcv_msg(struct spi_state *s, struct spi_packet *p, spi_msg_callback_t 
 		f(p);
 	} else {
 		//no action. XXX possibly increment send counter but seems likely we will have to go back anyway so don't
-		puts("bad crc!");
+		//TODO only on firmware
+		for (int i = 0; i < sizeof(struct spi_packet);i++) {
+			if ((i % 12) == 0) puts("");
+			PRINTF("%02x ", ((unsigned char*)p)[i]);
+		}
+		puts("");
+		printf("rcvd: %04x != calc: %04x -> bad crc!\n", rcvd_crc, calc_crc);
 	}
 }
 

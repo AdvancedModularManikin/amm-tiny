@@ -35,7 +35,8 @@ seattle_task(void *params)
 	seattle_init();
 
 	for (;;) {
-		PRINTF("B5: %d\r\n", GPIO_ReadPinInput(GPIOB, 5U));
+		//PRINTF("B5: %d\r\n", GPIO_ReadPinInput(GPIOB, 5U));
+		
 		//monitor switch
 		//if switch pressed, low = pressed
 		if (GPIO_ReadPinInput(GPIOB, 5U)) {

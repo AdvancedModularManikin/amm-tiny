@@ -64,7 +64,7 @@
 #include "seattle_demo.h"
 
 /* Task priorities. */
-#define hello_task_PRIORITY (configMAX_PRIORITIES - 1)
+#define hello_task_PRIORITY (configMAX_PRIORITIES - 2)
 
 /* SPI */
 #define EXAMPLE_DSPI_SLAVE_BASE (SPI0_BASE)
@@ -168,7 +168,12 @@ spi_proto_task(void *pvParameters)
 	 * to think of checking for info to send, preparing the message, and then
 	 * using the response
 	 */
+	unsigned char msg[10] = {1, 4, 7, 10, 13, 16, 19, 22, 25, 28};
+	slave_send_message(p, msg, 10);
+	slave_send_message(p, msg, 10);
+	slave_send_message(p, msg, 10);
 	for (;;) {
+		PRINTF("%d start of loop!\n", xTaskGetTickCount());
 		slave_do_tick(p); // handles at least the functions below up to the semaphore
 
 		/*Set slave transfer ready to receive/send data*/
@@ -176,18 +181,19 @@ spi_proto_task(void *pvParameters)
 		slaveXfer.rxData = slaveReceiveBuffer;
 		slaveXfer.dataSize = 36;assert(TRANSFER_SIZE == 36);//TRANSFER_SIZE; TODO fix this hardwiring
 		slaveXfer.configFlags = kDSPI_SlaveCtar0;
-
+		PRINTF("%d start of transaction!\n", xTaskGetTickCount());
 		DSPI_SlaveTransferNonBlocking(EXAMPLE_DSPI_SLAVE_BASEADDR, &g_s_handle, &slaveXfer);
 
 		//PRINTF("SPI transfer started");
 		xSemaphoreTake(cb_msg.sem, portMAX_DELAY);
 		//TODO replace send buffer with an invalid message, so that an early transaction at least won't screw up the protocol
 		//PRINTF("SPI recvd\n");
+		PRINTF("%d SPI transaction done!\n", xTaskGetTickCount());
 		spi_proto::spi_transactions++;
 
 		//TODO handle the received message
 		slave_spi_proto_rcv_msg(p, p.getbuf, p.buflen);
-		//slave_get_message(p, slaveReceiveBuffer, TRANSFER_SIZE);
+		PRINTF("%d end of loop!\n", xTaskGetTickCount());
 	}
 	vTaskSuspend(NULL);
 }
@@ -226,13 +232,16 @@ int main(void) {
   polling_init();
   BaseType_t ret;
   /* Create RTOS task */
+  /*
   ret = xTaskCreate(hello_task, "Hello_task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   ret = xTaskCreate(pin_hr_task, "pin heartrate task", configMINIMAL_STACK_SIZE+200, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  */
 
-  ret = xTaskCreate(spi_proto_task, "spi proto task", configMINIMAL_STACK_SIZE+200, NULL, hello_task_PRIORITY, NULL);
+  ret = xTaskCreate(spi_proto_task, "spi proto task", configMINIMAL_STACK_SIZE+200, NULL, hello_task_PRIORITY+1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  /*
   ret = xTaskCreate(button_task, "button task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   ret = xTaskCreate(solenoid_task, "solenoid task", configMINIMAL_STACK_SIZE+1000, NULL, hello_task_PRIORITY, NULL);
@@ -247,7 +256,8 @@ int main(void) {
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   ret = xTaskCreate(seattle_task, "seattle task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-
+  */
+  
   vTaskStartScheduler();
 
   for(;;) { /* Infinite loop to avoid leaving the main function */
