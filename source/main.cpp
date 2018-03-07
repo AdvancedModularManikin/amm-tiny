@@ -62,6 +62,7 @@
 #include "button.h"
 #include "flowsensor.h"
 #include "seattle_demo.h"
+#include "spi_edma_task.h"
 
 /* Task priorities. */
 #define hello_task_PRIORITY (configMAX_PRIORITIES - 2)
@@ -232,15 +233,15 @@ int main(void) {
   polling_init();
   BaseType_t ret;
   /* Create RTOS task */
-  /*
-  ret = xTaskCreate(hello_task, "Hello_task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
-  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   ret = xTaskCreate(pin_hr_task, "pin heartrate task", configMINIMAL_STACK_SIZE+200, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  */
 
-  ret = xTaskCreate(spi_proto_task, "spi proto task", configMINIMAL_STACK_SIZE+200, NULL, hello_task_PRIORITY+1, NULL);
+  //ret = xTaskCreate(spi_proto_task, "spi proto task", configMINIMAL_STACK_SIZE+200, NULL, hello_task_PRIORITY+1, NULL);
+  //assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  
+  ret = xTaskCreate(spi_edma_task, "spi edma task", configMINIMAL_STACK_SIZE+200, NULL, hello_task_PRIORITY+1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  
   /*
   ret = xTaskCreate(button_task, "button task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);

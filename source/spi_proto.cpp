@@ -1,9 +1,11 @@
 #include <string.h>
+/*
 #include <stdint.h>
 #include <stdio.h>
-
+*/
+/*
 #include "fsl_debug_console.h"
-
+*/
 #ifdef CPP
 extern "C" {
 #endif
@@ -27,8 +29,10 @@ spi_proto_rcv_msg(struct spi_state *s, struct spi_packet *p, spi_msg_callback_t 
 {
 	uint16_t rcvd_crc = p->crc;
 	uint16_t calc_crc = spi_msg_crc(p);
-	printf("rcvd_crc: 0x%04x\n", rcvd_crc);
-	printf("calc_crc: 0x%04x\n", calc_crc);
+	
+	//printf("rcvd_crc: 0x%04x\n", rcvd_crc);
+	//printf("calc_crc: 0x%04x\n", calc_crc);
+	
 	//validate checksum. If it's wrong, take no action. The lack of change in our ACK will be the signal the other side needs.
 	//if the checksum is correct, verify that p->seq == s->their_next_ack. If so, increase their_next_ack. If not, take no action, they will resend.
 	if (rcvd_crc == calc_crc) {
@@ -85,12 +89,14 @@ spi_proto_rcv_msg(struct spi_state *s, struct spi_packet *p, spi_msg_callback_t 
 	} else {
 		//no action. XXX possibly increment send counter but seems likely we will have to go back anyway so don't
 		//TODO only on firmware
+		/*
 		for (int i = 0; i < sizeof(struct spi_packet);i++) {
 			if ((i % 12) == 0) puts("");
 			PRINTF("%02x ", ((unsigned char*)p)[i]);
 		}
 		puts("");
 		printf("rcvd: %04x != calc: %04x -> bad crc!\n", rcvd_crc, calc_crc);
+		*/
 	}
 }
 
@@ -182,6 +188,7 @@ spi_proto_initialize(struct spi_state *s)
 void
 print_spi_state(struct spi_state *s)
 {
+#ifdef ACTUALLY_PRINT
 #define PRINTIT(x) printf( #x ": %d\n", s-> x)
 	if (s) {
 		printf("our_seq: %d\n", s->our_seq);
@@ -207,6 +214,7 @@ print_spi_state(struct spi_state *s)
 		puts("spi_state NULL!");
 	}
 #undef PRINTIT
+#endif
 }
 
 void
@@ -224,11 +232,13 @@ print_spi_state_full(struct spi_state *s)
 void
 print_spi_packet(struct spi_packet *p)
 {
+#ifdef ACTUALLY_PRINT
 	unsigned char *pp = (unsigned char *) p;
 	for (unsigned int i = 0; i < SPI_PACKET_LEN;i++) {
 		printf("0x%02x ",pp[i]);
 	}
 	printf("\n");
+#endif
 }
 
 int

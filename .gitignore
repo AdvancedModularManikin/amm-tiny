@@ -9,6 +9,8 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 
+compiler-file.d
+
 #build products
 Debug
 debug

@@ -372,6 +372,8 @@ add_executable(amm-tiny.elf
 "${ProjDirPath}/source/spi_proto.h"
 "${ProjDirPath}/source/spi_proto_slave.cpp"
 "${ProjDirPath}/source/spi_proto_slave.h"
+"${ProjDirPath}/source/spi_edma_task.cpp"
+"${ProjDirPath}/source/spi_edma_task.h"
 "${ProjDirPath}/board/pin_mux.c"
 "${ProjDirPath}/board/pin_mux.h"
 "${ProjDirPath}/board/board.c"
@@ -413,10 +415,17 @@ add_executable(amm-tiny.elf
 "${ProjDirPath}/board/clock_config.h"
 "${ProjDirPath}/drivers/fsl_smc.h"
 "${ProjDirPath}/drivers/fsl_smc.c"
+"${ProjDirPath}/drivers/fsl_dspi_edma.h"
+"${ProjDirPath}/drivers/fsl_dspi_edma.c"
+"${ProjDirPath}/drivers/fsl_dmamux.h"
+"${ProjDirPath}/drivers/fsl_dmamux.c"
+"${ProjDirPath}/drivers/fsl_edma.h"
+"${ProjDirPath}/drivers/fsl_edma.c"
 "${ProjDirPath}/source/crc16.cpp"
 "${ProjDirPath}/source/misc/crc16.h"
 "${ProjDirPath}/source/pressure_adc.cpp"
-"${ProjDirPath}/source/pressure_adc.h")
+"${ProjDirPath}/source/pressure_adc.h"
+)
 
 
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -T${ProjDirPath}/MK66FN2M0xxx18_flash.ld -static")

@@ -25,8 +25,8 @@ test_spi_proto_initialize(void)
 	int slave_write_ret = spi_proto_prep_msg(&slave, &slave_to_master, SPI_PACKET_LEN);
 	
 	//receive messages
-	spi_proto_rcv_msg(&slave, &master_to_slave);
-	spi_proto_rcv_msg(&master, &slave_to_master);
+	spi_proto_rcv_msg(&slave, &master_to_slave, NULL);
+	spi_proto_rcv_msg(&master, &slave_to_master, NULL);
 	
 	//TODO print out data structures
 	print_spi_state(&master);
@@ -77,8 +77,8 @@ test_spi_proto_one_round(unsigned char *m2s, unsigned char *s2m, int len)
 	print_spi_packet(&master_to_slave);
 	
 	//receive messages
-	spi_proto_rcv_msg(&slave, &master_to_slave);
-	spi_proto_rcv_msg(&master, &slave_to_master);
+	spi_proto_rcv_msg(&slave, &master_to_slave, NULL);
+	spi_proto_rcv_msg(&master, &slave_to_master, NULL);
 	
 	//TODO extract messages
 	//TODO compare with sent messages
@@ -128,8 +128,8 @@ test_spi_longer(unsigned int rounds)
 		int slave_write_ret = spi_proto_prep_msg(&slave, &slave_to_master, SPI_PACKET_LEN);
 	
 		//receive messages
-		spi_proto_rcv_msg(&slave, &master_to_slave);
-		spi_proto_rcv_msg(&master, &slave_to_master);
+		spi_proto_rcv_msg(&slave, &master_to_slave, NULL);
+		spi_proto_rcv_msg(&master, &slave_to_master, NULL);
 		
 		//TODO do output
 		print_spi_state(&master);
@@ -180,8 +180,8 @@ test_spi_longer_some_noise(unsigned int rounds, float noise_chance)
 			slave_to_master.msg[5] ^= 0xff;
 		}
 		//receive messages
-		spi_proto_rcv_msg(&slave, &master_to_slave);
-		spi_proto_rcv_msg(&master, &slave_to_master);
+		spi_proto_rcv_msg(&slave, &master_to_slave, NULL);
+		spi_proto_rcv_msg(&master, &slave_to_master, NULL);
 		
 		//TODO do output
 		print_spi_state(&master);
