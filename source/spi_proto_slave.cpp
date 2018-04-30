@@ -16,16 +16,19 @@
 #include "spi_proto_slave.h"
 #include "solenoid.h"
 
+//to toggle the led TODO remove becuase it's a debugging feature
+#include "board.h"
+
 namespace spi_proto {
 
 //this is a simple protocol, that doesn't support arbitrary length messages
 //TODO this contains seattle demo code fold it into the rewritten receive function
-int
-slave_get_message(struct slave_spi_proto &p, unsigned char *buf, int len)
+void
+slave_get_message(struct spi_packet *p)
 {
 	//TODO parses the message and does any required processing
 
-	//* //for debugging SPI
+	/* //for debugging SPI
 	for (int i = 0; i < len; i++) {
 		PRINTF("%02x ", buf[i]);
 	}
@@ -33,24 +36,23 @@ slave_get_message(struct slave_spi_proto &p, unsigned char *buf, int len)
 	//*/
 	//if it's heartrate,
 	//led_delay_time = 0.5/(((float)slaveReceiveBuffer[0]) * (1.0/60.0) * 0.001);
-	heart_rate = p.getbuf[0];
-	heart_delay_time = 0.5/(((float)(p.getbuf[0])) * (1.0/60.0) * 0.001);
+	heart_rate = p->msg[0];
+	heart_delay_time = 0.5/(((float)(p->msg[0])) * (1.0/60.0) * 0.001);
 	//second 1/2 is because rate counts inhales and exhales
-	breath_rate = p.getbuf[1];
-	breath_delay_time = 0.5 * 0.5/(((float)(p.getbuf[1])) * (1.0/60.0) * 0.001);
-
+	breath_rate = p->msg[1];
+	breath_delay_time = 0.5 * 0.5/(((float)(p->msg[1])) * (1.0/60.0) * 0.001);
 	//tourniquet is second byte
-	if (p.getbuf[2]){
+	if (p->msg[2]){
 		//set tourniquet on, so stop bleeding
 		tourniquet_on = true;
 	}
-	if (p.getbuf[3]) {
+	if (p->msg[3]) {
 		//start bleeding
 		hemorrhage_enabled = true;
 	}
 
 	//TODO make this control solenoid stuff
-	return 0;
+	//return 0;
 
 }
 
@@ -89,7 +91,7 @@ slave_spi_proto_rcv_msg(struct slave_spi_proto &p, unsigned char *buf, int len)
 	if (len < sizeof(struct spi_packet)) return -1;
 	struct spi_packet pack = *((struct spi_packet *)buf);
 
-	spi_msg_callback_t seattle_msg_callback = spi_proto_echo;
+	spi_msg_callback_t seattle_msg_callback = &slave_get_message;//spi_proto_echo;
 	spi_proto_rcv_msg(&p.proto, &pack, seattle_msg_callback);
 	return 0;
 }

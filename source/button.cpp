@@ -43,10 +43,10 @@ button_task(void *params)
 
 		//notify SPI thread
 		unsigned char message[4];
-		message[0] = (!sw2_down) | ((!sw3_down)<<1); // down, down = 3
-		if (message[0] != last_message) {
+		message[1] = (!sw2_down) | ((!sw3_down)<<1); // down, down = 3
+		if (message[1] != last_message) {
 			slave_send_message(spi_proto::p, message, 4);
-			last_message = message[0];
+			last_message = message[1];
 		}
 
 		//PRINTF("sending button: %02x\r\n", message);

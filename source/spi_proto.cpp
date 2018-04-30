@@ -149,7 +149,7 @@ spi_proto_send_msg(struct spi_state *s, void *buf, int n)
 	//no need to modify other fields of message, that is handled when it's about to be sent
 	if (s->num_avail) {
 		//copy to buffer, maintain invariants
-		memset(s->queue[s->first_avail_seq].msg, 0, n);
+		memset(s->queue[s->first_avail_seq].msg, 0, SPI_MSG_PAYLOAD_LEN);
 		memcpy(s->queue[s->first_avail_seq].msg, buf, n);
 		s->first_avail_seq++;
 		s->first_avail_seq %= 16;
