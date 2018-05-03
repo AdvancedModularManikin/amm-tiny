@@ -13,6 +13,11 @@
 
 #include "pressuresensor.h"
 
+#include "spi_proto.h"
+#include "spi_proto_slave.h"
+
+#include <stdio.h>
+
 
 //changing to polling.
 //possible problems: lack of proper pin configuration, issue with priority
@@ -38,11 +43,11 @@ struct pressure_sensor sensors[NUMBER_OF_PRESSURE_SENSORS] = {
 		}
 };
 //};
-adc16_config_t config;
 
 int
 polling_init(void) {
-
+	adc16_config_t config;
+	
 	ADC16_GetDefaultConfig(&config);
 	config.longSampleMode = kADC16_LongSampleCycle24;
 	ADC16_Init(ADC1, &config);
@@ -116,4 +121,69 @@ get_psi_2(void)
 
 	return val_bot + adj*(val_top-val_bot); // multiply by 1PSI/1 for units
 }
+}
+
+//carrier board pressure sensors
+/*
+Pressure1 ADC1 SE11 B5
+Pressure2 ADC1 SE12 B6
+Pressure3 ADC1 SE13 B7
+Pressure4 ADC1 SE14 B10
+*/
+struct pressure_sensor carrier_sensors[4] = {
+		{
+				.channel_config = {
+						.channelNumber = 11U,
+						.enableInterruptOnConversionCompleted = false,
+						.enableDifferentialConversion = false
+				}
+		}, {
+				.channel_config = {
+						.channelNumber = 12U,
+						.enableInterruptOnConversionCompleted = false,
+						.enableDifferentialConversion = false
+				}
+		}, {
+				.channel_config = {
+						.channelNumber = 13U,
+						.enableInterruptOnConversionCompleted = false,
+						.enableDifferentialConversion = false
+				}
+		}, {
+				.channel_config = {
+						.channelNumber = 14U,
+						.enableInterruptOnConversionCompleted = false,
+						.enableDifferentialConversion = false
+				}
+		}
+};
+
+
+void
+carrier_pressure_task(void *params)
+{
+	//TODO possibly prepare gpios, but I didn't do this with the last ones
+	
+	for (;;) {
+		for (int i = 0; i < 4; i++) {
+			ADC16_SetChannelConfig(ADC1, 0U, &carrier_sensors[i].channel_config);
+			while (0U == (kADC16_ChannelConversionDoneFlag &
+					ADC16_GetChannelStatusFlags(ADC1, 0U)))
+			{
+			}
+			carrier_sensors[i].unfiltered_pressure = ADC16_GetChannelConversionValue(ADC1, 0U);
+			carrier_sensors[i].raw_pressure = carrier_sensors[i].raw_pressure * ratio + carrier_sensors[i].unfiltered_pressure * (1-ratio);
+		}
+		
+		char msg[32];
+		snprintf(msg, 32, "ADC Value: %d \t%d \t%d \t%d\r\n",
+			carrier_sensors[0].raw_pressure,
+			carrier_sensors[1].raw_pressure,
+			carrier_sensors[2].raw_pressure,
+			carrier_sensors[3].raw_pressure);
+		slave_send_message(spi_proto::p, (unsigned char*) msg, 32);
+		
+		vTaskDelay(20);
+	}
+	vTaskSuspend(NULL);
 }

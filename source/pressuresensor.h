@@ -21,6 +21,8 @@ int
 polling_init(void);
 void
 polling_task(void *params);
+void
+carrier_pressure_task(void *params);
 
 namespace pressure {
 float

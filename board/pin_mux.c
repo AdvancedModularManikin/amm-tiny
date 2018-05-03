@@ -67,6 +67,7 @@ void BOARD_InitPins(void)
     CLOCK_EnableClock(kCLOCK_PortE);
     PORT_SetPinConfig(PORTE, 6U, &led_green_settings);
 	
+	//TODO on application carrier board spi led is LED18 which is on some other pin. it's enabled somewhere
 	//SPI led is PTA24
 	//GPIO_TogglePinsOutput(GPIOA, 1<<24);
     port_pin_config_t spi_led_settings = {0};
