@@ -8,13 +8,7 @@
 #ifndef SOURCE_SOLENOID_H_
 #define SOURCE_SOLENOID_H_
 
-//solenoids TODO improve to an actual struct
-#if 0
-struct solenoid {
-	void (*on)(void);
-	void (*off)(void);
-};
-#endif
+//TODO should this be split off into a gpiopin struct? wait until other things are using it
 //on and off functions just trigger pins. possibly instead store pin info in the struct?
 namespace solenoid {
 struct solenoid {
@@ -40,6 +34,8 @@ solenoids_toggle(void);
 
 void
 solenoid_task(void *params);
+void
+carrier_board_test_task(void *params);
 void
 lung_task(void *params);
 

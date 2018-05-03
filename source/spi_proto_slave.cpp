@@ -50,6 +50,9 @@ slave_get_message(struct spi_packet *p)
 		//start bleeding
 		hemorrhage_enabled = true;
 	}
+	
+	//toggle LED D18 when we get a valid packet
+	GPIO_TogglePinsOutput(GPIOA, 1<<24);
 
 	//TODO make this control solenoid stuff
 	//return 0;

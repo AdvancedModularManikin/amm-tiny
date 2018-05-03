@@ -63,6 +63,7 @@
 #include "flowsensor.h"
 #include "seattle_demo.h"
 #include "spi_edma_task.h"
+#include "sensirion.h"
 
 /* Task priorities. */
 #define hello_task_PRIORITY (configMAX_PRIORITIES - 2)
@@ -229,6 +230,8 @@ int main(void) {
   GPIO_PinInit(BOARD_LED_GREEN_GPIO, BOARD_LED_GREEN_GPIO_PIN, &digital_out);
 
   motor_off();
+  //turn 24V source on
+  GPIO_SetPinsOutput(GPIOA, 1<<7U);
 
   polling_init();
   BaseType_t ret;
@@ -242,6 +245,14 @@ int main(void) {
   ret = xTaskCreate(spi_edma_task, "spi edma task", configMINIMAL_STACK_SIZE+200, NULL, hello_task_PRIORITY+1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   
+  ret = xTaskCreate(sensirion_task, "Sensirion_task", configMINIMAL_STACK_SIZE + 124, NULL, hello_task_PRIORITY, NULL);
+  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  
+  ret = xTaskCreate(carrier_board_test_task, "carrier_board_test_task", configMINIMAL_STACK_SIZE + 100, NULL, hello_task_PRIORITY, NULL);
+  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+
+  //ret = xTaskCreate(carrier_pressure_task, "carrier_pressure_task", configMINIMAL_STACK_SIZE + 100, NULL, hello_task_PRIORITY, NULL);
+  //assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   /*
   ret = xTaskCreate(button_task, "button task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
@@ -251,8 +262,10 @@ int main(void) {
   //assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   ret = xTaskCreate(polling_task, "polling task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  */
   ret = xTaskCreate(flow_sensor_task, "flow sensor task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  /*
   ret = xTaskCreate(lung_task, "lung task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   ret = xTaskCreate(seattle_task, "seattle task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);

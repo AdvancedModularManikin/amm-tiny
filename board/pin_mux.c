@@ -66,6 +66,14 @@ void BOARD_InitPins(void)
     led_green_settings.mux = kPORT_MuxAsGpio;
     CLOCK_EnableClock(kCLOCK_PortE);
     PORT_SetPinConfig(PORTE, 6U, &led_green_settings);
+	
+	//SPI led is PTA24
+	//GPIO_TogglePinsOutput(GPIOA, 1<<24);
+    port_pin_config_t spi_led_settings = {0};
+    spi_led_settings.pullSelect = kPORT_PullUp;
+    spi_led_settings.mux = kPORT_MuxAsGpio;
+    CLOCK_EnableClock(kCLOCK_PortA);
+    PORT_SetPinConfig(PORTA, 24U, &spi_led_settings);
 
     //TODO more elegant way to handle pin initialization
 
@@ -91,14 +99,14 @@ void BOARD_InitPins(void)
 	solenoid_settings.pullSelect = kPORT_PullDown;
 	solenoid_settings.mux = kPORT_MuxAsGpio;
 
-	//*
-	solenoid_init(kCLOCK_PortA, PORTA, GPIOA, 25U, &solenoid_settings);
-	solenoid_init(kCLOCK_PortB, PORTB, GPIOB, 18U, &solenoid_settings);
-	solenoid_init(kCLOCK_PortB, PORTB, GPIOB, 19U, &solenoid_settings);
-	solenoid_init(kCLOCK_PortC, PORTC, GPIOC, 10U, &solenoid_settings);
-	solenoid_init(kCLOCK_PortC, PORTC, GPIOC, 11U, &solenoid_settings);
-	//*/
-
+	solenoid_init(kCLOCK_PortD, PORTD, GPIOD, 4U, &solenoid_settings);
+	solenoid_init(kCLOCK_PortD, PORTD, GPIOD, 5U, &solenoid_settings);
+	solenoid_init(kCLOCK_PortD, PORTD, GPIOD, 6U, &solenoid_settings);
+	solenoid_init(kCLOCK_PortD, PORTD, GPIOD, 7U, &solenoid_settings);
+	solenoid_init(kCLOCK_PortA, PORTA, GPIOA, 10U, &solenoid_settings);
+	solenoid_init(kCLOCK_PortA, PORTA, GPIOA, 11U, &solenoid_settings);
+	solenoid_init(kCLOCK_PortA, PORTA, GPIOA, 12U, &solenoid_settings);
+	solenoid_init(kCLOCK_PortA, PORTA, GPIOA, 13U, &solenoid_settings);
 
 	CLOCK_EnableClock(kCLOCK_PortD);
     /* SPI on D0-D3 */
@@ -117,5 +125,19 @@ void BOARD_InitPins(void)
     PORT_SetPinConfig(BOARD_SW3_PORT, BOARD_SW3_GPIO_PIN, &button_settings);
     //strangely no SW2 defines in board.h
     PORT_SetPinConfig(PORTD, 11U, &button_settings);
-
+	
+	//I2C0 pins
+	CLOCK_EnableClock(kCLOCK_PortC);
+	port_pin_config_t i2c1_pin_config = {0};
+	i2c1_pin_config.pullSelect = kPORT_PullUp;
+	i2c1_pin_config.mux = kPORT_MuxAlt2;
+	i2c1_pin_config.openDrainEnable = kPORT_OpenDrainEnable;
+	PORT_SetPinConfig(PORTC, 10U, &i2c1_pin_config); // I2C0_SCL
+	PORT_SetPinConfig(PORTC, 11U, &i2c1_pin_config); // I2C0_SDA
+	
+    port_pin_config_t source_24V_settings = {0};
+    source_24V_settings.pullSelect = kPORT_PullDown;
+    source_24V_settings.mux = kPORT_MuxAsGpio;
+    CLOCK_EnableClock(kCLOCK_PortA);
+    PORT_SetPinConfig(PORTA, 7U, &source_24V_settings);
 }

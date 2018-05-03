@@ -146,16 +146,34 @@
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_common.h">
 			<Option target="amm-tiny.elf"/>
 		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_dmamux.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_dmamux.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_dspi.c">
 			<Option target="amm-tiny.elf"/>
 		</Unit>
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_dspi.h">
 			<Option target="amm-tiny.elf"/>
 		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_dspi_edma.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_dspi_edma.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_dspi_freertos.c">
 			<Option target="amm-tiny.elf"/>
 		</Unit>
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_dspi_freertos.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_edma.c">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_edma.h">
 			<Option target="amm-tiny.elf"/>
 		</Unit>
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/drivers/fsl_gpio.c">
@@ -257,7 +275,7 @@
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/button.h">
 			<Option target="amm-tiny.elf"/>
 		</Unit>
-		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/crc16.c">
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/crc16.cpp">
 			<Option target="amm-tiny.elf"/>
 		</Unit>
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/flowsensor.cpp">
@@ -273,6 +291,9 @@
 			<Option target="amm-tiny.elf"/>
 		</Unit>
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/main.cpp">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/misc/crc16.h">
 			<Option target="amm-tiny.elf"/>
 		</Unit>
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/motorcontrol.cpp">
@@ -303,6 +324,12 @@
 			<Option target="amm-tiny.elf"/>
 		</Unit>
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/solenoid.h">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/spi_edma_task.cpp">
+			<Option target="amm-tiny.elf"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/spi_edma_task.h">
 			<Option target="amm-tiny.elf"/>
 		</Unit>
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/source/spi_proto.cpp">
@@ -336,6 +363,9 @@
 			<Option target="amm-tiny.elf"/>
 		</Unit>
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/gus/workspace.kds/amm-tiny/armgcc.cmake">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 		<Unit filename="/Users/gus/workspace.kds/amm-tiny/armgcc.cmake">

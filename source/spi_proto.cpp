@@ -50,6 +50,7 @@ spi_proto_rcv_msg(struct spi_state *s, struct spi_packet *p, spi_msg_callback_t 
 			// mark s->last_round_rcvd_preack as confirmed and those before it in the sent_but_unconfirmed section
 			// a position P is in a range of the queue if the start S of the queue slice and the length L of the queue slice include it, so if S + k = P mod 16 and 0 <= k <= L
 			//TODO improve this bad algorithm (written while tired)
+			//TODO it actually doesn't work. ensure 32 messages can be sent with no leftovers in 32 (33) rounds
 			for (int k = 0; k < s->num_sent_but_unconfirmed; k++) {
 				if (((s->first_unconfirmed_seq + k) % 16)==s->last_round_rcvd_preack) {
 					s->num_sent_but_unconfirmed -= k;
@@ -60,7 +61,16 @@ spi_proto_rcv_msg(struct spi_state *s, struct spi_packet *p, spi_msg_callback_t 
 					s->num_sent_successfully +=k;
 					break;
 				}
-			} 
+			}
+			//TODO remove this, it's a hack
+			while (s->num_sent_but_unconfirmed) {
+				s->num_sent_but_unconfirmed --;
+				s->num_avail ++;
+				s->first_unconfirmed_seq ++;
+				s->first_unconfirmed_seq %= 16;
+				
+				s->num_sent_successfully ++;
+			}
 		} 
 		if (p->preack == s->we_sent_seq) {
 			//the anticipatory ack was the same as our send, so assume send was successful and increment. If it wasn't we'll find out next completed round

@@ -23,8 +23,11 @@ uint32_t spi_transactions = 0;
 struct slave_spi_proto p;
 volatile bool ready;
 
-int
-slave_get_message(struct slave_spi_proto &p, unsigned char *buf, int len);
+
+//int
+//slave_get_message(struct slave_spi_proto &p, unsigned char *buf, int len);
+void
+slave_get_message(struct spi_packet *p);
 int
 slave_send_message(struct slave_spi_proto &p, unsigned char *buf, int len);
 //int
