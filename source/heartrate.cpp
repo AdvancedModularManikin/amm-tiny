@@ -12,13 +12,14 @@
 #include "task.h"
 
 #include "heartrate.h"
+#include "solenoid.h"
 
 void
 pin_hr_task(void *pvParameters)
 {
 	for (;;) {
 		if (heart_delay_time > 0) {
-			LED_GREEN_TOGGLE();
+			solenoid::toggle(solenoids[7]);
 		}
 		vTaskDelay(heart_delay_time > 0 ? heart_delay_time : 1000);
 	}

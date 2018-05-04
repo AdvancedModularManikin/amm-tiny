@@ -26,6 +26,8 @@ struct solenoid {
 	toggle(struct solenoid &s);
 }
 
+extern struct solenoid::solenoid solenoids[8];
+
 volatile bool tourniquet_on = false;
 volatile bool hemorrhage_enabled = false;
 
