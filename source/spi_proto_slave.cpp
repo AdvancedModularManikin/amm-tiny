@@ -38,9 +38,8 @@ slave_get_message(struct spi_packet *p)
 	//led_delay_time = 0.5/(((float)slaveReceiveBuffer[0]) * (1.0/60.0) * 0.001);
 	heart_rate = p->msg[0];
 	heart_delay_time = 0.5/(((float)(p->msg[0])) * (1.0/60.0) * 0.001);
-	//second 1/2 is because rate counts inhales and exhales
 	breath_rate = p->msg[1];
-	breath_delay_time = 0.5 * 0.5/(((float)(p->msg[1])) * (1.0/60.0) * 0.001);
+	breath_delay_time = 0.5/(((float)(p->msg[1])) * (1.0/60.0) * 0.001);
 	//tourniquet is second byte
 	if (p->msg[2]){
 		//set tourniquet on, so stop bleeding

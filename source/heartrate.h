@@ -16,6 +16,8 @@ volatile TickType_t breath_delay_time = 2000 / portTICK_PERIOD_MS;
 
 void
 pin_hr_task(void *pvParameters);
+void
+pin_br_task(void *pvParameters);
 
 
 #endif /* SOURCE_HEARTRATE_H_ */

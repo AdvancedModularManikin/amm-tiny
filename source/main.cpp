@@ -68,6 +68,7 @@
 #include "sensirion.h"
 #include "maxon.h"
 #include <stdio.h>
+#include "action.h"
 
 /* Task priorities. */
 #define hello_task_PRIORITY (configMAX_PRIORITIES - 2)
@@ -106,12 +107,15 @@ int main(void) {
 
   motor_off();
   //turn 24V source on
-  GPIO_SetPinsOutput(GPIOA, 1<<7U);
+  //but leave off unless needed
+  GPIO_SetPinsOutput(GPIOA, 0U);// 1<<7U);
 
   polling_init();
   BaseType_t ret;
   /* Create RTOS task */
-  ret = xTaskCreate(pin_hr_task, "pin heartrate task", configMINIMAL_STACK_SIZE+200, NULL, hello_task_PRIORITY, NULL);
+  ret = xTaskCreate(pin_hr_task, "pin heartrate task", configMINIMAL_STACK_SIZE+100, NULL, hello_task_PRIORITY, NULL);
+  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  ret = xTaskCreate(pin_br_task, "pin breathrate task", configMINIMAL_STACK_SIZE+100, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
 
   //ret = xTaskCreate(hello_task, "Hello task", configMINIMAL_STACK_SIZE+1000, NULL, hello_task_PRIORITY, NULL);
@@ -127,8 +131,8 @@ int main(void) {
   //ret = xTaskCreate(carrier_board_test_task, "carrier_board_test_task", configMINIMAL_STACK_SIZE + 100, NULL, hello_task_PRIORITY, NULL);
   //assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
 
-  ret = xTaskCreate(carrier_pressure_task, "carrier_pressure_task", configMINIMAL_STACK_SIZE + 100, NULL, hello_task_PRIORITY, NULL);
-  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  //ret = xTaskCreate(carrier_pressure_task, "carrier_pressure_task", configMINIMAL_STACK_SIZE + 100, NULL, hello_task_PRIORITY, NULL);
+  //assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   
   /*
   ret = xTaskCreate(button_task, "button task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
@@ -146,6 +150,9 @@ int main(void) {
   */
   
   ret = xTaskCreate(maxon_task, "Maxon task", configMINIMAL_STACK_SIZE + 100, NULL, hello_task_PRIORITY, NULL);
+  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  
+  ret = xTaskCreate(action_task, "Action task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   
   

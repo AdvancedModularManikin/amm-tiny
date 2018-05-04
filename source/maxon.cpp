@@ -101,7 +101,7 @@ maxon_task(void *params)
 	//every so often print status of motor ready
 	for (;;) {
 		should_motor_run ? maxon_on() : maxon_off();
-		int in = GPIO_ReadPinInput(GPIOB, 1U<<2U);
+		int in = GPIO_ReadPinInput(GPIOB, 2U);
 		
 		char msg[32];
 		snprintf(msg, 32, "motor_ready: %d uL/s", in);
