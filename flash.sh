@@ -1,9 +1,9 @@
 #!/bin/bash
-DEVICE=/dev/sdg #default for AMMDK
-MNTPOINT=/mnt/AMMDK #default for AMMDK
+DEVICE=/dev/sdg #default for AMMDK (if necessary edit this to point at the /dev location the OpenSDA debugger mass storage device lives at)
+MNTPOINT=/mnt/AMMDK #default for AMMDK (arbitrarily selected)
 if [ $# -eq 0 ] #Check to see if path argument was supplied
         then
-            echo "Please supply a path to the file you want to flash. Usage : ./flash.sh ./path-to-file.bin"
+            echo "Please supply a path to the file you want to flash. Example Usage : ./flash.sh ./path-to-file.bin"
         else
             FIRMWARE="$1" #Argument - path to .bin file (e.g ./amm-tiny.bin)
             sudo mkdir -p $MNTPOINT #create a mount point, dont complain if it exists
