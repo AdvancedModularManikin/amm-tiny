@@ -13,7 +13,7 @@ if [ $# -eq 0 ]; then
             sudo mount -t msdos $DEVICE $MNTPOINT # mount device with msdos type
 
             INPUT="$1" #Argument - path to file (e.g ./amm-tiny.bin)
-            if [[ "$INPUT" == *".elf"* ]]
+            if [[ "$INPUT" == *".elf" ]]
                 then
                     echo "Found an .elf converting to .bin"
                     sudo objcopy -O binary "$INPUT" temp-converted-file.bin #convert elf to bin and and copy
@@ -30,10 +30,10 @@ if [ $# -eq 0 ]; then
                 exit 1
             fi
             echo "Writing data to disk"
-            sync # write any data buffered in memory out to disk
+            sync # write data buffered in memory to device
             echo "Waiting 1 second"
-            sleep 1 # we have to wait (experiment :))
+            sleep 1 # 1 second wait is necessary from testing
             echo "Unmounting Device"
-            sudo umount $DEVICE # i need not explain :)
+            sudo umount $DEVICE # unmount
             echo "Done!"
          fi
