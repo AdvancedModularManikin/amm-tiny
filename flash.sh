@@ -29,8 +29,11 @@ if [ $# -eq 0 ]; then
                 echo "Unknown Input File Type"
                 exit 1
             fi
+            echo "Writing data to disk"
             sync # write any data buffered in memory out to disk
+            echo "Waiting 1 second"
             sleep 1 # we have to wait (experiment :))
+            echo "Unmounting Device"
             sudo umount $DEVICE # i need not explain :)
             echo "Done!"
          fi
