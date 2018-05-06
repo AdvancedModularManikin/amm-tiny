@@ -1,4 +1,5 @@
 #!/bin/bash
+#Remember to chmod +x this file :) 
 DEVICE=/dev/sdg #default for AMMDK
 MNTPOINT=/mnt/AMMDK #default for AMMDK
 #Check to see if path was supplied
