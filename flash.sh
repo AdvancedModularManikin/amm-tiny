@@ -1,8 +1,6 @@
 #!/bin/bash
 DEVICE=/dev/sdg #default for AMMDK
 MNTPOINT=/mnt/AMMDK #default for AMMDK
-
-
 if [ $# -eq 0 ] #Check to see if path argument was supplied
         then
             echo "Please supply a path to the file you want to flash. Usage : ./flash.sh ./path-to-file.bin"
