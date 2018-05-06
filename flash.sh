@@ -17,3 +17,4 @@ if [ $# -eq 0 ] #Check to see if path argument was supplied
             sudo umount $DEVICE # i need not explain :)
         fi
 #Modified from : http://karibe.co.ke/2014/04/changing-the-firmware-on-freescale-freedom-boards-in-linux/
+#TODO : Check to see if the input is a .elf and use the following to make a bin objcopy -O binary foo.elf foo.bin
