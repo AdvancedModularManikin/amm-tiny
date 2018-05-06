@@ -1,20 +1,32 @@
 #!/bin/bash
-DEVICE=/dev/sdg #default for AMMDK (if necessary edit this to point at the /dev location the OpenSDA debugger mass storage device lives at)
-MNTPOINT=/mnt/AMMDK #default for AMMDK (arbitrarily selected)
-if [ $# -eq 0 ] #Check to see if path argument was supplied
-        then
-            echo "Please supply a path to the file you want to flash. Example Usage : ./flash.sh ./path-to-file.bin"
+DEVICE=/dev/sdg #default for AMMDK
+MNTPOINT=/mnt/AMMDK #default for AMMDK
+#Check to see if path was supplied
+if [ $# -eq 0 ]; then
+        echo "Please supply a path to the file you want to flash. Usage : ./flash.sh ./path-to-file.bin"
         else
-            FIRMWARE="$1" #Argument - path to .bin file (e.g ./amm-tiny.bin)
             sudo mkdir -p $MNTPOINT #create a mount point, dont complain if it exists
             if [ ! -e $DEVICE ]; then echo "Can't find device"; exit 1; fi # check if device exists
             sudo umount  $DEVICE #unmount the device [Linux automounts it :(]
             sudo modprobe msdos #wake msdos module
             sudo mount -t msdos $DEVICE $MNTPOINT # mount device with msdos type
-            sudo cp "$FIRMWARE" "$MNTPOINT" # copy the firmware
+
+            INPUT="$1" #Argument - path to file (e.g ./amm-tiny.bin)
+            if [[ "$INPUT" == *".elf"* ]]
+                then
+                    echo "Found an .elf"
+                    sudo objcopy -O binary "$INPUT" temp-converted-file.bin #convert elf to bin and and copyi
+                    sudo cp temp-converted-file.bin "$MNTPOINT"
+                    sudo rm temp-converted-file.bin
+            elif [[ "$INPUT" == *".bin" ]]
+                then
+                    echo "Found a .bin"
+                    sudo cp "$INPUT" "$MNTPOINT" #copy the bin
+            else
+                echo "Unknown Input File Type"
+                exit 1
+            fi
             sync # write any data buffered in memory out to disk
             sleep 1 # we have to wait (experiment :))
             sudo umount $DEVICE # i need not explain :)
-        fi
-#Modified from : http://karibe.co.ke/2014/04/changing-the-firmware-on-freescale-freedom-boards-in-linux/
-#TODO : Check to see if the input is a .elf and use the following to make a bin objcopy -O binary foo.elf foo.bin
+         fi
