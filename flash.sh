@@ -14,13 +14,15 @@ if [ $# -eq 0 ]; then
             INPUT="$1" #Argument - path to file (e.g ./amm-tiny.bin)
             if [[ "$INPUT" == *".elf"* ]]
                 then
-                    echo "Found an .elf"
-                    sudo objcopy -O binary "$INPUT" temp-converted-file.bin #convert elf to bin and and copyi
+                    echo "Found an .elf converting to .bin"
+                    sudo objcopy -O binary "$INPUT" temp-converted-file.bin #convert elf to bin and and copy
+                    echo "Copying bin to device"
                     sudo cp temp-converted-file.bin "$MNTPOINT"
+                    echo "removing temporary bin file"
                     sudo rm temp-converted-file.bin
             elif [[ "$INPUT" == *".bin" ]]
                 then
-                    echo "Found a .bin"
+                    echo "Found a .bin copying to device"
                     sudo cp "$INPUT" "$MNTPOINT" #copy the bin
             else
                 echo "Unknown Input File Type"
@@ -29,4 +31,5 @@ if [ $# -eq 0 ]; then
             sync # write any data buffered in memory out to disk
             sleep 1 # we have to wait (experiment :))
             sudo umount $DEVICE # i need not explain :)
+            echo "Done!"
          fi
