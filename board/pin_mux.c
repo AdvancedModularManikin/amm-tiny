@@ -75,6 +75,7 @@ void BOARD_InitPins(void)
     spi_led_settings.mux = kPORT_MuxAsGpio;
     CLOCK_EnableClock(kCLOCK_PortA);
     PORT_SetPinConfig(PORTA, 24U, &spi_led_settings);
+    GPIO_PinInit(GPIOA, 24U, &(gpio_pin_config_t){kGPIO_DigitalOutput, 0});
 
     //TODO more elegant way to handle pin initialization
 
