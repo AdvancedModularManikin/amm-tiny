@@ -35,5 +35,7 @@ if [ $# -eq 0 ]; then
             sleep 1 # 1 second wait is necessary from testing
             echo "Unmounting Device"
             sudo umount $DEVICE # unmount
+            echo "Resetting the chip"
+            sudo openocd -f kinetis_daplink.cfg -c "init;reset;exit"
             echo "Done!"
          fi
