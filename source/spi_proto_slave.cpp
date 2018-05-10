@@ -14,7 +14,7 @@
 #include "heartrate.h"
 #include "spi_proto.h"
 #include "spi_proto_slave.h"
-#include "solenoid.h"
+#include "spi_chunks.h"
 
 //to toggle the led TODO remove becuase it's a debugging feature
 #include "board.h"
@@ -26,36 +26,7 @@ namespace spi_proto {
 void
 slave_get_message(struct spi_packet *p)
 {
-	//TODO parses the message and does any required processing
-
-	/* //for debugging SPI
-	for (int i = 0; i < len; i++) {
-		PRINTF("%02x ", buf[i]);
-	}
-	PRINTF("\r\n");
-	//*/
-	//if it's heartrate,
-	//led_delay_time = 0.5/(((float)slaveReceiveBuffer[0]) * (1.0/60.0) * 0.001);
-	heart_rate = p->msg[0];
-	heart_delay_time = 0.5/(((float)(p->msg[0])) * (1.0/60.0) * 0.001);
-	breath_rate = p->msg[1];
-	breath_delay_time = 0.5/(((float)(p->msg[1])) * (1.0/60.0) * 0.001);
-	//tourniquet is second byte
-	if (p->msg[2]){
-		//set tourniquet on, so stop bleeding
-		tourniquet_on = true;
-	}
-	if (p->msg[3]) {
-		//start bleeding
-		hemorrhage_enabled = true;
-	}
-	
-	//toggle LED D18 when we get a valid packet
-	GPIO_TogglePinsOutput(GPIOA, 1<<24);
-
-	//TODO make this control solenoid stuff
-	//return 0;
-
+	spi_chunk_overall(p->msg, SPI_MSG_PAYLOAD_LEN);
 }
 
 int
