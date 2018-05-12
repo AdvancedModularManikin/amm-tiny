@@ -28,6 +28,9 @@ maxon_init(void)
 	//B2 is motor status feedback (GPIO)
 	//DAC0 is motor DAC speed control
 	
+    //leave 24V source off
+    GPIO_ClearPinsOutput(GPIOA, 1U<<7U);
+	
 	//setup B1 as GPIO out
     port_pin_config_t motor_enable_settings = {0};
     motor_enable_settings.pullSelect = kPORT_PullDown;
@@ -87,8 +90,10 @@ adc_scale(uint16_t adcval)
 
 void maxon_on(void) {GPIO_SetPinsOutput(GPIOB, 1U<<1U);}
 void maxon_off(void) {GPIO_ClearPinsOutput(GPIOB, 1U<<1U);}
+void v24_on(void) {GPIO_SetPinsOutput(GPIOA, 1U<<7U);}
+void v24_off(void) {GPIO_ClearPinsOutput(GPIOA, 1U<<7U);}
 
-bool should_motor_run = false;
+bool should_motor_run = false, should_24v_be_on = false;
 uint16_t motorReading;
 float scaleRes;
 void
@@ -100,6 +105,7 @@ maxon_task(void *params)
 	
 	//every so often print status of motor ready
 	for (;;) {
+		should_24v_be_on ? v24_on() : v24_off();
 		should_motor_run ? maxon_on() : maxon_off();
 		int in = GPIO_ReadPinInput(GPIOB, 2U);
 		
