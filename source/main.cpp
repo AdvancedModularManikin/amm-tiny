@@ -108,7 +108,7 @@ int main(void) {
   motor_off();
   //turn 24V source on
   //but leave off unless needed
-  GPIO_SetPinsOutput(GPIOA, 0U);// 1<<7U);
+  GPIO_ClearPinsOutput(GPIOA, 1U<<7U);
 
   polling_init();
   BaseType_t ret;

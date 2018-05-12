@@ -142,4 +142,5 @@ void BOARD_InitPins(void)
     source_24V_settings.mux = kPORT_MuxAsGpio;
     CLOCK_EnableClock(kCLOCK_PortA);
     PORT_SetPinConfig(PORTA, 7U, &source_24V_settings);
+	GPIO_PinInit(GPIOA, 7U, &(gpio_pin_config_t){kGPIO_DigitalOutput, 0});
 }
