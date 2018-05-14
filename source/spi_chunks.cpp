@@ -8,7 +8,9 @@
 #include "spi_chunks.h"
 #include "spi_chunks_slave.h"
 
-
+#ifdef CPP
+extern "C" {
+#endif
 
 /*
 assuming the payload of the spi proto is large but most commands are small the command flow is:
@@ -61,6 +63,23 @@ chunk_packer(struct waiting_chunk *chunks, size_t numchunk,
 	}
 }
 
+#define NUM_WAIT_CHUNKS 10
+struct waiting_chunk wait_chunks[NUM_WAIT_CHUNKS] = {0};
+
+int
+send_chunk(uint8_t *buf, size_t len)
+{
+	//find an open waiting_chunk in waiting_chunks and copy it in
+	for (int i = 0; i < NUM_WAIT_CHUNKS; i++) {
+		if (!wait_chunks[i].ready_to_pack) {
+			memcpy(wait_chunks[i].buf, buf, len);
+			wait_chunks[i].buf[0] = len; // just in case
+			return 0;
+		}
+	}
+	return -1;
+}
+
 //so we need a function to dispatch on chunks of the message
 int
 spi_msg_chunks(uint8_t *buf, size_t len, int (*chunk_handler)(uint8_t *b, size_t len))
@@ -83,9 +102,6 @@ spi_msg_chunks(uint8_t *buf, size_t len, int (*chunk_handler)(uint8_t *b, size_t
 	return 0;
 }
 
-//this is the callback
-int
-spi_chunk_overall(uint8_t *buf, size_t len)
-{
-	return spi_msg_chunks(buf, len, chunk_dispatcher_slave);
+#ifdef CPP
 }
+#endif

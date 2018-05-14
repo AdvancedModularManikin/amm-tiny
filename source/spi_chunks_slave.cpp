@@ -1,17 +1,12 @@
 #include "fsl_gpio.h"
-#include "solenoid.h"
+#include "ammdk-carrier/solenoid.h"
 #include "valve.h"
 #include "carrier_gpio.h"
 #include "controllers/gpio.h"
 //just for SPI_MSG_PAYLOAD_LEN
 #include "spi_proto.h"
 #include "spi_chunks.h"
-
-
-
-#define CHUNK_TYPE_VALVE 1
-#define CHUNK_TYPE_GPIO 2
-#define CHUNK_LEN_GPIO 4
+#include "spi_chunk_defines.h"
 
 //invariant: *buf = len, due to how it's called but also because it is part of the packet shape
 //TODO put this in spi_chunk_slave.cpp
@@ -21,9 +16,10 @@ chunk_dispatcher_slave(uint8_t *buf, size_t len)
 	//call appropriate type function on chunk, or record if it's an unknown type
 	//TODO could potentially provide a histogram of how many bytes the unrecognized chunk was, would this be useful? just store an array and incremement the length index
 	if (len < 2) return -1; // length zero isn't a real chunk, length 1 can't carry data
+	//TODO log too-short chunks
 	switch(buf[1]) {
 	case CHUNK_TYPE_VALVE:
-		if (len < 4) break; // TODO maybe increment some error counter somewhere
+		if (len < CHUNK_LEN_VALVE) break; // TODO maybe increment some error counter somewhere
 		// [LEN|TYPE|ID|CMD]
 		struct valve_command valvecmd;
 		valvecmd.valve_id = buf[2];
@@ -38,8 +34,21 @@ chunk_dispatcher_slave(uint8_t *buf, size_t len)
 		gpiocmd.gpio_command = buf[3];
 		gpio_handle_slave(gpiocmd, carrier_gpios, GPIO_NUM);
 		break;
+	case CHUNK_TYPE_ECHO:
+		buf[1] = CHUNK_TYPE_ECHO_RETURN;
+		send_chunk(buf, len); //for testing
+		break;
 	//case CHUNK_TYPE_STRING
 	default:
 		unknown_chunk_type_msg_count++; // TODO think of better name
+		return -1;
 	}
+	return 0;
+}
+
+//this is the callback, call it on the SPI proto payload
+int
+spi_chunk_overall(uint8_t *buf, size_t len)
+{
+	return spi_msg_chunks(buf, len, chunk_dispatcher_slave);
 }
