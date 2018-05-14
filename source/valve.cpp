@@ -1,7 +1,7 @@
 #include "stdint.h"
 #include "stddef.h"
 #include "fsl_gpio.h"
-#include "solenoid.h"
+#include "ammdk-carrier/solenoid.h"
 #include "valve.h"
 
 
