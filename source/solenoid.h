@@ -15,10 +15,8 @@ volatile bool tourniquet_on = false;
 volatile bool hemorrhage_enabled = false;
 
 void
-solenoid_task(void *params);
-void
 carrier_board_test_task(void *params);
 void
-lung_task(void *params);
+solenoid_gdb_mirror_task(void *params);
 
 #endif /* SOURCE_SOLENOID_H_ */

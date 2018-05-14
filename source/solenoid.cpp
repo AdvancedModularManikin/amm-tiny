@@ -49,3 +49,17 @@ carrier_board_test_task(void *params)
 	
 	vTaskSuspend(NULL);
 }
+
+volatile bool should_sol_1_be_on = false, should_sol_2_be_on = false;
+void
+solenoid_gdb_mirror_task(void *params)
+{
+	for (;;) {
+		should_sol_1_be_on ? solenoid::on(solenoids[0]) : solenoid::off(solenoids[0]);
+		should_sol_2_be_on ? solenoid::on(solenoids[1]) : solenoid::off(solenoids[1]);
+		
+		vTaskDelay(200);
+	}
+	
+	vTaskSuspend(NULL);
+}
