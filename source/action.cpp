@@ -4,7 +4,7 @@
 
 #include "fsl_gpio.h"
 
-#include "carrier_gpio.h"
+#include "ammdk-carrier/carrier_gpio.h"
 
 #include "spi_proto.h"
 #include "spi_proto_slave.h"

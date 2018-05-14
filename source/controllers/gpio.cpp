@@ -1,5 +1,5 @@
 #include "fsl_gpio.h"
-#include "../carrier_gpio.h"
+#include "../ammdk-carrier/carrier_gpio.h"
 #include "gpio.h"
 
 int gpio_bad_chunks = 0;
