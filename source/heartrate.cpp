@@ -12,7 +12,7 @@
 #include "task.h"
 
 #include "heartrate.h"
-#include "solenoid.h"
+#include "ammdk-carrier/solenoid.h"
 
 void
 pin_hr_task(void *pvParameters)

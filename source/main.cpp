@@ -56,12 +56,10 @@
 #include "spi_proto.h"
 #include "spi_proto_slave.h"
 #include "heartrate.h"
-#include "motorcontrol.h"
 #include "solenoid.h"
 #include "pressuresensor.h"
 #include "button.h"
 #include "flowsensor.h"
-#include "seattle_demo.h"
 #include "spi_edma_task.h"
 
 /* included just for tasks */
@@ -105,11 +103,6 @@ int main(void) {
   gpio_pin_config_t digital_out = {kGPIO_DigitalOutput, (0)};
   GPIO_PinInit(BOARD_LED_GREEN_GPIO, BOARD_LED_GREEN_GPIO_PIN, &digital_out);
 
-  motor_off();
-  //turn 24V source on
-  //but leave off unless needed
-  GPIO_ClearPinsOutput(GPIOA, 1U<<7U);
-
   polling_init();
   BaseType_t ret;
   /* Create RTOS task */
@@ -124,15 +117,15 @@ int main(void) {
   ret = xTaskCreate(spi_edma_task, "spi edma task", configMINIMAL_STACK_SIZE+200, NULL, hello_task_PRIORITY+1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   
-  
+  /*
   ret = xTaskCreate(sensirion_task, "Sensirion_task", configMINIMAL_STACK_SIZE + 124, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  
+  */
   //ret = xTaskCreate(carrier_board_test_task, "carrier_board_test_task", configMINIMAL_STACK_SIZE + 100, NULL, hello_task_PRIORITY, NULL);
   //assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
 
-  //ret = xTaskCreate(carrier_pressure_task, "carrier_pressure_task", configMINIMAL_STACK_SIZE + 100, NULL, hello_task_PRIORITY, NULL);
-  //assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  ret = xTaskCreate(carrier_pressure_task, "carrier_pressure_task", configMINIMAL_STACK_SIZE + 100, NULL, hello_task_PRIORITY, NULL);
+  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   
   /*
   ret = xTaskCreate(button_task, "button task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
@@ -151,15 +144,13 @@ int main(void) {
   
   ret = xTaskCreate(maxon_task, "Maxon task", configMINIMAL_STACK_SIZE + 100, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  
+  /*
   ret = xTaskCreate(action_task, "Action task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  
+  */
   
   /*
   ret = xTaskCreate(lung_task, "lung task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
-  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  ret = xTaskCreate(seattle_task, "seattle task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   */
   

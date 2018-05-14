@@ -14,7 +14,6 @@
 #include "heartrate.h"
 #include "spi_proto.h"
 #include "spi_proto_slave.h"
-#include "spi_chunks.h"
 
 //to toggle the led TODO remove becuase it's a debugging feature
 #include "board.h"
@@ -26,7 +25,7 @@ namespace spi_proto {
 void
 slave_get_message(struct spi_packet *p)
 {
-	spi_chunk_overall(p->msg, SPI_MSG_PAYLOAD_LEN);
+	//TODO handle mule 1 stuff
 }
 
 int
