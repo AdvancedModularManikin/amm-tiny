@@ -50,14 +50,18 @@ carrier_board_test_task(void *params)
 	vTaskSuspend(NULL);
 }
 
-volatile bool should_sol_1_be_on = false, should_sol_2_be_on = false;
+volatile bool should_sol_n_be_on[SOLENOID_NUM] = {0};
+volatile bool is_sol_n_manual[SOLENOID_NUM] = {0};
 void
 solenoid_gdb_mirror_task(void *params)
 {
 	for (;;) {
-		should_sol_1_be_on ? solenoid::on(solenoids[0]) : solenoid::off(solenoids[0]);
-		should_sol_2_be_on ? solenoid::on(solenoids[1]) : solenoid::off(solenoids[1]);
-		
+		for (int i = 0; i < SOLENOID_NUM; i++) {
+			if (is_sol_n_manual[i])
+				should_sol_n_be_on
+					? solenoid::on(solenoids[i])
+					: solenoid::off(solenoids[i]);
+		}
 		vTaskDelay(200);
 	}
 	
