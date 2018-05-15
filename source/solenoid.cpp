@@ -58,7 +58,7 @@ solenoid_gdb_mirror_task(void *params)
 	for (;;) {
 		for (int i = 0; i < SOLENOID_NUM; i++) {
 			if (is_sol_n_manual[i])
-				should_sol_n_be_on
+				should_sol_n_be_on[i]
 					? solenoid::on(solenoids[i])
 					: solenoid::off(solenoids[i]);
 		}
