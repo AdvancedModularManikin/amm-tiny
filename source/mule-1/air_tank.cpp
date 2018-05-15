@@ -12,11 +12,13 @@ struct pi_ctl {
 	float target;
 	
 	float isum; // current value
+	float last;
 };
 
 float
 pi_supply(struct pi_ctl *p, float reading)
 {
+	p->last = reading;
 	float oset = p->target - reading;
 	
 	p->isum += oset * p->i;

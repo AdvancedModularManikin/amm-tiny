@@ -4,9 +4,8 @@ OS=`uname`
 if [ $OS = "Darwin" ]
 then
 	#osx
-	export ARMGCC_DIR=~/code/gcc-arm-none-eabi-6-2017-q1-update 
-	cmake -DCMAKE_TOOLCHAIN_FILE="armgcc.cmake" -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug  .
+	ARMGCC_DIR=/opt/local/ cmake -DCMAKE_TOOLCHAIN_FILE="armgcc.cmake" -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug .
 else
 	#ammdk boards
-	ARMGCC_DIR=/usr/ cmake -DCMAKE_TOOLCHAIN_FILE="armgcc.cmake" -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug  .
+	ARMGCC_DIR=/usr/ cmake -DCMAKE_TOOLCHAIN_FILE="armgcc.cmake" -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug .
 fi
