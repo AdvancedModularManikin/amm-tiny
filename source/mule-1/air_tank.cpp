@@ -68,7 +68,7 @@ air_reservoir_control_task(void *params)
 	
 	for (;;) {
 		uint32_t adcRead = carrier_sensors[0].raw_pressure;
-		float voltage = ((float)adcRead)*3.3 / (4096) / volDiv;
+		float voltage = ((float)adcRead)*3.3 / (4096) / voldiv;
 		
 		//convert to PSI. Assume linearity
 		
