@@ -17,6 +17,8 @@ struct pressure_sensor {
 };
 //}
 
+extern struct pressure_sensor carrier_sensors[4];
+
 int
 polling_init(void);
 void

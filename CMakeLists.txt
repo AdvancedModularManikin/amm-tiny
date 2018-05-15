@@ -386,6 +386,8 @@ add_executable(amm-tiny.elf
 "${ProjDirPath}/source/ammdk-carrier/maxon.h"
 "${ProjDirPath}/source/ammdk-carrier/solenoid.cpp"
 "${ProjDirPath}/source/ammdk-carrier/solenoid.h"
+"${ProjDirPath}/source/mule-1/air_tank.cpp"
+"${ProjDirPath}/source/mule-1/air_tank.h"
 "${ProjDirPath}/board/pin_mux.c"
 "${ProjDirPath}/board/pin_mux.h"
 "${ProjDirPath}/board/board.c"

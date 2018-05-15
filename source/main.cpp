@@ -67,6 +67,7 @@
 #include "maxon.h"
 #include <stdio.h>
 #include "action.h"
+#include "mule-1/air_tank.h"
 
 /* Task priorities. */
 #define hello_task_PRIORITY (configMAX_PRIORITIES - 2)
@@ -130,6 +131,8 @@ int main(void) {
   ret = xTaskCreate(carrier_pressure_task, "carrier_pressure_task", configMINIMAL_STACK_SIZE + 100, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   
+  ret = xTaskCreate(air_reservoir_control_task, "airtank control", configMINIMAL_STACK_SIZE + 100, NULL, hello_task_PRIORITY, NULL);
+  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   /*
   ret = xTaskCreate(button_task, "button task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
