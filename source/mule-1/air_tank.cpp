@@ -4,6 +4,7 @@
 #include "maxon.h"
 #include "fsl_adc16.h"
 #include "pressuresensor.h"
+#include "ammdk-carrier/solenoid.h"
 
 struct pi_ctl {
 	float p;
@@ -28,6 +29,9 @@ struct pi_ctl pid;
 void
 air_reservoir_control_task(void *params)
 {
+	solenoid::off(solenoids[0]);
+	solenoid::on(solenoids[1]);
+	
 	pid.p = 0.25;
 	pid.i = 0.01;
 	pid.isum = 3; //not really based on anything
@@ -41,7 +45,9 @@ air_reservoir_control_task(void *params)
 		
 		//convert to PSI. Assume linearity
 		
-		float psi = ((float)(presh * 15))/(1<<16);
+		//Pressure (PSI) = VALUE * (3/10280) - (15/8)
+		//128 is to make pressure in the office ~= 13.9
+		float psi = ((float)presh) *128* (3.0/10280.0) - (15.0/8.0);
 		
 		float ret = pi_supply(&pid, psi);
 		
