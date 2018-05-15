@@ -44,7 +44,8 @@ scale(float vOut)
 	//wolframalpha
 	return 15/8 * (2*vOut - 1);
 }
-
+float ret;
+uint32_t val;
 void
 air_reservoir_control_task(void *params)
 {
@@ -63,6 +64,8 @@ air_reservoir_control_task(void *params)
 	float r1 = 1200;
 	float r2 = 2200;
 	float voldiv = r2/(r1+r2);
+	bool can_motor_run = 1;
+	bool we_stopped = 0;
 	
 	for (;;) {
 		uint32_t adcRead = carrier_sensors[0].raw_pressure;
@@ -72,11 +75,15 @@ air_reservoir_control_task(void *params)
 		
 		float psi = scale(voltage);
 		
-		float ret = pi_supply(&pid, psi);
+		ret = pi_supply(&pid, psi);
 		
 		//TODO convert back to 0-2^12 range for DAC
-		uint32_t val = (uint32_t) (ret*0x200);
-		should_motor_run = stall_val > val;
+		val = (uint32_t) (ret*1000.0);
+		can_motor_run = stall_val > val;
+		if (stall_val > val && should_motor_run) {
+			we_stopped = 1;
+		}
+		should_motor_run = stall_val < val;
 		dacVal = val > 0xfff ? 0xfff : val;
 		
 		vTaskDelay(50);
