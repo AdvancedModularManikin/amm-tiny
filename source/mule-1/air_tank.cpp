@@ -6,6 +6,7 @@
 #include "pressuresensor.h"
 #include "ammdk-carrier/solenoid.h"
 
+//TODO add d
 struct pi_ctl {
 	float p;
 	float i;
@@ -52,8 +53,8 @@ air_reservoir_control_task(void *params)
 	solenoid::off(solenoids[0]);
 	solenoid::on(solenoids[1]);
 	
-	pid.p = 0.25;
-	pid.i = 0.01;
+	pid.p = 10;
+	pid.i = 1/64;
 	pid.isum = 0;
 	pid.target = 5;
 	
@@ -64,12 +65,10 @@ air_reservoir_control_task(void *params)
 	float r1 = 1200;
 	float r2 = 2200;
 	float voldiv = r2/(r1+r2);
-	bool can_motor_run = 1;
-	bool we_stopped = 0;
 	
 	for (;;) {
 		uint32_t adcRead = carrier_sensors[0].raw_pressure;
-		float voltage = ((float)adcRead) * 5.0 / (4096);
+		float voltage = ((float)adcRead)*3.3 / (4096) / volDiv;
 		
 		//convert to PSI. Assume linearity
 		
@@ -79,10 +78,6 @@ air_reservoir_control_task(void *params)
 		
 		//TODO convert back to 0-2^12 range for DAC
 		val = (uint32_t) (ret*1000.0);
-		can_motor_run = stall_val > val;
-		if (stall_val > val && should_motor_run) {
-			we_stopped = 1;
-		}
 		should_motor_run = stall_val < val;
 		dacVal = val > 0xfff ? 0xfff : val;
 		
