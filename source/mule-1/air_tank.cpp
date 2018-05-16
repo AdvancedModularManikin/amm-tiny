@@ -34,6 +34,8 @@ pi_supply(struct pid_ctl *p, float reading)
 struct pid_ctl pid;
 
 uint32_t stall_val = 0x100;
+//PSI (atmospheric is 0)
+float operating_pressure = 5.0;
 
 volatile bool should_pid_run = true;
 float ret;
@@ -48,7 +50,6 @@ air_reservoir_control_task(void *params)
 	pid.i = 1.0/1024;
 	pid.d = 1.0/16;
 	pid.isum = 0;
-	pid.target = 5;
 	
 	should_24v_be_on = 1;
 	should_motor_run = 1;
