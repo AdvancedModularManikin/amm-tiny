@@ -42,9 +42,9 @@ air_reservoir_control_task(void *params)
 	solenoid::off(solenoids[0]);
 	solenoid::on(solenoids[1]);
 	
-	pid.p = 10;
-	pid.i = 1.0/64;
-	pid.d = 1.0;
+	pid.p = 24;
+	pid.i = 1.0/1024;
+	pid.d = 1.0/16;
 	pid.isum = 0;
 	pid.target = 5;
 	
