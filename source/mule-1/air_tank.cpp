@@ -31,20 +31,6 @@ struct pi_ctl pid;
 
 uint16_t stall_val = 0x400;
 
-float
-scale(float vOut)
-{
-	float vsupply = 5.0;
-	float pmax = 15.0;
-	float pmin = 0.0;
-	float pressure;
-	
-	//transfer vOut = (0.8 * vsupply)/(pmax - pmin) * (pressure - pmin) + 0.1 * vsupply
-	//transfer vOut = (0.8 * 5.0)/(15.0 - 0.0) * (pressure - 0.0) + 0.1 * 5.0
-	
-	//wolframalpha
-	return 15/8 * (2*vOut - 1);
-}
 float ret;
 uint32_t val;
 void
@@ -68,11 +54,7 @@ air_reservoir_control_task(void *params)
 	
 	for (;;) {
 		uint32_t adcRead = carrier_sensors[0].raw_pressure;
-		float voltage = ((float)adcRead)*3.3 / (4096) / voldiv;
-		
-		//convert to PSI. Assume linearity
-		
-		float psi = scale(voltage);
+		float psi = ((float)adcRead)*(3.0/10280.0*16.0) - 15.0/8.0;
 		
 		ret = pi_supply(&pid, psi);
 		
