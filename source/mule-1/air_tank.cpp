@@ -32,8 +32,9 @@ pi_supply(struct pid_ctl *p, float reading)
 
 struct pid_ctl pid;
 
-uint16_t stall_val = 0x100;
+uint32_t stall_val = 0x100;
 
+volatile bool should_pid_run = true;
 float ret;
 uint32_t val;
 void
@@ -57,22 +58,23 @@ air_reservoir_control_task(void *params)
 	float voldiv = r2/(r1+r2);
 	
 	for (;;) {
-		//don't update if motor isn't running as it will run too far off
-		//TODO also don't update if solenoid 2 is open
-		float hold_isum = pid.isum;
-		uint32_t adcRead = carrier_sensors[0].raw_pressure;
-		float psi = ((float)adcRead)*(3.0/10280.0*16.0) - 15.0/8.0;
+		if (should_pid_run) {
+			//don't update if motor isn't running as it will run too far off
+			//TODO also don't update if solenoid 2 is open
+			float hold_isum = pid.isum;
+			uint32_t adcRead = carrier_sensors[0].raw_pressure;
+			float psi = ((float)adcRead)*(3.0/10280.0*16.0) - 15.0/8.0;
 		
-		ret = pi_supply(&pid, psi);
+			ret = pi_supply(&pid, psi);
 		
-		//convert back to 0-2^12 range for DAC
-		val = (uint32_t) (ret*1000.0);
-		should_motor_run = stall_val < val;
-		if (!should_motor_run) {
-			pid.isum = hold_isum;
+			//convert back to 0-2^12 range for DAC
+			val = (uint32_t) (ret*1000.0);
+			should_motor_run = stall_val < val;
+			if (!should_motor_run) {
+				pid.isum = hold_isum;
+			}
+			dacVal = val > 0xfff ? 0xfff : val;
 		}
-		dacVal = val > 0xfff ? 0xfff : val;
-		
 		vTaskDelay(50);
 	}
 	vTaskSuspend(NULL);
