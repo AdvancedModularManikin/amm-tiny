@@ -6,30 +6,33 @@
 #include "pressuresensor.h"
 #include "ammdk-carrier/solenoid.h"
 
-//TODO add d
-struct pi_ctl {
+struct pid_ctl {
 	float p;
 	float i;
+	float d;
 	float target;
 	
 	float isum; // current value
 	float last;
+	float last_diff;
 };
 
 float
-pi_supply(struct pi_ctl *p, float reading)
+pi_supply(struct pid_ctl *p, float reading)
 {
+	float diff = reading - p->last;
 	p->last = reading;
+	p->last_diff = diff;
 	float oset = p->target - reading;
 	
 	p->isum += oset * p->i;
 	
-	return p->isum + p->p*oset;
+	return p->isum + p->p*oset + p->d*diff;
 }
 
-struct pi_ctl pid;
+struct pid_ctl pid;
 
-uint16_t stall_val = 0x400;
+uint16_t stall_val = 0x100;
 
 float ret;
 uint32_t val;
@@ -40,7 +43,8 @@ air_reservoir_control_task(void *params)
 	solenoid::on(solenoids[1]);
 	
 	pid.p = 10;
-	pid.i = 1/64;
+	pid.i = 1.0/64;
+	pid.d = 1.0;
 	pid.isum = 0;
 	pid.target = 5;
 	
