@@ -5,6 +5,7 @@
 #include "fsl_adc16.h"
 #include "pressuresensor.h"
 #include "ammdk-carrier/solenoid.h"
+#include "air_tank.h"
 
 struct pid_ctl {
 	float p;
@@ -58,6 +59,7 @@ air_reservoir_control_task(void *params)
 	float voldiv = r2/(r1+r2);
 	
 	for (;;) {
+		pid.target = operating_pressure;
 		if (should_pid_run) {
 			//don't update if motor isn't running as it will run too far off
 			//TODO also don't update if solenoid 2 is open

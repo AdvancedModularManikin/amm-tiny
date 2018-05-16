@@ -14,6 +14,7 @@
 #include "heartrate.h"
 #include "spi_proto.h"
 #include "spi_proto_slave.h"
+#include "mule-1/air_tank.h"
 
 //to toggle the led TODO remove becuase it's a debugging feature
 #include "board.h"
@@ -26,6 +27,8 @@ void
 slave_get_message(struct spi_packet *p)
 {
 	//TODO handle mule 1 stuff
+	//receive pressure message (float)
+	memcpy(&operating_pressure, &p->msg[4], 4);
 }
 
 int
