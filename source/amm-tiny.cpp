@@ -72,6 +72,14 @@
 /* Task priorities. */
 #define hello_task_PRIORITY (configMAX_PRIORITIES - 2)
 
+void
+ammtinycb(struct spi_packet *p)
+{
+	//TODO handle mule 1 stuff
+	//receive pressure message (float)
+	memcpy(&operating_pressure, &p->msg[4], 4);
+}
+
 /*!
  * @brief Task responsible for printing of "Hello world." message.
  */
@@ -97,10 +105,6 @@ int main(void) {
   BOARD_BootClockRUN();
   BOARD_InitDebugConsole();
 
-  /* Add your code here */
-  //TODO create spi_proto struct and mark it as unused
-  //TODO setup flow interrupt
-
   gpio_pin_config_t digital_out = {kGPIO_DigitalOutput, (0)};
   GPIO_PinInit(BOARD_LED_GREEN_GPIO, BOARD_LED_GREEN_GPIO_PIN, &digital_out);
 
@@ -118,7 +122,7 @@ int main(void) {
   //ret = xTaskCreate(hello_task, "Hello task", configMINIMAL_STACK_SIZE+1000, NULL, hello_task_PRIORITY, NULL);
   //assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   
-  ret = xTaskCreate(spi_edma_task, "spi edma task", configMINIMAL_STACK_SIZE+200, NULL, hello_task_PRIORITY+1, NULL);
+  ret = xTaskCreate(spi_edma_task, "spi edma task", configMINIMAL_STACK_SIZE+200, (void*)ammtinycb, hello_task_PRIORITY+1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   
   /*

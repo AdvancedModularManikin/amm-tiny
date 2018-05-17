@@ -17,6 +17,7 @@ struct slave_spi_proto {
 	int buflen;
 
 	struct spi_state proto;
+	spi_msg_callback_t spi_cb;
 };
 
 uint32_t spi_transactions = 0;

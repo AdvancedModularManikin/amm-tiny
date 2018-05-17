@@ -20,7 +20,6 @@
 //page 473 in k66 sub family reference manual, the DMAMUX chapter
 #define DSPI_SLAVE_DMA_TX_REQUEST_SOURCE 15U
 #define DSPI_SLAVE_DMA_RX_REQUEST_SOURCE 14U
-// #define TRANSFER_SIZE 256U        /*! Transfer dataSize */
 //TODO centralize this definition
 #define TRANSFER_BAUDRATE (8388608U)
 
@@ -62,10 +61,12 @@ uint8_t slaveTxData[TRANSFER_SIZE] = {0};
 void
 spi_edma_task(void *pvParams)
 {
+	spi_msg_callback_t spi_callback = (void (*)(spi_packet*))pvParams;
 	using namespace spi_proto;
 	callback_message_t cb_msg;
 	// init p, set up buffers and len
 	spi_proto_slave_initialize(&spi_proto::p);
+	spi_proto::p.spi_cb = spi_callback;
 	p.buflen = TRANSFER_SIZE;
 	p.sendbuf = slaveTxData;
 	p.getbuf = slaveRxData;
@@ -94,7 +95,7 @@ spi_edma_task(void *pvParams)
 	DMAMUX_SetSource(DSPI_SLAVE_DMA_MUX_BASEADDR, slaveRxChannel, DSPI_SLAVE_DMA_RX_REQUEST_SOURCE); // TODO fixup names
 	DMAMUX_EnableChannel(DSPI_SLAVE_DMA_MUX_BASEADDR, slaveRxChannel);
 	
-    DMAMUX_SetSource(DSPI_SLAVE_DMA_MUX_BASEADDR, slaveTxChannel, DSPI_SLAVE_DMA_TX_REQUEST_SOURCE);
+	DMAMUX_SetSource(DSPI_SLAVE_DMA_MUX_BASEADDR, slaveTxChannel, DSPI_SLAVE_DMA_TX_REQUEST_SOURCE);
 	DMAMUX_EnableChannel(DSPI_SLAVE_DMA_MUX_BASEADDR, slaveTxChannel);
 	
 	EDMA_GetDefaultConfig(&userConfig);

@@ -22,14 +22,6 @@
 namespace spi_proto {
 
 //this is a simple protocol, that doesn't support arbitrary length messages
-//TODO this contains seattle demo code fold it into the rewritten receive function
-void
-slave_get_message(struct spi_packet *p)
-{
-	//TODO handle mule 1 stuff
-	//receive pressure message (float)
-	memcpy(&operating_pressure, &p->msg[4], 4);
-}
 
 int
 slave_send_message(struct slave_spi_proto &p, unsigned char *buf, unsigned int len)
@@ -66,8 +58,7 @@ slave_spi_proto_rcv_msg(struct slave_spi_proto &p, unsigned char *buf, unsigned 
 	if (len < sizeof(struct spi_packet)) return -1;
 	struct spi_packet pack = *((struct spi_packet *)buf);
 
-	spi_msg_callback_t seattle_msg_callback = &slave_get_message;//spi_proto_echo;
-	spi_proto_rcv_msg(&p.proto, &pack, seattle_msg_callback);
+	spi_proto_rcv_msg(&p.proto, &pack, p.spi_cb);
 	return 0;
 }
 
