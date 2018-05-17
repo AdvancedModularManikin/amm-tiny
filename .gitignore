@@ -10,6 +10,7 @@ compile_commands.json
 CTestTestfile.cmake
 
 compiler-file.d
+Project.cbp
 
 #build products
 Debug
