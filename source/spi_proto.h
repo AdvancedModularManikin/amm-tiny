@@ -68,9 +68,9 @@ print_spi_packet(struct spi_packet *p);
 void
 spi_proto_rcv_msg(struct spi_state *s, struct spi_packet *p, spi_msg_callback_t cb);
 int
-spi_proto_prep_msg(struct spi_state *s, void *buf, int n);
+spi_proto_prep_msg(struct spi_state *s, void *buf, unsigned int n);
 int
-spi_proto_send_msg(struct spi_state *s, void *buf, int n);
+spi_proto_send_msg(struct spi_state *s, void *buf, unsigned int n);
 
 uint16_t
 spi_msg_crc(struct spi_packet *p);

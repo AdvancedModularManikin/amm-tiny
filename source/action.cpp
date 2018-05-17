@@ -32,7 +32,7 @@ action_task(void *params)
 	
 	for (;;) {
 		for (int i = 0;i<ACTION_NUM;i++) {
-			if (lastread[i] = !GPIO_ReadPinInput(actions[i].pin->base, actions[i].pin->pin_ix)) {
+			if ((lastread[i] = !GPIO_ReadPinInput(actions[i].pin->base, actions[i].pin->pin_ix))) {
 				if (!actions[i].debounce) {
 					actions[i].debounce = 1;
 					char msg[32];

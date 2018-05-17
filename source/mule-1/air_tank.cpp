@@ -55,9 +55,10 @@ air_reservoir_control_task(void *params)
 	should_motor_run = 1;
 	
 	//voltage divider
-	float r1 = 1200;
-	float r2 = 2200;
-	float voldiv = r2/(r1+r2);
+	//TODO not currently used. Once we figure out why the equation from the datasheet was not working use it again.
+	//float r1 = 1200;
+	//float r2 = 2200;
+	//float voldiv = r2/(r1+r2);
 	
 	for (;;) {
 		pid.target = operating_pressure;

@@ -47,8 +47,7 @@ namespace pressure {
 	}
 
 //TODO make this the whole interrupt
-//#define adc_isr(name, s) \
-//		ADC16_GetChannelConversionValue(s.adc, s.channel_group);
+//#define adc_isr(name, s) ADC16_GetChannelConversionValue(s.adc, s.channel_group);
 
 
 	float current_pressure_value(struct sensor &s)

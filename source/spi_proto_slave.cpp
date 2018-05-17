@@ -32,7 +32,7 @@ slave_get_message(struct spi_packet *p)
 }
 
 int
-slave_send_message(struct slave_spi_proto &p, unsigned char *buf, int len)
+slave_send_message(struct slave_spi_proto &p, unsigned char *buf, unsigned int len)
 {
 	return spi_proto_send_msg(&p.proto, buf, len);
 }
@@ -58,7 +58,7 @@ spi_proto_echo(struct spi_packet *pack)
 }
 
 int
-slave_spi_proto_rcv_msg(struct slave_spi_proto &p, unsigned char *buf, int len)
+slave_spi_proto_rcv_msg(struct slave_spi_proto &p, unsigned char *buf, unsigned int len)
 {
 	//parse an spi_packet out of getbuf
 

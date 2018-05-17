@@ -25,17 +25,17 @@ volatile bool ready;
 
 
 //int
-//slave_get_message(struct slave_spi_proto &p, unsigned char *buf, int len);
+//slave_get_message(struct slave_spi_proto &p, unsigned char *buf, unsigned int len);
 void
 slave_get_message(struct spi_packet *p);
 int
-slave_send_message(struct slave_spi_proto &p, unsigned char *buf, int len);
+slave_send_message(struct slave_spi_proto &p, unsigned char *buf, unsigned int len);
 //int
 //slave_handle_spi_interrupt();
 int
 slave_do_tick(struct slave_spi_proto &p);
 int
-slave_spi_proto_rcv_msg(struct slave_spi_proto &p, unsigned char *buf, int len);
+slave_spi_proto_rcv_msg(struct slave_spi_proto &p, unsigned char *buf, unsigned int len);
 
 void
 spi_proto_slave_initialize(struct slave_spi_proto *s);

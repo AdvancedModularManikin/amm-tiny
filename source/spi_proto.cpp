@@ -111,7 +111,7 @@ spi_proto_rcv_msg(struct spi_state *s, struct spi_packet *p, spi_msg_callback_t 
 }
 
 int
-spi_proto_prep_msg(struct spi_state *s, void *buf, int n)
+spi_proto_prep_msg(struct spi_state *s, void *buf, unsigned int n)
 {
 	//give it the buffer to write the message into
 	//TODO make #defs for return values
@@ -150,7 +150,7 @@ spi_proto_prep_msg(struct spi_state *s, void *buf, int n)
 }
 
 int
-spi_proto_send_msg(struct spi_state *s, void *buf, int n)
+spi_proto_send_msg(struct spi_state *s, void *buf, unsigned int n)
 {
 	//this puts the message in the queue, or returns -1
 	//TODO add #defs for return values

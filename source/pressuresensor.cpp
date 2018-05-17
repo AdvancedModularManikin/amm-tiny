@@ -176,7 +176,7 @@ carrier_pressure_task(void *params)
 		}
 		
 		char msg[32];
-		snprintf(msg, 32, "ADC Value: %d \t%d \t%d \t%d\r\n",
+		snprintf(msg, 32, "ADC Value: %lu \t%lu \t%lu \t%lu\r\n",
 			carrier_sensors[0].raw_pressure,
 			carrier_sensors[1].raw_pressure,
 			carrier_sensors[2].raw_pressure,

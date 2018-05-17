@@ -101,7 +101,6 @@ spi_edma_task(void *pvParams)
 	EDMA_Init(DSPI_SLAVE_DMA_BASEADDR, &userConfig);
 	
 	/*DSPI init*/
-	uint32_t i;
 	dspi_master_config_t masterConfig;
 	dspi_slave_config_t slaveConfig;
 	dspi_transfer_t slaveXfer;
