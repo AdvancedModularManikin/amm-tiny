@@ -35,7 +35,8 @@ fluidmanagerspicb(struct spi_packet *p)
 {
   //TODO handle mule 1 stuff
   //receive pressure message (float)
-  memcpy(&operating_pressure, &p->msg[4], 4);
+  if (p->msg[0])
+    memcpy(&operating_pressure, &p->msg[4], 4);
 }
 
 //fluid manager module code
