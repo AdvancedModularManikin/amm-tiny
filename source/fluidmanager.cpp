@@ -31,9 +31,11 @@
 #define max_PRIORITY (configMAX_PRIORITIES - 1)
 
 void
-fluidmanagerspicb(struct psi_packet *p)
+fluidmanagerspicb(struct spi_packet *p)
 {
-  //TODO
+  //TODO handle mule 1 stuff
+  //receive pressure message (float)
+  memcpy(&operating_pressure, &p->msg[4], 4);
 }
 
 //fluid manager module code
