@@ -3,9 +3,6 @@
 #include "clock_config.h"
 #include "fsl_debug_console.h"
 
-/* freescale drivers */
-#include "fsl_adc16.h"
-
 /* FreeRTOS kernel includes. */
 #include "FreeRTOS.h"
 #include "task.h"
@@ -16,21 +13,15 @@
 #include "spi_edma_task.h"
 
 /* included just for tasks */
-#include "maxon.h"
-#include "mule-1/air_tank.h"
 #include "solenoid.h"
-#include "pressuresensor.h"
 
 /* Task priorities. */
 #define max_PRIORITY (configMAX_PRIORITIES - 1)
 
 void
-fluidmanagerspicb(struct spi_packet *p)
+bleeder_spi_cb(struct spi_packet *p)
 {
-  //TODO handle mule 1 stuff
-  //receive pressure message (float)
-  if (p->msg[0])
-    memcpy(&operating_pressure, &p->msg[4], 4);
+  //TODO handle mule 1 stuff for IVC
 }
 
 //fluid manager module code
@@ -40,24 +31,16 @@ int main(void) {
   BOARD_BootClockRUN();
   BOARD_InitDebugConsole();
 
-  polling_init();
   BaseType_t ret;
   /* Create RTOS task */
 
   ret = xTaskCreate(solenoid_gdb_mirror_task, "solenoid_gdb_mirror_task", configMINIMAL_STACK_SIZE+100, NULL, max_PRIORITY-1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   
-  ret = xTaskCreate(spi_edma_task, "spi edma task", configMINIMAL_STACK_SIZE+200, (void*)fluidmanagerspicb, max_PRIORITY, NULL);
+  ret = xTaskCreate(spi_edma_task, "spi edma task", configMINIMAL_STACK_SIZE+200, (void*)bleeder_spi_cb, max_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
 
-  ret = xTaskCreate(carrier_pressure_task, "carrier_pressure_task", configMINIMAL_STACK_SIZE + 100, NULL, max_PRIORITY-1, NULL);
-  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  
-  ret = xTaskCreate(air_reservoir_control_task, "airtank control", configMINIMAL_STACK_SIZE + 100, NULL, max_PRIORITY-1, NULL);
-  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-
-  ret = xTaskCreate(maxon_task, "Maxon task", configMINIMAL_STACK_SIZE + 100, NULL, max_PRIORITY-1, NULL);
-  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  //TODO bleed control task
   
   vTaskStartScheduler();
 

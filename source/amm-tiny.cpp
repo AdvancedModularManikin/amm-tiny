@@ -38,13 +38,7 @@
 #include "fsl_debug_console.h"
 
 /* freescale drivers */
-#include "fsl_dspi.h"
-#include "fsl_dspi_freertos.h"
 #include "fsl_adc16.h"
-//#include "fsl_common.h"
-//#include "fsl_gpio.h"
-//#include "fsl_port.h"
-//#include "fsl_ftm.h"
 
 /* FreeRTOS kernel includes. */
 #include "FreeRTOS.h"
