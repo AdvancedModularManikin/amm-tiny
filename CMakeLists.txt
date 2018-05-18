@@ -520,6 +520,8 @@ ${K66F_STARTUP}
 "${ProjDirPath}/source/controllers/gpio.h"
 "${ProjDirPath}/source/flowsensor.cpp"
 "${ProjDirPath}/source/flowsensor.h"
+"${ProjDirPath}/source/pressuresensor.cpp"
+"${ProjDirPath}/source/pressuresensor.h"
 "${ProjDirPath}/source/solenoid.cpp"
 "${ProjDirPath}/source/solenoid.h"
 "${ProjDirPath}/utilities/fsl_debug_console.c"

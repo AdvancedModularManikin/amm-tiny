@@ -2,7 +2,7 @@
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "fsl_debug_console.h"
-
+#include "fsl_adc16.h"
 /* FreeRTOS kernel includes. */
 #include "FreeRTOS.h"
 #include "task.h"
@@ -16,29 +16,32 @@
 #include "solenoid.h"
 #include "ammdk-carrier/solenoid.h"
 #include <string.h>
+#include "pressuresensor.h"
+#include "flowsensor.h"
 
 /* Task priorities. */
 #define max_PRIORITY (configMAX_PRIORITIES - 1)
 
-int arterial_bleeding = 0;
-uint16_t arterial_bleed_period = 1000;
+/* IVC module has two tasks:
+ * maintain pressure in vein at ~0.1 psi -- careful not to pop it
+ * monitor amount of flow and send it to biogears
+ */
+float bleed_pressure = 0.125;
+float vein_psi;
 //TODO keep track of bleed amount and warn when level is low
 void
 bleed_task(void *pvParameters)
 {
+  struct solenoid::solenoid &vein_sol = solenoids[7];
   for (;;) {
-    if (arterial_bleed_period < 100) {
-      arterial_bleed_period = 1000;
-      arterial_bleeding = 0;
+    uint32_t adcRead = carrier_sensors[0].raw_pressure;
+    vein_psi = ((float)adcRead)*(3.0/10280.0*16.0) - 15.0/8.0;
+    if (vein_psi < bleed_pressure) {
+      solenoid::on(vein_sol);
+      vTaskDelay(2);
+      solenoid::off(vein_sol);
     }
-    if (arterial_bleeding) {
-      solenoid::toggle(solenoids[7]);
-      //TODO if somehow this delays for a long time it will lock up. perhaps delay in shorter segments.
-      vTaskDelay(arterial_bleed_period);
-    } else {
-      solenoid::off(solenoids[7]);
-      vTaskDelay(50);
-    }
+    vTaskDelay(50);
   }
   vTaskSuspend(NULL);
 }
@@ -48,8 +51,6 @@ bleeder_spi_cb(struct spi_packet *p)
 {
   //TODO handle mule 1 stuff for IVC
   if (p->msg[0]) {
-    arterial_bleeding = p->msg[1];
-    memcpy(&arterial_bleed_period, &p->msg[2], 2);
   }
 }
 

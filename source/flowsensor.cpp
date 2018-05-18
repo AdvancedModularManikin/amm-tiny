@@ -26,6 +26,7 @@
 //set up recurring task to take the added-up count and put it somewhere useful
 
 volatile uint32_t pulsecounts;
+float total_flow; // mL
 float flow_rate;
 
 const float TICKS_PER_MILLILITER = 22.0;
@@ -77,6 +78,7 @@ flow_sensor_task(void *params)
 	for (;;) {
 		float ticks = pulsecounts;
 		total_pulses += pulsecounts;
+		total_flow = ((float) total_pulses)/TICKS_PER_MILLILITER;
 		pulsecounts = 0;
 		//TODO change to mL/min
 		//have time, ticks, ticks/L, want L/s
