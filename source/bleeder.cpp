@@ -33,6 +33,10 @@ void
 bleed_task(void *pvParameters)
 {
   struct solenoid::solenoid &vein_sol = solenoids[7];
+  
+  //enable 24V rail
+  GPIO_SetPinsOutput(GPIOA, 1U<<7U);
+  
   for (;;) {
     uint32_t adcRead = carrier_sensors[0].raw_pressure;
     vein_psi = ((float)adcRead)*(3.0/10280.0*16.0) - 15.0/8.0;
