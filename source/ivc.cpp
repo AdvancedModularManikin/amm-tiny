@@ -22,6 +22,19 @@
 /* Task priorities. */
 #define max_PRIORITY (configMAX_PRIORITIES - 1)
 
+#define IVC_STATUS_WAITING  0
+#define IVC_STATUS_START    1
+#define IVC_STATUS_PAUSE    2
+#define IVC_STATUS_STOP     3
+#define IVC_STATUS_RESET    4
+
+/*
+ * the task has two modes: waiting and running.
+ * START moves it to running from whereever.
+ * PAUSE and STOP and WAITING move it to waiting
+ * RESET moves it to waiting and resets the total_counts flow variable.
+ */
+
 /* IVC module has two tasks:
  * maintain pressure in vein at ~0.1 psi -- careful not to pop it
  * monitor amount of flow and send it to biogears
@@ -30,7 +43,7 @@ float bleed_pressure = 0.125;
 float vein_psi;
 volatile int pressurization_quantum = 20;
 
-bool start_task = 0;
+bool ivc_waiting = 1;
 void
 bleed_task(void *pvParameters)
 {
@@ -46,15 +59,19 @@ bleed_task(void *pvParameters)
   for (;;) {
     //wait for start message
     //TODO use a semaphore or task notification
-    while (!start_task)
+    while (ivc_waiting)
       vTaskDelay(100);
-    start_task = 0;
     
     uint32_t adcRead = carrier_sensors[0].raw_pressure;
     vein_psi = ((float)adcRead)*(3.0/10280.0*16.0) - 15.0/8.0;
     if (vein_psi < bleed_pressure) {
       solenoid::on(vein_sol);
       do {
+        if (ivc_waiting) {
+          solenoid::off(vein_sol);
+          while (ivc_waiting) vTaskDelay(50);
+          solenoid::on(vein_sol);
+        }
         vTaskDelay(pressurization_quantum);
         adcRead = carrier_sensors[0].raw_pressure;
         vein_psi = ((float)adcRead)*(3.0/10280.0*16.0) - 15.0/8.0;
@@ -66,6 +83,7 @@ bleed_task(void *pvParameters)
     msg[0] = 1;
     msg[1] = 1;
     slave_send_message(spi_proto::p, (unsigned char*) msg, 32);
+    ivc_waiting = 1;
     vTaskDelay(50);
   }
   vTaskSuspend(NULL);
@@ -76,7 +94,22 @@ bleeder_spi_cb(struct spi_packet *p)
 {
   //TODO handle mule 1 stuff for IVC
   if (p->msg[0]) {
-    start_task = p->msg[1];
+    switch (p->msg[1]) {
+    case IVC_STATUS_START:
+      //start task, should resume after a pause
+      ivc_waiting = 0;
+      break;
+    case IVC_STATUS_RESET:
+      //also reset flow
+      total_pulses = 0;
+    case IVC_STATUS_PAUSE:
+    case IVC_STATUS_STOP:
+    case IVC_STATUS_WAITING:
+    default:
+      //stop pressurizing but do not reset flow
+      ivc_waiting = 1;
+      break;
+    }
   }
 }
 

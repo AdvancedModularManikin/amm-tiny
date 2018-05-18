@@ -8,7 +8,7 @@
 #ifndef SOURCE_FLOWSENSOR_H_
 #define SOURCE_FLOWSENSOR_H_
 
-volatile uint32_t pulsecounts;
+uint32_t total_pulses;
 float total_flow;
 
 void
