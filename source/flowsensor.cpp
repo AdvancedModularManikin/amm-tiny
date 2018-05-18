@@ -86,7 +86,9 @@ flow_sensor_task(void *params)
 		//to get mL/s, multiply by 10
 		flow_rate = (ticks / TICKS_PER_MILLILITER) * 10.0;
 		char msg[32];
-		snprintf(msg, 32, "flow_rate: %d uL/s", (int)(flow_rate*1000));
+		msg[0] = 1;
+		msg[1] = 0;
+		memcpy(&msg[4], &total_flow, 4);
 		
 		slave_send_message(spi_proto::p, (unsigned char*) msg, 32);
 

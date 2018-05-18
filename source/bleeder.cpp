@@ -29,7 +29,8 @@
 float bleed_pressure = 0.125;
 float vein_psi;
 volatile int pressurization_quantum = 20;
-//TODO keep track of bleed amount and warn when level is low
+
+bool start_task = 0;
 void
 bleed_task(void *pvParameters)
 {
@@ -38,7 +39,17 @@ bleed_task(void *pvParameters)
   //enable 24V rail
   GPIO_SetPinsOutput(GPIOA, 1U<<7U);
   
+  //module logic:
+  //wait for start message
+  //begin pressurizing
+  //when pressurized, stop pressurizing and send the "I'm sealed" message to SoM code
   for (;;) {
+    //wait for start message
+    //TODO use a semaphore or task notification
+    while (!start_task)
+      vTaskDelay(100);
+    start_task = 0;
+    
     uint32_t adcRead = carrier_sensors[0].raw_pressure;
     vein_psi = ((float)adcRead)*(3.0/10280.0*16.0) - 15.0/8.0;
     if (vein_psi < bleed_pressure) {
@@ -50,6 +61,11 @@ bleed_task(void *pvParameters)
       } while(vein_psi < bleed_pressure);
       solenoid::off(vein_sol);
     }
+    
+    char msg[32];
+    msg[0] = 1;
+    msg[1] = 1;
+    slave_send_message(spi_proto::p, (unsigned char*) msg, 32);
     vTaskDelay(50);
   }
   vTaskSuspend(NULL);
@@ -60,6 +76,7 @@ bleeder_spi_cb(struct spi_packet *p)
 {
   //TODO handle mule 1 stuff for IVC
   if (p->msg[0]) {
+    start_task = p->msg[1];
   }
 }
 
