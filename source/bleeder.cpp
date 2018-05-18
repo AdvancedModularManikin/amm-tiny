@@ -28,7 +28,7 @@
  */
 float bleed_pressure = 0.125;
 float vein_psi;
-volatile int pressurization_delay = 2;
+volatile int pressurization_quantum = 20;
 //TODO keep track of bleed amount and warn when level is low
 void
 bleed_task(void *pvParameters)
@@ -43,7 +43,11 @@ bleed_task(void *pvParameters)
     vein_psi = ((float)adcRead)*(3.0/10280.0*16.0) - 15.0/8.0;
     if (vein_psi < bleed_pressure) {
       solenoid::on(vein_sol);
-      vTaskDelay(pressurization_delay);
+      do {
+        vTaskDelay(pressurization_quantum);
+        adcRead = carrier_sensors[0].raw_pressure;
+        vein_psi = ((float)adcRead)*(3.0/10280.0*16.0) - 15.0/8.0;
+      } while(vein_psi < bleed_pressure);
       solenoid::off(vein_sol);
     }
     vTaskDelay(50);
