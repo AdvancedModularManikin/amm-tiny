@@ -16,8 +16,6 @@ struct solenoid {
 	toggle(struct solenoid &s);
 }
 
-//extern struct solenoid::solenoid solenoids[8];
-
 int
 solenoids_toggle(void);
 extern struct solenoid::solenoid solenoids[SOLENOID_NUM];
