@@ -504,7 +504,7 @@ ${K66F_STARTUP}
 "${ProjDirPath}/utilities/fsl_sbrk.c"
 )
 
-add_executable(bleeder.elf
+add_executable(ivc.elf
 ${BOARD_CFG}
 ${FSL_DRIVERS}
 ${FREERTOS_SOURCE}
@@ -515,11 +515,11 @@ ${K66F_STARTUP}
 "${ProjDirPath}/source/ammdk-carrier/carrier_gpio.h"
 "${ProjDirPath}/source/ammdk-carrier/solenoid.cpp"
 "${ProjDirPath}/source/ammdk-carrier/solenoid.h"
-"${ProjDirPath}/source/bleeder.cpp"
 "${ProjDirPath}/source/controllers/gpio.cpp"
 "${ProjDirPath}/source/controllers/gpio.h"
 "${ProjDirPath}/source/flowsensor.cpp"
 "${ProjDirPath}/source/flowsensor.h"
+"${ProjDirPath}/source/ivc.cpp"
 "${ProjDirPath}/source/pressuresensor.cpp"
 "${ProjDirPath}/source/pressuresensor.h"
 "${ProjDirPath}/source/solenoid.cpp"
@@ -571,22 +571,22 @@ target_link_libraries(fluidmanager.elf optimized nosys)
 
 TARGET_LINK_LIBRARIES(fluidmanager.elf -Wl,--end-group)
 
-TARGET_LINK_LIBRARIES(bleeder.elf -Wl,--start-group)
-target_link_libraries(bleeder.elf debug m)
+TARGET_LINK_LIBRARIES(ivc.elf -Wl,--start-group)
+target_link_libraries(ivc.elf debug m)
 
-target_link_libraries(bleeder.elf debug c)
+target_link_libraries(ivc.elf debug c)
 
-target_link_libraries(bleeder.elf debug gcc)
+target_link_libraries(ivc.elf debug gcc)
 
-target_link_libraries(bleeder.elf debug nosys)
+target_link_libraries(ivc.elf debug nosys)
 
-target_link_libraries(bleeder.elf optimized m)
+target_link_libraries(ivc.elf optimized m)
 
-target_link_libraries(bleeder.elf optimized c)
+target_link_libraries(ivc.elf optimized c)
 
-target_link_libraries(bleeder.elf optimized gcc)
+target_link_libraries(ivc.elf optimized gcc)
 
-target_link_libraries(bleeder.elf optimized nosys)
+target_link_libraries(ivc.elf optimized nosys)
 
-TARGET_LINK_LIBRARIES(bleeder.elf -Wl,--end-group)
+TARGET_LINK_LIBRARIES(ivc.elf -Wl,--end-group)
 
