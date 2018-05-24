@@ -12,6 +12,7 @@
 extern "C" {
 #endif
 
+//TODO check that 0 and 1 length packets are correctly handled
 /*
 assuming the payload of the spi proto is large but most commands are small the command flow is:
 	callback for spi_proto (whole message)
@@ -47,13 +48,16 @@ int chunk_dispatcher_master(uint8_t *buf, size_t len)
 }
 #endif
 
+//returns the number of bytes used
 int
 chunk_packer(struct waiting_chunk *chunks, size_t numchunk,
 	uint8_t *buf, size_t len)
 {
-	for (int i; i < numchunk;i++) {
+	int ret = 0;
+	for (int i = 0; i < numchunk;i++) {
 		if (chunks[i].ready_to_pack) {
 			if (chunks[i].buf[0] <= len) {
+				ret += chunks[i].buf[0];
 				memcpy(buf, chunks[i].buf, chunks[i].buf[0]);
 				len -= chunks[i].buf[0];
 				chunks[i].ready_to_pack = 0;
@@ -61,6 +65,7 @@ chunk_packer(struct waiting_chunk *chunks, size_t numchunk,
 			}
 		}
 	}
+	return ret;
 }
 
 #define NUM_WAIT_CHUNKS 10
@@ -74,6 +79,7 @@ send_chunk(uint8_t *buf, size_t len)
 		if (!wait_chunks[i].ready_to_pack) {
 			memcpy(wait_chunks[i].buf, buf, len);
 			wait_chunks[i].buf[0] = len; // just in case
+			wait_chunks[i].ready_to_pack = 1;
 			return 0;
 		}
 	}

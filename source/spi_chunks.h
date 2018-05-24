@@ -12,3 +12,6 @@ int
 spi_msg_chunks(uint8_t *buf, size_t len, int (*chunk_handler)(uint8_t *b, size_t len));
 int
 send_chunk(uint8_t *buf, size_t len);
+int
+chunk_packer(struct waiting_chunk *chunks, size_t numchunk,
+	uint8_t *buf, size_t len);
