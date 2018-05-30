@@ -54,12 +54,13 @@ chunk_packer(struct waiting_chunk *chunks, size_t numchunk,
 	uint8_t *buf, size_t len)
 {
 	int ret = 0;
-	for (int i = 0; i < numchunk;i++) {
+	for (unsigned int i = 0; i < numchunk;i++) {
 		if (chunks[i].ready_to_pack) {
 			if (chunks[i].buf[0] <= len) {
 				ret += chunks[i].buf[0];
 				memcpy(buf, chunks[i].buf, chunks[i].buf[0]);
 				len -= chunks[i].buf[0];
+				buf += chunks[i].buf[0];
 				chunks[i].ready_to_pack = 0;
 				if (len < 3) break; // 2 is the smallest possible chunk: [2|ID]
 			}
