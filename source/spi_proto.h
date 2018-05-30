@@ -6,7 +6,10 @@
 extern "C" {
 #endif
 
+#define SPI_PROTO_MAGIC_REAL 0xa6
+#define SPI_PROTO_MAGIC_FILLER 0x54
 struct __attribute__((packed)) spi_packet {
+	//TODO add version number
 	uint8_t magic; // includes at least a version number
 	uint8_t seq : 4;
 	uint8_t preack : 4; //or "anticipatory ack", or "expected ack"
@@ -21,19 +24,29 @@ struct __attribute__((packed)) spi_packet {
 
 //there can't ever be more than 16 messages waiting in the queue
 
+/*
+Queue with various indices
+ [--------------------------]
+   |   |   |
+   |   |   +first_avail_seq
+   |   +first_unsent_seq
+   + first_unconfirmed_seq
 
+spaces before first_unconfirmed_seq and after first_avail_seq are open
+
+*/
 struct spi_state {
 	//each side has its own
 	uint8_t our_seq, our_next_preack;
 	
-	uint8_t we_sent_seq, we_sent_preack; // this side's last round sendings
+	uint8_t we_sent_seq, we_sent_preack; // this side's this round sendings (same as packet we're analyzing in receive_msg)
+	
+	uint8_t our_prev_sent_seq, our_prev_sent_preack; // this side's last round sendings
 	
 	//for received values
 	uint8_t last_round_rcvd_seq, last_round_rcvd_preack;
-	
-	//note that this one doesn't directly control slots, it's a loop boundary
-	uint8_t oldest_unconfirmed_seq;
-	
+
+	//bookkeeping
 	uint8_t first_unconfirmed_seq;
 	
 	uint8_t first_unsent_seq;
@@ -42,6 +55,7 @@ struct spi_state {
 	
 	//logging of sorts
 	int num_sent_successfully;
+	int num_received_successfully;
 	
 	//occupancy controls
 	uint8_t num_unsent;
@@ -64,13 +78,15 @@ void
 print_spi_state_full(struct spi_state *s);
 void
 print_spi_packet(struct spi_packet *p);
+void
+print_spi_occs(struct spi_state *p);
 
 void
 spi_proto_rcv_msg(struct spi_state *s, struct spi_packet *p, spi_msg_callback_t cb);
 int
-spi_proto_prep_msg(struct spi_state *s, void *buf, int n);
+spi_proto_prep_msg(struct spi_state *s, void *buf, size_t n);
 int
-spi_proto_send_msg(struct spi_state *s, void *buf, int n);
+spi_proto_send_msg(struct spi_state *s, void *buf, size_t n);
 
 uint16_t
 spi_msg_crc(struct spi_packet *p);
