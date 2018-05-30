@@ -5,8 +5,29 @@
 #include "controllers/gpio.h"
 //just for SPI_MSG_PAYLOAD_LEN
 #include "spi_proto.h"
+#include "spi_proto_slave.h"
 #include "spi_chunks.h"
 #include "spi_chunk_defines.h"
+
+
+#define NUM_WAIT_CHUNKS 10
+struct waiting_chunk wait_chunks[NUM_WAIT_CHUNKS] = {0};
+
+//in slave because it is a convenience method
+int
+send_chunk(uint8_t *buf, size_t len)
+{
+	//find an open waiting_chunk in waiting_chunks and copy it in
+	for (int i = 0; i < NUM_WAIT_CHUNKS; i++) {
+		if (!wait_chunks[i].ready_to_pack) {
+			memcpy(wait_chunks[i].buf, buf, len);
+			wait_chunks[i].buf[0] = len; // just in case
+			wait_chunks[i].ready_to_pack = 1;
+			return 0;
+		}
+	}
+	return -1;
+}
 
 //invariant: *buf = len, due to how it's called but also because it is part of the packet shape
 //TODO put this in spi_chunk_slave.cpp
@@ -46,9 +67,32 @@ chunk_dispatcher_slave(uint8_t *buf, size_t len)
 	return 0;
 }
 
+int
+chunk_dispatcher_echo(uint8_t *buf, size_t len)
+{
+	if (len < 2) return -1; // length zero isn't a real chunk, length 1 can't carry data
+	//TODO log too-short chunks
+	switch(buf[1]) {
+	default:
+		buf[1] = CHUNK_TYPE_ECHO_RETURN;
+		send_chunk(buf, len); //for testing
+		break;
+	}
+	return 0;
+}
+
 //this is the callback, call it on the SPI proto payload
 int
 spi_chunk_overall(uint8_t *buf, size_t len)
 {
-	return spi_msg_chunks(buf, len, chunk_dispatcher_slave);
+	return spi_msg_chunks(buf, len, chunk_dispatcher_echo);
+}
+
+int
+prepare_slave_chunks(void)
+{
+	uint8_t buf[SPI_MSG_PAYLOAD_LEN];
+	int ret1 = chunk_packer(wait_chunks, NUM_WAIT_CHUNKS, buf, SPI_MSG_PAYLOAD_LEN);
+	int ret2 = slave_send_message(spi_proto::p, buf, SPI_MSG_PAYLOAD_LEN);
+	return ret1|ret2;
 }

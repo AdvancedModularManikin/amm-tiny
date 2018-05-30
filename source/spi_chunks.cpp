@@ -69,24 +69,6 @@ chunk_packer(struct waiting_chunk *chunks, size_t numchunk,
 	return ret;
 }
 
-#define NUM_WAIT_CHUNKS 10
-struct waiting_chunk wait_chunks[NUM_WAIT_CHUNKS] = {0};
-
-int
-send_chunk(uint8_t *buf, size_t len)
-{
-	//find an open waiting_chunk in waiting_chunks and copy it in
-	for (int i = 0; i < NUM_WAIT_CHUNKS; i++) {
-		if (!wait_chunks[i].ready_to_pack) {
-			memcpy(wait_chunks[i].buf, buf, len);
-			wait_chunks[i].buf[0] = len; // just in case
-			wait_chunks[i].ready_to_pack = 1;
-			return 0;
-		}
-	}
-	return -1;
-}
-
 //so we need a function to dispatch on chunks of the message
 int
 spi_msg_chunks(uint8_t *buf, size_t len, int (*chunk_handler)(uint8_t *b, size_t len))
@@ -97,7 +79,7 @@ spi_msg_chunks(uint8_t *buf, size_t len, int (*chunk_handler)(uint8_t *b, size_t
 		if (buf[p]) {
 			if (p + buf[p] < len) { // doesn't overflow at least
 				int ret = chunk_handler(&buf[p], buf[p]); // TODO this can access the rest of the array possibly, but we probably trust it anyway
-				p += buf[p];
+				p += buf[p] ? buf[p] : 1; // TODO could break on zero or one length chunks if we were guaranteed there wouldn't be any after them
 				//TODO do something with ret
 			} else {
 				return -1;
