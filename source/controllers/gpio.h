@@ -12,6 +12,7 @@ struct gpio_command {
 	uint8_t gpio_id;
 	uint8_t gpio_command;
 };
+#define CHUNK_LEN_GPIO sizeof(struct gpio_command)
 
 struct gpio_response {
 	uint8_t gpio_id;
@@ -24,7 +25,7 @@ struct gpio_response {
 extern int gpio_bad_chunks;
 
 void
-gpio_handle_slave(struct gpio_command cmd,
+gpio_handle_slave(struct gpio_command *cmd,
 	struct gpio_pin *carrier_gpios,
 	size_t gpio_num);
 

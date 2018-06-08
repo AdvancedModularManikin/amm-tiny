@@ -82,7 +82,7 @@ static void puppet_task(void *pvParameters) {
 		i %= 100;
 		
 		slave_send_message(spi_proto::p, (unsigned char*) msg, 32);
-		vTaskDelay(100);
+		vTaskDelay(pdMS_TO_TICKS(100));
 	}
 	vTaskSuspend(NULL);
 }
