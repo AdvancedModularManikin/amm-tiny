@@ -19,13 +19,10 @@ extern "C" {
 #include "spi_proto_slave.h"
 #include "spi_chunks_slave.h"
 
-//to toggle the led TODO remove becuase it's a debugging feature
-#include "board.h"
 
 namespace spi_proto {
 
 //this is a simple protocol, that doesn't support arbitrary length messages
-//TODO this contains seattle demo code fold it into the rewritten receive function
 void
 slave_get_message(struct spi_packet *p)
 {
@@ -38,10 +35,6 @@ slave_send_message(struct slave_spi_proto &p, unsigned char *buf, int len)
 	return spi_proto_send_msg(&p.proto, buf, len);
 }
 
-//do the things the normal interrupt handler did
-//int
-//slave_handle_spi_interrupt(){}
-
 int
 slave_do_tick(struct slave_spi_proto &p)
 {
@@ -51,10 +44,10 @@ slave_do_tick(struct slave_spi_proto &p)
 	return 0;
 }
 
+//sometimes useful for debugging
 void
 spi_proto_echo(struct spi_packet *pack)
 {
-	//TODO send the message back
 	spi_proto_send_msg(&spi_proto::p.proto, pack->msg, SPI_MSG_PAYLOAD_LEN);
 }
 
@@ -67,8 +60,7 @@ slave_spi_proto_rcv_msg(struct slave_spi_proto &p, unsigned char *buf, int len)
 	if (len < sizeof(struct spi_packet)) return -1;
 	struct spi_packet pack = *((struct spi_packet *)buf);
 
-	spi_msg_callback_t seattle_msg_callback = &slave_get_message;//spi_proto_echo;
-	spi_proto_rcv_msg(&p.proto, &pack, seattle_msg_callback);
+	spi_proto_rcv_msg(&p.proto, &pack, &slave_get_message);
 	return 0;
 }
 

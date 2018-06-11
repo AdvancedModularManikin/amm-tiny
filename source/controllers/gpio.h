@@ -19,9 +19,6 @@ struct gpio_response {
 	uint8_t gpio_val;
 };
 
-//struct gpio_pin {int ix;};
-//struct gpio_pin carrier_gpios[GPIO_NUM];
-
 extern int gpio_bad_chunks;
 
 void

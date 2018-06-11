@@ -28,6 +28,8 @@ valve_handle_slave(struct valve_command *cmd,
 		} else {
 			valve_bad_chunks++;
 		}
+	} else {
+		valve_bad_chunks++;
 	}
 }
 
