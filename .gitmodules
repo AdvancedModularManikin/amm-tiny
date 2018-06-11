@@ -1,0 +1,3 @@
+[submodule "spi_proto"]
+	path = spi_proto
+	url = https://github.com/peterohanley/spi_proto

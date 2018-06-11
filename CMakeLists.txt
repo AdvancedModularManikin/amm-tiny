@@ -336,6 +336,8 @@ include_directories(${ProjDirPath}/../../../../../devices/MK66F18/utilities)
 
 include_directories(${ProjDirPath}/freertos/Source)
 
+include_directories(${ProjDirPath}/spi_proto)
+
 include_directories(${ProjDirPath}/../../..)
 
 include_directories(${ProjDirPath}/../../../../../devices/MK66F18)
@@ -364,8 +366,8 @@ add_executable(amm-tiny.elf
 "${ProjDirPath}/source/pressuresensor.h"
 "${ProjDirPath}/source/solenoid.cpp"
 "${ProjDirPath}/source/solenoid.h"
-"${ProjDirPath}/source/spi_proto.cpp"
-"${ProjDirPath}/source/spi_proto.h"
+"${ProjDirPath}/spi_proto/spi_proto_lib/spi_proto.c"
+"${ProjDirPath}/spi_proto/spi_proto.h"
 "${ProjDirPath}/source/spi_proto_slave.cpp"
 "${ProjDirPath}/source/spi_proto_slave.h"
 "${ProjDirPath}/source/spi_edma_task.cpp"
@@ -378,8 +380,8 @@ add_executable(amm-tiny.elf
 "${ProjDirPath}/source/carrier_gpio.h"
 "${ProjDirPath}/source/action.cpp"
 "${ProjDirPath}/source/action.h"
-"${ProjDirPath}/source/spi_chunks.cpp"
-"${ProjDirPath}/source/spi_chunks.h"
+"${ProjDirPath}/spi_proto/spi_proto_lib/spi_chunks.cpp"
+"${ProjDirPath}/spi_proto/spi_proto_lib/spi_chunks.h"
 "${ProjDirPath}/source/spi_chunks_slave.cpp"
 "${ProjDirPath}/source/spi_chunks_slave.h"
 "${ProjDirPath}/source/controllers/dac.cpp"
@@ -449,8 +451,8 @@ add_executable(amm-tiny.elf
 "${ProjDirPath}/drivers/fsl_i2c.c"
 "${ProjDirPath}/drivers/fsl_i2c_freertos.h"
 "${ProjDirPath}/drivers/fsl_i2c_freertos.c"
-"${ProjDirPath}/source/crc16.cpp"
-"${ProjDirPath}/source/misc/crc16.h"
+"${ProjDirPath}/spi_proto/crc16.c"
+"${ProjDirPath}/spi_proto/misc/crc16.h"
 "${ProjDirPath}/source/pressure_adc.cpp"
 "${ProjDirPath}/source/pressure_adc.h"
 )

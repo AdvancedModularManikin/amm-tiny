@@ -12,9 +12,11 @@
 #include "FreeRTOS.h" // required for heartrate.h
 
 #include "heartrate.h"
+extern "C" {
 #include "spi_proto.h"
+#include "spi_proto_lib/spi_chunks.h"
+}
 #include "spi_proto_slave.h"
-#include "spi_chunks.h"
 #include "spi_chunks_slave.h"
 
 //to toggle the led TODO remove becuase it's a debugging feature
