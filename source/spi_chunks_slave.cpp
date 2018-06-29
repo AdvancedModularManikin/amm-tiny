@@ -71,6 +71,7 @@ chunk_dispatcher_slave(uint8_t *buf, size_t len)
 		daccmd.level = *(uint16_t*)&buf[4]; // TODO fix
 		dac_handle_slave(&daccmd, carrier_dacs, DAC_NUM);
 		break;
+#if 0
 	case CHUNK_TYPE_MOTOR:
 		if (len < CHUNK_LEN_MOTOR) {short_chunks++;break;}
 		// [LEN|TYPE|ID|???]
@@ -79,6 +80,7 @@ chunk_dispatcher_slave(uint8_t *buf, size_t len)
 		//motorcmd.ty = buf[3];
 		motor_handle_slave(&motorcmd, carrier_motors, MOTOR_NUM);
 		break;
+#endif
 	case CHUNK_TYPE_ECHO:
 		buf[1] = CHUNK_TYPE_ECHO_RETURN;
 		send_chunk(buf, len); //for testing
@@ -108,7 +110,7 @@ chunk_dispatcher_echo(uint8_t *buf, size_t len)
 int
 spi_chunk_overall(uint8_t *buf, size_t len)
 {
-	return spi_msg_chunks(buf, len, chunk_dispatcher_echo);
+	return spi_msg_chunks(buf, len, chunk_dispatcher_slave);
 }
 
 int

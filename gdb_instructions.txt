@@ -10,6 +10,13 @@ JLinkGDBServer -select USB -device MK66FN2M0xxx18 -speed 1000 -if SWD -endian li
 
 #to connect gdb:
 target remote localhost:2331 (or whatever the reported ip was)
+If you are running gdb on a remote machine either:
+- start openocd with -c "bindto 0.0.0.0" to allow nonlocal connections or
+- use ssh port forwarding as shown below
+If the connection is refused try ssh port fowarding with
+ssh amm@som-ip -L 3344:localhost:3333 
+then you can do target remote localhost:3344 in gdb
+
 #to flash
 monitor reset
 monitor halt
