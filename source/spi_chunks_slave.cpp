@@ -1,6 +1,6 @@
 #include "fsl_gpio.h"
 
-#include "carrier_gpio.h"
+#include "ammdk-carrier/carrier_gpio.h"
 #include "ammdk-carrier/dac.h"
 #include "ammdk-carrier/solenoid.h"
 #include "ammdk-carrier/maxon.h"

@@ -108,13 +108,13 @@ int main(void) {
   ret = xTaskCreate(pin_br_task, "pin breathrate task", configMINIMAL_STACK_SIZE+100, NULL, max_PRIORITY-1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
 
-  ret = xTaskCreate(solenoid_gdb_mirror_task, "solenoid_gdb_mirror_task", configMINIMAL_STACK_SIZE+100, NULL, hello_task_PRIORITY, NULL);
+  ret = xTaskCreate(solenoid_gdb_mirror_task, "solenoid_gdb_mirror_task", configMINIMAL_STACK_SIZE+100, NULL, max_PRIORITY-1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   
-  //ret = xTaskCreate(hello_task, "Hello task", configMINIMAL_STACK_SIZE+1000, NULL, hello_task_PRIORITY, NULL);
+  //ret = xTaskCreate(hello_task, "Hello task", configMINIMAL_STACK_SIZE+1000, NULL, max_PRIORITY-1, NULL);
   //assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   
-  ret = xTaskCreate(spi_edma_task, "spi edma task", configMINIMAL_STACK_SIZE+200, (void*)ammtinycb, hello_task_PRIORITY+1, NULL);
+  ret = xTaskCreate(spi_edma_task, "spi edma task", configMINIMAL_STACK_SIZE+200, (void*)ammtinycb, max_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   
   /*
@@ -122,19 +122,19 @@ int main(void) {
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   */
 
-  ret = xTaskCreate(carrier_pressure_task, "carrier_pressure_task", configMINIMAL_STACK_SIZE + 100, NULL, hello_task_PRIORITY, NULL);
+  ret = xTaskCreate(carrier_pressure_task, "carrier_pressure_task", configMINIMAL_STACK_SIZE + 100, NULL, max_PRIORITY-1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   
-  ret = xTaskCreate(air_reservoir_control_task, "airtank control", configMINIMAL_STACK_SIZE + 100, NULL, hello_task_PRIORITY, NULL);
+  ret = xTaskCreate(air_reservoir_control_task, "airtank control", configMINIMAL_STACK_SIZE + 100, NULL, max_PRIORITY-1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   /*
-  ret = xTaskCreate(button_task, "button task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
+  ret = xTaskCreate(button_task, "button task", configMINIMAL_STACK_SIZE + 1000, NULL, max_PRIORITY-1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  ret = xTaskCreate(solenoid_task, "solenoid task", configMINIMAL_STACK_SIZE+1000, NULL, hello_task_PRIORITY, NULL);
+  ret = xTaskCreate(solenoid_task, "solenoid task", configMINIMAL_STACK_SIZE+1000, NULL, max_PRIORITY-1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  //ret = xTaskCreate(motor_task, "motor task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
+  //ret = xTaskCreate(motor_task, "motor task", configMINIMAL_STACK_SIZE, NULL, max_PRIORITY-1, NULL);
   //assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  
+  */
   
   //ret = xTaskCreate(maxon_task, "Maxon task", configMINIMAL_STACK_SIZE + 100, NULL, max_PRIORITY-1, NULL);
   //assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
