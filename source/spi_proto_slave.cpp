@@ -12,12 +12,14 @@
 #include "FreeRTOS.h" // required for heartrate.h
 
 #include "heartrate.h"
+extern "C" {
 #include "spi_proto.h"
+#include "spi_proto_lib/spi_chunks.h"
+}
 #include "spi_proto_slave.h"
 #include "mule-1/air_tank.h"
+#include "spi_chunks_slave.h"
 
-//to toggle the led TODO remove becuase it's a debugging feature
-#include "board.h"
 
 namespace spi_proto {
 
@@ -29,10 +31,6 @@ slave_send_message(struct slave_spi_proto &p, unsigned char *buf, unsigned int l
 	return spi_proto_send_msg(&p.proto, buf, len);
 }
 
-//do the things the normal interrupt handler did
-//int
-//slave_handle_spi_interrupt(){}
-
 int
 slave_do_tick(struct slave_spi_proto &p)
 {
@@ -42,10 +40,10 @@ slave_do_tick(struct slave_spi_proto &p)
 	return 0;
 }
 
+//sometimes useful for debugging
 void
 spi_proto_echo(struct spi_packet *pack)
 {
-	//TODO send the message back
 	spi_proto_send_msg(&spi_proto::p.proto, pack->msg, SPI_MSG_PAYLOAD_LEN);
 }
 

@@ -64,7 +64,7 @@
 #include "mule-1/air_tank.h"
 
 /* Task priorities. */
-#define hello_task_PRIORITY (configMAX_PRIORITIES - 2)
+#define max_PRIORITY (configMAX_PRIORITIES - 1)
 
 void
 ammtinycb(struct spi_packet *p)
@@ -75,7 +75,7 @@ ammtinycb(struct spi_packet *p)
 /*!
  * @brief Task responsible for printing of "Hello world." message.
  */
-static void hello_task(void *pvParameters) {
+static void puppet_task(void *pvParameters) {
 	int i = 0;
 	for (;;) {
 		char msg[32];
@@ -83,7 +83,7 @@ static void hello_task(void *pvParameters) {
 		i %= 100;
 		
 		slave_send_message(spi_proto::p, (unsigned char*) msg, 32);
-		vTaskDelay(100);
+		vTaskDelay(pdMS_TO_TICKS(100));
 	}
 	vTaskSuspend(NULL);
 }
@@ -103,9 +103,9 @@ int main(void) {
   polling_init();
   BaseType_t ret;
   /* Create RTOS task */
-  ret = xTaskCreate(pin_hr_task, "pin heartrate task", configMINIMAL_STACK_SIZE+100, NULL, hello_task_PRIORITY, NULL);
+  ret = xTaskCreate(pin_hr_task, "pin heartrate task", configMINIMAL_STACK_SIZE+100, NULL, max_PRIORITY-1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  ret = xTaskCreate(pin_br_task, "pin breathrate task", configMINIMAL_STACK_SIZE+100, NULL, hello_task_PRIORITY, NULL);
+  ret = xTaskCreate(pin_br_task, "pin breathrate task", configMINIMAL_STACK_SIZE+100, NULL, max_PRIORITY-1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
 
   ret = xTaskCreate(solenoid_gdb_mirror_task, "solenoid_gdb_mirror_task", configMINIMAL_STACK_SIZE+100, NULL, hello_task_PRIORITY, NULL);
@@ -118,11 +118,9 @@ int main(void) {
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   
   /*
-  ret = xTaskCreate(sensirion_task, "Sensirion_task", configMINIMAL_STACK_SIZE + 124, NULL, hello_task_PRIORITY, NULL);
+  ret = xTaskCreate(sensirion_task, "Sensirion_task", configMINIMAL_STACK_SIZE + 124, NULL, max_PRIORITY-1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   */
-  //ret = xTaskCreate(carrier_board_test_task, "carrier_board_test_task", configMINIMAL_STACK_SIZE + 100, NULL, hello_task_PRIORITY, NULL);
-  //assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
 
   ret = xTaskCreate(carrier_pressure_task, "carrier_pressure_task", configMINIMAL_STACK_SIZE + 100, NULL, hello_task_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
@@ -136,25 +134,10 @@ int main(void) {
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   //ret = xTaskCreate(motor_task, "motor task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
   //assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  ret = xTaskCreate(polling_task, "polling task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
-  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  */
-  /*
-  ret = xTaskCreate(flow_sensor_task, "flow sensor task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
-  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  */
   
-  ret = xTaskCreate(maxon_task, "Maxon task", configMINIMAL_STACK_SIZE + 100, NULL, hello_task_PRIORITY, NULL);
-  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  /*
-  ret = xTaskCreate(action_task, "Action task", configMINIMAL_STACK_SIZE + 1000, NULL, hello_task_PRIORITY, NULL);
-  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  */
   
-  /*
-  ret = xTaskCreate(lung_task, "lung task", configMINIMAL_STACK_SIZE, NULL, hello_task_PRIORITY, NULL);
-  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  */
+  //ret = xTaskCreate(maxon_task, "Maxon task", configMINIMAL_STACK_SIZE + 100, NULL, max_PRIORITY-1, NULL);
+  //assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   
   vTaskStartScheduler();
 

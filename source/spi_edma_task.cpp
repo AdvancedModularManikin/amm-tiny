@@ -12,6 +12,7 @@
 
 #include "spi_proto.h"
 #include "spi_proto_slave.h"
+#include "spi_chunks_slave.h"
 #include "spi_edma_task.h"
 
 #define DSPI_SLAVE_BASEADDR SPI0
@@ -152,6 +153,7 @@ spi_edma_task(void *pvParams)
 	uint8_t blank_msg[SPI_MSG_PAYLOAD_LEN];
 	for (;;) {
 		//ensure there is at least 1 message to be sent. TODO alter protocol send logic to make this unnecessary
+		prepare_slave_chunks();
 		if (p.proto.num_unsent == 0) {
 			slave_send_message(p, blank_msg, 0); // TODO in theory middle arg can be NULL
 		}
