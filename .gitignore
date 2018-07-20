@@ -16,10 +16,10 @@ Project.cbp
 Debug
 debug
 
-#intellij
-.idea/**/workspace.xml
-.idea/**/tasks.xml
-.idea/dictionaries
+#IDEs
+.idea
+.project
+.settings
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
