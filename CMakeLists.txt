@@ -308,8 +308,6 @@ include_directories(${ProjDirPath}/board/)
 
 include_directories(${ProjDirPath}/utilities/)
 
-include_directories(${ProjDirPath}/..)
-
 include_directories(${ProjDirPath}/freertos/Source/portable/GCC/ARM_CM4F)
 
 include_directories(${ProjDirPath}/freertos/Source/include)
@@ -320,13 +318,9 @@ include_directories(${ProjDirPath}/../../../../../devices)
 
 include_directories(${ProjDirPath}/drivers)
 
-include_directories(${ProjDirPath}/..)
-
 include_directories(${ProjDirPath}/../../../../../devices/MK66F18/utilities)
 
 include_directories(${ProjDirPath}/freertos/Source)
-
-include_directories(${ProjDirPath}/../../..)
 
 include_directories(${ProjDirPath}/../../../../../devices/MK66F18)
 
@@ -340,15 +334,11 @@ include_directories(${ProjDirPath}/../../../../../devices)
 
 include_directories(${ProjDirPath}/drivers)
 
-include_directories(${ProjDirPath}/..)
-
 include_directories(${ProjDirPath}/../../../../../devices/MK66F18/utilities)
 
 include_directories(${ProjDirPath}/freertos/Source)
 
 include_directories(${ProjDirPath}/spi_proto)
-
-include_directories(${ProjDirPath}/../../..)
 
 include_directories(${ProjDirPath}/../../../../../devices/MK66F18)
 
