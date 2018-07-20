@@ -298,49 +298,17 @@ SET(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} muldefs")
 
 SET(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -specs=nosys.specs")
 
-include_directories(${ProjDirPath}/source/)
-
-include_directories(${ProjDirPath}/CMSIS/)
-
-include_directories(${ProjDirPath}/startup/)
-
 include_directories(${ProjDirPath}/board/)
-
+include_directories(${ProjDirPath}/CMSIS/)
+include_directories(${ProjDirPath}/drivers)
+include_directories(${ProjDirPath}/freertos/Source)
+include_directories(${ProjDirPath}/freertos/Source/include)
+include_directories(${ProjDirPath}/freertos/Source/portable/GCC/ARM_CM4F)
+include_directories(${ProjDirPath}/source/)
+include_directories(${ProjDirPath}/spi_proto)
+include_directories(${ProjDirPath}/startup/)
 include_directories(${ProjDirPath}/utilities/)
 
-include_directories(${ProjDirPath}/freertos/Source/portable/GCC/ARM_CM4F)
-
-include_directories(${ProjDirPath}/freertos/Source/include)
-
-include_directories(${ProjDirPath}/../../../../../CMSIS/Include)
-
-include_directories(${ProjDirPath}/../../../../../devices)
-
-include_directories(${ProjDirPath}/drivers)
-
-include_directories(${ProjDirPath}/../../../../../devices/MK66F18/utilities)
-
-include_directories(${ProjDirPath}/freertos/Source)
-
-include_directories(${ProjDirPath}/../../../../../devices/MK66F18)
-
-include_directories(${ProjDirPath}/freertos/Source/portable/GCC/ARM_CM4F)
-
-include_directories(${ProjDirPath}/freertos/Source/include)
-
-include_directories(${ProjDirPath}/../../../../../CMSIS/Include)
-
-include_directories(${ProjDirPath}/../../../../../devices)
-
-include_directories(${ProjDirPath}/drivers)
-
-include_directories(${ProjDirPath}/../../../../../devices/MK66F18/utilities)
-
-include_directories(${ProjDirPath}/freertos/Source)
-
-include_directories(${ProjDirPath}/spi_proto)
-
-include_directories(${ProjDirPath}/../../../../../devices/MK66F18)
 
 set(BOARD_CFG
 "${ProjDirPath}/board/board.c"
