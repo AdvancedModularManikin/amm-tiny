@@ -103,11 +103,12 @@ spi_edma_task(void *pvParams)
 	EDMA_Init(DSPI_SLAVE_DMA_BASEADDR, &userConfig);
 	
 	/*DSPI init*/
-	dspi_master_config_t masterConfig;
 	dspi_slave_config_t slaveConfig;
 	dspi_transfer_t slaveXfer;
 
 	/*Master config*/ // TODO confirm all these params, refactor to tear out master usage
+	{
+	dspi_master_config_t masterConfig;
 	masterConfig.whichCtar = kDSPI_Ctar0;
 	masterConfig.ctarConfig.baudRate = TRANSFER_BAUDRATE;
 	masterConfig.ctarConfig.bitsPerFrame = 8U;
@@ -132,7 +133,7 @@ spi_edma_task(void *pvParams)
 	slaveConfig.enableRxFifoOverWrite = masterConfig.enableRxFifoOverWrite;
 	slaveConfig.enableModifiedTimingFormat = masterConfig.enableModifiedTimingFormat;
 	slaveConfig.samplePoint = masterConfig.samplePoint;
-
+	}
 	DSPI_SlaveInit(DSPI_SLAVE_BASEADDR, &slaveConfig);
 	
 	/* Set up dspi slave first */
@@ -152,7 +153,6 @@ spi_edma_task(void *pvParams)
 
 	uint8_t blank_msg[SPI_MSG_PAYLOAD_LEN];
 	for (;;) {
-		//ensure there is at least 1 message to be sent. TODO alter protocol send logic to make this unnecessary
 		prepare_slave_chunks();
 		if (p.proto.num_unsent == 0) {
 			slave_send_message(p, blank_msg, 0); // TODO in theory middle arg can be NULL
@@ -170,11 +170,9 @@ spi_edma_task(void *pvParams)
 			//TODO do something to mitigate this
 			//TODO 2 determine how to mitigate a total communication failure at runtime
 		}
-		//PRINTF("waiting on semaphore\n");
 		
 		xSemaphoreTake(cb_msg.sem, portMAX_DELAY);
 		
-		//PRINTF("%d SPI transaction done!\n", xTaskGetTickCount());
 		spi_proto::spi_transactions++;
 
 		//handle the received message

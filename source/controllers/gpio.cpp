@@ -2,26 +2,43 @@
 #include "../ammdk-carrier/carrier_gpio.h"
 #include "gpio.h"
 
+#include "spi_remote.h"
+#include "spi_proto_lib/spi_chunk_defines.h"
+#include "spi_chunks_slave.h"
+
 int gpio_bad_chunks = 0;
 
 void
-gpio_handle_slave(struct gpio_command *cmd,
+gpio_handle_slave(struct gpio_cmd *cmd,
 	struct gpio_pin *carrier_gpios,
 	size_t gpio_num)
 {
-	if (cmd->gpio_id >= gpio_num) {gpio_bad_chunks++; return;}
+	if (cmd->id >= gpio_num) {gpio_bad_chunks++; return;}
 	
-	switch (cmd->gpio_command) {
-		case GPIO_C_OFF:
-		gpio_off(&carrier_gpios[cmd->gpio_id]);
-		break;
-		case GPIO_C_ON:
-		gpio_on(&carrier_gpios[cmd->gpio_id]);
-		break;
-		case GPIO_C_TOGGLE:
-		gpio_toggle(&carrier_gpios[cmd->gpio_id]);
-		break;
+	switch (cmd->cmd) {
+	case OP_SET:
+		switch(cmd->val) {
+		case GPIO_ON:
+			gpio_on(&carrier_gpios[cmd->id]);
+			goto set_resp;
+		case GPIO_TOGGLE:
+			gpio_toggle(&carrier_gpios[cmd->id]);
+			goto set_resp;
+		case GPIO_OFF:
+			gpio_off(&carrier_gpios[cmd->id]);
+			goto set_resp;
+		default:
+			{gpio_bad_chunks++; return;}
+		}
+	default:
+	//TODO OP_GET
+		return;
 	}
+	
+	set_resp:
+	uint8_t buf[] = {0, CHUNK_TYPE_GPIO, cmd->id, OP_SET};
+	send_chunk(buf, 4);
+	return;
 }
 
 void

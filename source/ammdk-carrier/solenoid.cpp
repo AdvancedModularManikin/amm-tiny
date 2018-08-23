@@ -12,6 +12,7 @@
 8 PTA13
 */
 
+//TODO we are keeping the solenoids around, but converting them to use PWM for the drop-and-hold behavior
 //extern "C" {
 struct solenoid::solenoid solenoids[SOLENOID_NUM] = {
 	{.base = GPIOD, .pin_ix = 4},

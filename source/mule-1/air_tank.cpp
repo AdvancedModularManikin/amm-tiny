@@ -43,8 +43,8 @@ uint32_t val;
 void
 air_reservoir_control_task(void *params)
 {
-	solenoid::off(solenoids[0]);
-	solenoid::on(solenoids[1]);
+	solenoid::off(solenoids[0]); // A
+	solenoid::on(solenoids[1]); // B
 	
 	pid.p = 24;
 	pid.i = 1.0/1024;

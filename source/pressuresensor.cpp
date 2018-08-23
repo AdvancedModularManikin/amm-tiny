@@ -175,6 +175,7 @@ carrier_pressure_task(void *params)
 			carrier_sensors[i].raw_pressure = carrier_sensors[i].raw_pressure * ratio + carrier_sensors[i].unfiltered_pressure * (1-ratio);
 		}
 		
+#if 0
 		char msg[32];
 		snprintf(msg, 32, "ADC Value: %lu \t%lu \t%lu \t%lu\r\n",
 			carrier_sensors[0].raw_pressure,
@@ -182,7 +183,7 @@ carrier_pressure_task(void *params)
 			carrier_sensors[2].raw_pressure,
 			carrier_sensors[3].raw_pressure);
 		slave_send_message(spi_proto::p, (unsigned char*) msg, 32);
-		
+#endif
 		vTaskDelay(20);
 	}
 	vTaskSuspend(NULL);

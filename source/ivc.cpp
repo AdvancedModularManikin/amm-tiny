@@ -14,14 +14,14 @@
 
 /* included just for tasks */
 #include "solenoid.h"
-#include "ammdk-carrier/solenoid.h"
 #include <string.h>
 #include "pressuresensor.h"
 #include "flowsensor.h"
 
 /* Task priorities. */
 #define max_PRIORITY (configMAX_PRIORITIES - 1)
-
+//TODO tear this out and delete this file, linux-side IVC should control everything remotely
+#if 0
 #define IVC_STATUS_WAITING  0
 #define IVC_STATUS_START    1
 #define IVC_STATUS_PAUSE    2
@@ -88,12 +88,14 @@ bleed_task(void *pvParameters)
   }
   vTaskSuspend(NULL);
 }
-
+#endif
 void
 bleeder_spi_cb(struct spi_packet *p)
 {
+#if 0
+  //TODO do this using generic protocol
   //TODO handle mule 1 stuff for IVC
-  if (p->msg[0]) {
+  if (p->msg[0]) { // TODO proper spi_proto has "real?" tags so this should no longer be necessary, filler messages are no longer received
     switch (p->msg[1]) {
     case IVC_STATUS_START:
       //start task, should resume after a pause
@@ -111,7 +113,9 @@ bleeder_spi_cb(struct spi_packet *p)
       break;
     }
   }
+#endif
 }
+//#endif
 
 //fluid manager module code
 int main(void) {
@@ -127,8 +131,8 @@ int main(void) {
   ret = xTaskCreate(solenoid_gdb_mirror_task, "solenoid_gdb_mirror_task", configMINIMAL_STACK_SIZE+100, NULL, max_PRIORITY-1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
 
-  ret = xTaskCreate(bleed_task, "bleed task", configMINIMAL_STACK_SIZE+100, NULL, max_PRIORITY-1, NULL);
-  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  //ret = xTaskCreate(bleed_task, "bleed task", configMINIMAL_STACK_SIZE+100, NULL, max_PRIORITY-1, NULL);
+  //assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   
   ret = xTaskCreate(flow_sensor_task, "flow task", configMINIMAL_STACK_SIZE+100, NULL, max_PRIORITY-1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);

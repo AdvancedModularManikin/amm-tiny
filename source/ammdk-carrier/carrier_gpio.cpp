@@ -15,14 +15,27 @@ struct gpio_pin carrier_gpios[CARRIER_GPIO_COUNT] = {
 7 PTC0
 
 	*/
+#define DECL(letter, number) {GPIO ## letter , PORT ## letter , number , kCLOCK_Port ## letter}
+
 	{GPIOB, PORTB, 18U, kCLOCK_PortB},
 	{GPIOB, PORTB, 19U, kCLOCK_PortB},
 	{GPIOB, PORTB, 20U, kCLOCK_PortB},
 	{GPIOB, PORTB, 21U, kCLOCK_PortB},
 	{GPIOB, PORTB, 22U, kCLOCK_PortB},
 	{GPIOB, PORTB, 23U, kCLOCK_PortB},
-	{GPIOC, PORTC, 00U, kCLOCK_PortC}
-	
+	{GPIOC, PORTC, 00U, kCLOCK_PortC},
+  //solenoids
+	DECL(D, 4), //{.base = GPIOD, .pin_ix = 4},
+	DECL(D, 4), //{.base = GPIOD, .pin_ix = 5},
+	DECL(D, 6), //{.base = GPIOD, .pin_ix = 6},
+	DECL(D, 7), //{.base = GPIOD, .pin_ix = 7},
+	DECL(A, 10), //{.base = GPIOA, .pin_ix = 10},
+	DECL(A, 11), //{.base = GPIOA, .pin_ix = 11},
+	DECL(A, 12), //{.base = GPIOA, .pin_ix = 12},
+	DECL(A, 13), //{.base = GPIOA, .pin_ix = 13}
+	DECL(A, 7), // 24V rail
+	DECL(B, 1), // motor enable
+#undef DECL
 };
 
 void carrier_gpio_init(void)
