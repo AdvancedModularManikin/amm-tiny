@@ -17,7 +17,7 @@ SET(CMAKE_STATIC_LIBRARY_SUFFIX)
 SET(CMAKE_EXECUTABLE_LIBRARY_PREFIX)
 SET(CMAKE_EXECUTABLE_LIBRARY_SUFFIX)
 
- 
+
 # CURRENT DIRECTORY
 SET(ProjDirPath ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -120,6 +120,8 @@ SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -mapcs")
 
 SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -std=gnu99")
 
+SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wno-unused-local-typedefs")
+
 
 
 SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
@@ -172,6 +174,8 @@ SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wno-unused-function")
 
 SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wno-missing-field-initializers")
 
+SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wno-unused-local-typedefs")
+
 
 
 SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -DNDEBUG")
@@ -213,6 +217,8 @@ SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fno-builtin")
 SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -mapcs")
 
 SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -std=gnu99")
+
+SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -Wno-unused-local-typedefs")
 
 SET(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -mcpu=cortex-m4")
 
@@ -299,15 +305,15 @@ SET(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} muldefs")
 SET(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -specs=nosys.specs")
 
 include_directories(${ProjDirPath}/board/)
-include_directories(${ProjDirPath}/CMSIS/)
-include_directories(${ProjDirPath}/drivers)
-include_directories(${ProjDirPath}/freertos/Source)
-include_directories(${ProjDirPath}/freertos/Source/include)
-include_directories(${ProjDirPath}/freertos/Source/portable/GCC/ARM_CM4F)
+include_directories(${ProjDirPath}/k66f-reqs/CMSIS/)
+include_directories(${ProjDirPath}/k66f-reqs/drivers)
+include_directories(${ProjDirPath}/k66f-reqs/freertos/Source)
+include_directories(${ProjDirPath}/k66f-reqs/freertos/Source/include)
+include_directories(${ProjDirPath}/k66f-reqs/freertos/Source/portable/GCC/ARM_CM4F)
 include_directories(${ProjDirPath}/source/)
 include_directories(${ProjDirPath}/spi_proto)
-include_directories(${ProjDirPath}/startup/)
-include_directories(${ProjDirPath}/utilities/)
+include_directories(${ProjDirPath}/k66f-reqs/startup/)
+include_directories(${ProjDirPath}/k66f-reqs/utilities/)
 
 
 set(BOARD_CFG
@@ -320,67 +326,67 @@ set(BOARD_CFG
 )
 
 set(FSL_DRIVERS
-"${ProjDirPath}/drivers/fsl_adc16.c"
-"${ProjDirPath}/drivers/fsl_adc16.h"
-"${ProjDirPath}/drivers/fsl_clock.c"
-"${ProjDirPath}/drivers/fsl_clock.h"
-"${ProjDirPath}/drivers/fsl_common.c"
-"${ProjDirPath}/drivers/fsl_common.h"
-"${ProjDirPath}/drivers/fsl_dac.c"
-"${ProjDirPath}/drivers/fsl_dac.h"
-"${ProjDirPath}/drivers/fsl_dmamux.c"
-"${ProjDirPath}/drivers/fsl_dmamux.h"
-"${ProjDirPath}/drivers/fsl_dspi.c"
-"${ProjDirPath}/drivers/fsl_dspi.h"
-"${ProjDirPath}/drivers/fsl_dspi_edma.c"
-"${ProjDirPath}/drivers/fsl_dspi_edma.h"
-"${ProjDirPath}/drivers/fsl_dspi_freertos.c"
-"${ProjDirPath}/drivers/fsl_dspi_freertos.h"
-"${ProjDirPath}/drivers/fsl_edma.c"
-"${ProjDirPath}/drivers/fsl_edma.h"
-"${ProjDirPath}/drivers/fsl_gpio.c"
-"${ProjDirPath}/drivers/fsl_gpio.h"
-"${ProjDirPath}/drivers/fsl_i2c.c"
-"${ProjDirPath}/drivers/fsl_i2c.h"
-"${ProjDirPath}/drivers/fsl_i2c_freertos.c"
-"${ProjDirPath}/drivers/fsl_i2c_freertos.h"
-"${ProjDirPath}/drivers/fsl_lpuart.c"
-"${ProjDirPath}/drivers/fsl_lpuart.h"
-"${ProjDirPath}/drivers/fsl_port.h"
-"${ProjDirPath}/drivers/fsl_smc.c"
-"${ProjDirPath}/drivers/fsl_smc.h"
-"${ProjDirPath}/drivers/fsl_uart.c"
-"${ProjDirPath}/drivers/fsl_uart.h"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_adc16.c"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_adc16.h"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_clock.c"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_clock.h"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_common.c"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_common.h"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_dac.c"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_dac.h"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_dmamux.c"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_dmamux.h"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_dspi.c"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_dspi.h"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_dspi_edma.c"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_dspi_edma.h"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_dspi_freertos.c"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_dspi_freertos.h"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_edma.c"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_edma.h"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_gpio.c"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_gpio.h"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_i2c.c"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_i2c.h"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_i2c_freertos.c"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_i2c_freertos.h"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_lpuart.c"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_lpuart.h"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_port.h"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_smc.c"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_smc.h"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_uart.c"
+"${ProjDirPath}/k66f-reqs/drivers/fsl_uart.h"
 )
 
 set(FREERTOS_SOURCE
-"${ProjDirPath}/freertos/Source/croutine.c"
-"${ProjDirPath}/freertos/Source/event_groups.c"
-"${ProjDirPath}/freertos/Source/include/FreeRTOS.h"
-"${ProjDirPath}/freertos/Source/include/StackMacros.h"
-"${ProjDirPath}/freertos/Source/include/croutine.h"
-"${ProjDirPath}/freertos/Source/include/event_groups.h"
-"${ProjDirPath}/freertos/Source/include/list.h"
-"${ProjDirPath}/freertos/Source/include/mpu_wrappers.h"
-"${ProjDirPath}/freertos/Source/include/portable.h"
-"${ProjDirPath}/freertos/Source/include/projdefs.h"
-"${ProjDirPath}/freertos/Source/include/queue.h"
-"${ProjDirPath}/freertos/Source/include/semphr.h"
-"${ProjDirPath}/freertos/Source/include/task.h"
-"${ProjDirPath}/freertos/Source/include/timers.h"
-"${ProjDirPath}/freertos/Source/list.c"
-"${ProjDirPath}/freertos/Source/portable/GCC/ARM_CM4F/port.c"
-"${ProjDirPath}/freertos/Source/portable/GCC/ARM_CM4F/portmacro.h"
-"${ProjDirPath}/freertos/Source/portable/MemMang/heap_4.c"
-"${ProjDirPath}/freertos/Source/queue.c"
-"${ProjDirPath}/freertos/Source/tasks.c"
-"${ProjDirPath}/freertos/Source/timers.c"
+"${ProjDirPath}/k66f-reqs/freertos/Source/croutine.c"
+"${ProjDirPath}/k66f-reqs/freertos/Source/event_groups.c"
+"${ProjDirPath}/k66f-reqs/freertos/Source/include/FreeRTOS.h"
+"${ProjDirPath}/k66f-reqs/freertos/Source/include/StackMacros.h"
+"${ProjDirPath}/k66f-reqs/freertos/Source/include/croutine.h"
+"${ProjDirPath}/k66f-reqs/freertos/Source/include/event_groups.h"
+"${ProjDirPath}/k66f-reqs/freertos/Source/include/list.h"
+"${ProjDirPath}/k66f-reqs/freertos/Source/include/mpu_wrappers.h"
+"${ProjDirPath}/k66f-reqs/freertos/Source/include/portable.h"
+"${ProjDirPath}/k66f-reqs/freertos/Source/include/projdefs.h"
+"${ProjDirPath}/k66f-reqs/freertos/Source/include/queue.h"
+"${ProjDirPath}/k66f-reqs/freertos/Source/include/semphr.h"
+"${ProjDirPath}/k66f-reqs/freertos/Source/include/task.h"
+"${ProjDirPath}/k66f-reqs/freertos/Source/include/timers.h"
+"${ProjDirPath}/k66f-reqs/freertos/Source/list.c"
+"${ProjDirPath}/k66f-reqs/freertos/Source/portable/GCC/ARM_CM4F/port.c"
+"${ProjDirPath}/k66f-reqs/freertos/Source/portable/GCC/ARM_CM4F/portmacro.h"
+"${ProjDirPath}/k66f-reqs/freertos/Source/portable/MemMang/heap_4.c"
+"${ProjDirPath}/k66f-reqs/freertos/Source/queue.c"
+"${ProjDirPath}/k66f-reqs/freertos/Source/tasks.c"
+"${ProjDirPath}/k66f-reqs/freertos/Source/timers.c"
 )
 
 set(K66F_STARTUP
-"${ProjDirPath}/startup/startup_MK66F18.S"
-"${ProjDirPath}/startup/system_MK66F18.c"
-"${ProjDirPath}/startup/system_MK66F18.h"
+"${ProjDirPath}/k66f-reqs/startup/startup_MK66F18.S"
+"${ProjDirPath}/k66f-reqs/startup/system_MK66F18.c"
+"${ProjDirPath}/k66f-reqs/startup/system_MK66F18.h"
 )
 
 set(SPI_PROTO_SOURCES
@@ -437,9 +443,9 @@ ${K66F_STARTUP}
 "${ProjDirPath}/source/sensirion.h"
 "${ProjDirPath}/source/solenoid.cpp"
 "${ProjDirPath}/source/solenoid.h"
-"${ProjDirPath}/utilities/fsl_debug_console.c"
-"${ProjDirPath}/utilities/fsl_debug_console.h"
-"${ProjDirPath}/utilities/fsl_sbrk.c"
+"${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.c"
+"${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.h"
+"${ProjDirPath}/k66f-reqs/utilities/fsl_sbrk.c"
 )
 
 add_executable(fluidmanager.elf
@@ -466,9 +472,9 @@ ${K66F_STARTUP}
 "${ProjDirPath}/source/pressuresensor.h"
 "${ProjDirPath}/source/solenoid.cpp"
 "${ProjDirPath}/source/solenoid.h"
-"${ProjDirPath}/utilities/fsl_debug_console.c"
-"${ProjDirPath}/utilities/fsl_debug_console.h"
-"${ProjDirPath}/utilities/fsl_sbrk.c"
+"${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.c"
+"${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.h"
+"${ProjDirPath}/k66f-reqs/utilities/fsl_sbrk.c"
 )
 
 add_executable(ivc.elf
@@ -491,9 +497,9 @@ ${K66F_STARTUP}
 "${ProjDirPath}/source/pressuresensor.h"
 "${ProjDirPath}/source/solenoid.cpp"
 "${ProjDirPath}/source/solenoid.h"
-"${ProjDirPath}/utilities/fsl_debug_console.c"
-"${ProjDirPath}/utilities/fsl_debug_console.h"
-"${ProjDirPath}/utilities/fsl_sbrk.c"
+"${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.c"
+"${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.h"
+"${ProjDirPath}/k66f-reqs/utilities/fsl_sbrk.c"
 )
 
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -T${ProjDirPath}/MK66FN2M0xxx18_flash.ld -static")
