@@ -7,12 +7,6 @@ enum valve_state {
 	VALVE_OPEN = 1
 };
 
-//TODO check whether attribute packed is necessary here
-struct valve_command {
-	uint8_t valve_id;
-	uint8_t valve_command;
-};
-#define CHUNK_LEN_VALVE sizeof(struct valve_command)
 #define VALVE_NUM SOLENOID_NUM
 
 void

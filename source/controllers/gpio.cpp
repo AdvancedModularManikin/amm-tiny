@@ -15,6 +15,9 @@ gpio_handle_slave(struct gpio_cmd *cmd,
 {
 	if (cmd->id >= gpio_num) {gpio_bad_chunks++; return;}
 	
+	int ret;
+	uint8_t buf[5]; // TODO assert CHUNK_LEN_GPIO_S2M == 5
+	
 	switch (cmd->cmd) {
 	case OP_SET:
 		switch(cmd->val) {
@@ -30,17 +33,32 @@ gpio_handle_slave(struct gpio_cmd *cmd,
 		default:
 			{gpio_bad_chunks++; return;}
 		}
+	case OP_GET:
+	//cmd val meaningless here
+		ret = gpio_read(&carrier_gpios[cmd->id]);
+		buf[0] = 0;
+		buf[1] = CHUNK_TYPE_GPIO;
+		buf[2] = cmd->id;
+		buf[3] = OP_GET;
+		buf[4] = ret;
+		send_chunk(buf, 5);
+		return;
 	default:
-	//TODO OP_GET
 		return;
 	}
 	
+	//TODO this should be five I think
 	set_resp:
-	uint8_t buf[] = {0, CHUNK_TYPE_GPIO, cmd->id, OP_SET};
-	send_chunk(buf, 4);
+	uint8_t buf_set[] = {0, CHUNK_TYPE_GPIO, cmd->id, OP_SET};
+	send_chunk(buf_set, 4);
 	return;
 }
 
+int
+gpio_read(struct gpio_pin *p)
+{
+	return GPIO_ReadPinInput(p->base, 1U << p->pin_ix);
+}
 void
 gpio_off(struct gpio_pin *p)
 {

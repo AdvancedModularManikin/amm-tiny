@@ -13,6 +13,7 @@
 
 int adc_bad_chunks = 0;
 
+//OP_SET currently has no meaning for adcs
 void
 adc_handle_slave(struct adc_cmd *cmd)
 {
@@ -32,7 +33,6 @@ adc_handle_slave(struct adc_cmd *cmd)
 			{adc_bad_chunks++; return;}
 		}
 	default:
-	//TODO OP_GET
 		{adc_bad_chunks++; return;}
 	}
 

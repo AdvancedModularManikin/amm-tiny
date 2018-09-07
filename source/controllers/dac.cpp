@@ -12,6 +12,8 @@ uint16_t dac_bad_chunks;
 
 //TODO delete or make more comprehensive
 uint16_t last_dac_write;
+
+//TODO remove hard-coding of DAC0
 void
 dac_handle_slave(struct dac_cmd *cmd, struct dac *dacs, size_t dac_num)
 {
