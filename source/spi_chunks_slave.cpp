@@ -11,8 +11,8 @@
 //just for SPI_MSG_PAYLOAD_LEN
 #include "spi_proto.h"
 #include "spi_proto_slave.h"
-#include "spi_proto_lib/spi_chunks.h"
-#include "spi_proto_lib/spi_chunk_defines.h"
+#include "spi_chunks.h"
+#include "spi_chunk_defines.h"
 #include "spi_remote.h"
 
 

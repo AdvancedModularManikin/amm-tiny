@@ -3,7 +3,7 @@
 #include "gpio.h"
 
 #include "spi_remote.h"
-#include "spi_proto_lib/spi_chunk_defines.h"
+#include "spi_chunk_defines.h"
 #include "spi_chunks_slave.h"
 
 int gpio_bad_chunks = 0;

@@ -14,7 +14,7 @@
 #include "heartrate.h"
 extern "C" {
 #include "spi_proto.h"
-#include "spi_proto_lib/spi_chunks.h"
+#include "spi_chunks.h"
 }
 #include "spi_proto_slave.h"
 #include "mule-1/air_tank.h"

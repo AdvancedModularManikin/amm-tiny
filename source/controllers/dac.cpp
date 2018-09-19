@@ -5,7 +5,7 @@
 #include "gpio.h"
 #include "dac.h"
 #include "spi_remote.h"
-#include "spi_proto_lib/spi_chunk_defines.h"
+#include "spi_chunk_defines.h"
 #include "spi_chunks_slave.h"
 
 uint16_t dac_bad_chunks;

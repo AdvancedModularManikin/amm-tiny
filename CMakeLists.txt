@@ -311,7 +311,7 @@ include_directories(${ProjDirPath}/k66f-reqs/freertos/Source)
 include_directories(${ProjDirPath}/k66f-reqs/freertos/Source/include)
 include_directories(${ProjDirPath}/k66f-reqs/freertos/Source/portable/GCC/ARM_CM4F)
 include_directories(${ProjDirPath}/source/)
-include_directories(${ProjDirPath}/spi_proto)
+include_directories(${ProjDirPath}/spi_proto/src)
 include_directories(${ProjDirPath}/k66f-reqs/startup/)
 include_directories(${ProjDirPath}/k66f-reqs/utilities/)
 
@@ -390,13 +390,13 @@ set(K66F_STARTUP
 )
 
 set(SPI_PROTO_SOURCES
-"${ProjDirPath}/spi_proto/crc16.c"
-"${ProjDirPath}/spi_proto/misc/crc16.h"
+"${ProjDirPath}/spi_proto/src/crc16.c"
+"${ProjDirPath}/spi_proto/src/crc16.h"
 "${ProjDirPath}/source/spi_edma_task.cpp"
 "${ProjDirPath}/source/spi_edma_task.h"
-"${ProjDirPath}/spi_proto/spi_proto_lib/spi_proto.c"
-"${ProjDirPath}/spi_proto/spi_proto_lib/spi_chunks.cpp"
-"${ProjDirPath}/spi_proto/spi_proto.h"
+"${ProjDirPath}/spi_proto/src/spi_proto.c"
+"${ProjDirPath}/spi_proto/src/spi_chunks.cpp"
+"${ProjDirPath}/spi_proto/src/spi_proto.h"
 "${ProjDirPath}/source/spi_proto_slave.cpp"
 "${ProjDirPath}/source/spi_proto_slave.h"
 "${ProjDirPath}/source/spi_chunks_slave.cpp"
