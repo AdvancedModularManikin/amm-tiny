@@ -502,6 +502,27 @@ ${K66F_STARTUP}
 "${ProjDirPath}/k66f-reqs/utilities/fsl_sbrk.c"
 )
 
+add_executable(heartrateLED.elf
+${BOARD_CFG}
+${FSL_DRIVERS}
+${FREERTOS_SOURCE}
+${SPI_PROTO_SOURCES}
+${K66F_STARTUP}
+"${ProjDirPath}/source/FreeRTOSConfig.h"
+"${ProjDirPath}/source/ammdk-carrier/carrier_gpio.cpp"
+"${ProjDirPath}/source/ammdk-carrier/carrier_gpio.h"
+"${ProjDirPath}/source/ammdk-carrier/maxon.cpp"
+"${ProjDirPath}/source/ammdk-carrier/maxon.h"
+"${ProjDirPath}/source/ammdk-carrier/solenoid.cpp"
+"${ProjDirPath}/source/ammdk-carrier/solenoid.h"
+"${ProjDirPath}/source/controllers/gpio.cpp"
+"${ProjDirPath}/source/controllers/gpio.h"
+"${ProjDirPath}/source/heartrateLED.cpp"
+"${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.c"
+"${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.h"
+"${ProjDirPath}/k66f-reqs/utilities/fsl_sbrk.c"
+)
+
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -T${ProjDirPath}/MK66FN2M0xxx18_flash.ld -static")
 
 set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -T${ProjDirPath}/MK66FN2M0xxx18_flash.ld -static")
@@ -563,3 +584,21 @@ target_link_libraries(ivc.elf optimized nosys)
 
 TARGET_LINK_LIBRARIES(ivc.elf -Wl,--end-group)
 
+TARGET_LINK_LIBRARIES(fluidmanager.elf -Wl,--start-group)
+target_link_libraries(fluidmanager.elf debug m)
+
+target_link_libraries(fluidmanager.elf debug c)
+
+target_link_libraries(fluidmanager.elf debug gcc)
+
+target_link_libraries(fluidmanager.elf debug nosys)
+
+target_link_libraries(fluidmanager.elf optimized m)
+
+target_link_libraries(fluidmanager.elf optimized c)
+
+target_link_libraries(fluidmanager.elf optimized gcc)
+
+target_link_libraries(fluidmanager.elf optimized nosys)
+
+TARGET_LINK_LIBRARIES(fluidmanager.elf -Wl,--end-group)
