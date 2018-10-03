@@ -19,6 +19,7 @@
 /* included just for tasks */
 #include "ammdk-carrier/carrier_gpio.h"
 #include "controllers/gpio.h"
+#include "pressuresensor.h"
 
 /* Task priorities. */
 #define max_PRIORITY (configMAX_PRIORITIES - 1)
@@ -57,19 +58,30 @@ heartrate_task(void *ignored)
   //blink LED
   TickType_t xFrequency = pdMS_TO_TICKS(100);
   TickType_t xLastWakeTime = xTaskGetTickCount();
-  
-  unsigned char msgbuf[1];
 
   for( ;; ) {
-    //TODO clamp this to prevent stuff like sleeping for a year
+    //clamp this to 12bpm to prevent stuff like sleeping for a year
     unsigned int heart_delay_time = ms_delay_from_cycle_per_minute(heartrate);
-    if (heart_delay_time > 1000) heart_delay_time = 1000;
+    if (heart_delay_time > 5000) heart_delay_time = 5000;
     xFrequency = pdMS_TO_TICKS(heart_delay_time);
     vTaskDelayUntil( &xLastWakeTime, xFrequency );
 
     gpio_toggle(heartrate_led_gpio);
-    msgbuf[0] = xLastWakeTime;
-    slave_send_message(spi_proto::p, msgbuf, 1);
+    
+  }
+}
+
+void pressure_reporter_task (void *ignored)
+{
+  unsigned char msgbuf[2];
+  
+  for (;;) {
+    uint16_t sensor = carrier_sensors[0].raw_pressure;
+    msgbuf[0] = sensor >> 8;
+    msgbuf[1] = sensor;
+    slave_send_message(spi_proto::p, msgbuf, 2);
+    
+    vTaskDelay(pdMS_TO_TICKS(800));
   }
 }
 
@@ -80,7 +92,7 @@ int main(void) {
   BOARD_BootClockRUN();
   BOARD_InitDebugConsole();
 
-  //polling_init();
+  polling_init();
   BaseType_t ret;
   /* Create RTOS task */
 
@@ -90,10 +102,11 @@ int main(void) {
   ret = xTaskCreate(heartrate_task, "heartrate_task", configMINIMAL_STACK_SIZE, NULL, max_PRIORITY-1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   
-  /*
+  ret = xTaskCreate(pressure_reporter_task, "pressure_reporter_task", configMINIMAL_STACK_SIZE+100, NULL, max_PRIORITY-1, NULL);
+  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
+  
   ret = xTaskCreate(carrier_pressure_task, "carrier_pressure_task", configMINIMAL_STACK_SIZE + 100, NULL, max_PRIORITY-1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  */
   
   vTaskStartScheduler();
 

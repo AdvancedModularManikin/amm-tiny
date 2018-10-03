@@ -518,6 +518,8 @@ ${K66F_STARTUP}
 "${ProjDirPath}/source/controllers/gpio.cpp"
 "${ProjDirPath}/source/controllers/gpio.h"
 "${ProjDirPath}/source/heartrateLED.cpp"
+"${ProjDirPath}/source/pressuresensor.cpp"
+"${ProjDirPath}/source/pressuresensor.h"
 "${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.c"
 "${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.h"
 "${ProjDirPath}/k66f-reqs/utilities/fsl_sbrk.c"
