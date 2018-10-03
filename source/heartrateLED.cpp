@@ -52,7 +52,8 @@ heartrate_task(void *ignored)
 
   for( ;; ) {
     //TODO clamp this to prevent stuff like sleeping for a year
-    int heart_delay_time = pdMS_TO_TICKS(ms_delay_from_cycle_per_minute(heartrate));
+    unsigned int heart_delay_time = pdMS_TO_TICKS(ms_delay_from_cycle_per_minute(heartrate));
+    if (heart_delay_time > 1000) heart_delay_time = 1000;
     xFrequency = pdMS_TO_TICKS(heart_delay_time);
     vTaskDelayUntil( &xLastWakeTime, xFrequency );
 
