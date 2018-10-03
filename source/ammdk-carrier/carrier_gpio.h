@@ -1,5 +1,5 @@
 #pragma once
-#define CARRIER_GPIO_COUNT (7+8+1+1)
+#define CARRIER_GPIO_COUNT (7+8+1+1+1)
 struct gpio_pin {
 	GPIO_Type *base;
 	PORT_Type *port;

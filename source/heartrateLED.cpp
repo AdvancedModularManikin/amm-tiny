@@ -17,6 +17,7 @@
 #include "spi_edma_task.h"
 
 /* included just for tasks */
+#include "ammdk-carrier/carrier_gpio.h"
 #include "controllers/gpio.h"
 
 /* Task priorities. */
@@ -38,10 +39,17 @@ heartratespicb(struct spi_packet *p)
 int
 ms_delay_from_cycle_per_minute(float rate)
 {
-  return 1.0/(rate * (1/60) * 0.001);
+  float bpm = rate;
+  float bps = bpm / 60.0;
+  float spb = 1/bps;
+  float mspb = 1000*spb;
+  return mspb;
 }
 
-struct gpio_pin *heartrate_led_gpio; // TODO select one of the LEDs on the main board
+#define GPIO_PIN_A24 carrier_gpios[17]
+
+//A24, low is on
+struct gpio_pin *heartrate_led_gpio = &GPIO_PIN_A24; // it's on the mainboard
 
 void
 heartrate_task(void *ignored)
@@ -52,7 +60,7 @@ heartrate_task(void *ignored)
 
   for( ;; ) {
     //TODO clamp this to prevent stuff like sleeping for a year
-    unsigned int heart_delay_time = pdMS_TO_TICKS(ms_delay_from_cycle_per_minute(heartrate));
+    unsigned int heart_delay_time = ms_delay_from_cycle_per_minute(heartrate);
     if (heart_delay_time > 1000) heart_delay_time = 1000;
     xFrequency = pdMS_TO_TICKS(heart_delay_time);
     vTaskDelayUntil( &xLastWakeTime, xFrequency );

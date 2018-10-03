@@ -35,6 +35,8 @@ struct gpio_pin carrier_gpios[CARRIER_GPIO_COUNT] = {
 	DECL(A, 13), //{.base = GPIOA, .pin_ix = 13}
 	DECL(A, 7), // 24V rail
 	DECL(B, 1), // motor enable
+
+	DECL(A, 24), // an LED on the main board. TODO different definitions for main and shield stuff that's combined into one
 #undef DECL
 };
 
