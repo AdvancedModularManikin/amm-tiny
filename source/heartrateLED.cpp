@@ -57,6 +57,8 @@ heartrate_task(void *ignored)
   //blink LED
   TickType_t xFrequency = pdMS_TO_TICKS(100);
   TickType_t xLastWakeTime = xTaskGetTickCount();
+  
+  unsigned char msgbuf[1];
 
   for( ;; ) {
     //TODO clamp this to prevent stuff like sleeping for a year
@@ -66,6 +68,8 @@ heartrate_task(void *ignored)
     vTaskDelayUntil( &xLastWakeTime, xFrequency );
 
     gpio_toggle(heartrate_led_gpio);
+    msgbuf[0] = xLastWakeTime;
+    slave_send_message(spi_proto::p, msgbuf, 1);
   }
 }
 
@@ -80,11 +84,6 @@ int main(void) {
   BaseType_t ret;
   /* Create RTOS task */
 
-  /*
-  ret = xTaskCreate(solenoid_gdb_mirror_task, "solenoid_gdb_mirror_task", configMINIMAL_STACK_SIZE+100, NULL, max_PRIORITY-1, NULL);
-  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  */
-  
   ret = xTaskCreate(spi_edma_task, "spi edma task", configMINIMAL_STACK_SIZE+200, (void*)heartratespicb, max_PRIORITY, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
 
@@ -93,12 +92,6 @@ int main(void) {
   
   /*
   ret = xTaskCreate(carrier_pressure_task, "carrier_pressure_task", configMINIMAL_STACK_SIZE + 100, NULL, max_PRIORITY-1, NULL);
-  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-  
-  ret = xTaskCreate(air_reservoir_control_task, "airtank control", configMINIMAL_STACK_SIZE + 100, NULL, max_PRIORITY-1, NULL);
-  assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
-
-  ret = xTaskCreate(maxon_task, "Maxon task", configMINIMAL_STACK_SIZE + 100, NULL, max_PRIORITY-1, NULL);
   assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
   */
   
