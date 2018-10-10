@@ -26,7 +26,7 @@ struct gpio_pin carrier_gpios[CARRIER_GPIO_COUNT] = {
 	{GPIOC, PORTC, 00U, kCLOCK_PortC},
   //solenoids
 	DECL(D, 4), //{.base = GPIOD, .pin_ix = 4},
-	DECL(D, 4), //{.base = GPIOD, .pin_ix = 5},
+	DECL(D, 5), //{.base = GPIOD, .pin_ix = 5},
 	DECL(D, 6), //{.base = GPIOD, .pin_ix = 6},
 	DECL(D, 7), //{.base = GPIOD, .pin_ix = 7},
 	DECL(A, 10), //{.base = GPIOA, .pin_ix = 10},
