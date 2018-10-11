@@ -15,8 +15,9 @@
 
 /* included just for tasks */
 #include "solenoid.h"
+#include "ammdk-carrier/carrier_gpio.h"
 #include "ammdk-carrier/solenoid.h"
-#include <string.h>
+#include "controllers/gpio.h"
 #include "pressuresensor.h"
 #include "flowsensor.h"
 
@@ -29,9 +30,19 @@
 #define IVC_STATUS_STOP     3
 #define IVC_STATUS_RESET    4
 
+struct gpio_pin *rail_24v = &carrier_gpios[15];
+
+unsigned int bpm_to_ms(unsigned int bpm_)
+{
+    float bpm = bpm_; // 1/m
+    float bps = bpm/60; //1/m * m/s = 1/s
+    float spb = 1/bps; // 1/1/s = s/1
+    float mspb = 1000*spb;
+    return mspb;
+}
 
 bool chest_rise_waiting = 1;
-unsigned int breath_bpm; // breaths per minute
+unsigned int breath_bpm = 12; // breaths per minute
 unsigned int breath_dur = 5000; //ms
 void chest_rise_task(void *pvParameters)
 {
@@ -58,6 +69,7 @@ void chest_rise_task(void *pvParameters)
     solenoid::off(left_intake);
     solenoid::off(right_intake);
     for (;;) {
+        breath_dur = bpm_to_ms(breath_bpm);
         //wait for start message
         //TODO use a semaphore or task notification
 
@@ -112,7 +124,8 @@ int main(void) {
     BOARD_InitDebugConsole();
 
     //enable 24V rail
-    GPIO_SetPinsOutput(GPIOA, 1U<<7U);
+    gpio_on(rail_24v);
+
     polling_init();
     BaseType_t ret;
 
