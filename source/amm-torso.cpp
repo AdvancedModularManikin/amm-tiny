@@ -41,7 +41,7 @@ unsigned int bpm_to_ms(unsigned int bpm_)
     return mspb;
 }
 
-bool chest_rise_waiting = 1;
+volatile bool chest_rise_waiting = 1;
 unsigned int breath_bpm = 12; // breaths per minute
 unsigned int breath_dur = 5000; //ms
 void chest_rise_task(void *pvParameters)
@@ -72,6 +72,7 @@ void chest_rise_task(void *pvParameters)
         breath_dur = bpm_to_ms(breath_bpm);
         //wait for start message
         //TODO use a semaphore or task notification
+        while (chest_rise_waiting);
 
         solenoid::on(left_intake);
         solenoid::on(right_intake);
