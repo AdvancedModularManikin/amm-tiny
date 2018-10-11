@@ -72,22 +72,21 @@ void chest_rise_task(void *pvParameters)
         breath_dur = bpm_to_ms(breath_bpm);
         //wait for start message
         //TODO use a semaphore or task notification
-        while (chest_rise_waiting);
+        if (!chest_rise_waiting) {
+            solenoid::on(left_intake);
+            solenoid::on(right_intake);
+            // wait 1.0 seconds
+            vTaskDelay(pdMS_TO_TICKS (breath_dur /5));
 
-        solenoid::on(left_intake);
-        solenoid::on(right_intake);
-        // wait 1.0 seconds
-        vTaskDelay(pdMS_TO_TICKS (breath_dur /5));
-
-        solenoid::off(left_intake);
-        solenoid::off(right_intake);
-        solenoid::on(left_exhaust);
-        solenoid::on(right_exhaust);
-        vTaskDelay(pdMS_TO_TICKS ((2 * breath_dur) /5));
-        solenoid::off(left_exhaust);
-        solenoid::off(right_exhaust);
-        vTaskDelay(pdMS_TO_TICKS ((2 * breath_dur) /5));
-        chest_rise_waiting = 1;
+            solenoid::off(left_intake);
+            solenoid::off(right_intake);
+            solenoid::on(left_exhaust);
+            solenoid::on(right_exhaust);
+            vTaskDelay(pdMS_TO_TICKS ((2 * breath_dur) /5));
+            solenoid::off(left_exhaust);
+            solenoid::off(right_exhaust);
+            vTaskDelay(pdMS_TO_TICKS ((2 * breath_dur) /5));
+        };
     }
 }
 
