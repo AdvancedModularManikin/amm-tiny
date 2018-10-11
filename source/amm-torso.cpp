@@ -95,26 +95,23 @@ void chest_rise_task(void *pvParameters)
 void
 bleeder_spi_cb(struct spi_packet *p)
 {
-    //TODO handle mule 1 stuff for IVC
-    if (p->msg[0]) {
-        switch (p->msg[1]) {
-        case IVC_STATUS_START:
-            //start task, should resume after a pause
-            chest_rise_waiting = 0;
-            break;
-        case IVC_STATUS_RESET:
-            //also reset flow
-            total_pulses = 0;
-        case IVC_STATUS_PAUSE:
-        case IVC_STATUS_STOP:
-        case IVC_STATUS_WAITING:
-        default:
-            //stop pressurizing but do not reset flow
-            chest_rise_waiting = 1;
-            break;
-        }
-        breath_bpm = p->msg[1];
+    switch (p->msg[0]) {
+    case IVC_STATUS_START:
+        //start task, should resume after a pause
+        chest_rise_waiting = 0;
+        break;
+    case IVC_STATUS_RESET:
+        //also reset flow
+        total_pulses = 0;
+    case IVC_STATUS_PAUSE:
+    case IVC_STATUS_STOP:
+    case IVC_STATUS_WAITING:
+    default:
+        //stop pressurizing but do not reset flow
+        chest_rise_waiting = 1;
+        break;
     }
+    breath_bpm = p->msg[1];
 }
 
 //fluid manager module code
