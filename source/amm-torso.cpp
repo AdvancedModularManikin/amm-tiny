@@ -24,11 +24,11 @@
 /* Task priorities. */
 #define max_PRIORITY (configMAX_PRIORITIES - 1)
 
-#define IVC_STATUS_WAITING  0
-#define IVC_STATUS_START    1
-#define IVC_STATUS_PAUSE    2
-#define IVC_STATUS_STOP     3
-#define IVC_STATUS_RESET    4
+#define CHEST_RISE_STAUTS_WAITING  0
+#define CHEST_RISE_STAUTS_START    1
+#define CHEST_RISE_STAUTS_PAUSE    2
+#define CHEST_RISE_STAUTS_STOP     3
+#define CHEST_RISE_STAUTS_RESET    4
 
 //how long must a breath last before we consider it to be effectively 0 bpm?
 #define MAX_BREATH_DUR 10000
@@ -104,14 +104,23 @@ void
 spi_cb(struct spi_packet *p)
 {
     switch (p->msg[0]) {
-    case IVC_STATUS_START:
+    case CHEST_RISE_STAUTS_START:
         //start task, should resume after a pause
         chest_rise_waiting = 0;
         break;
+<<<<<<< Updated upstream
     case IVC_STATUS_RESET:
     case IVC_STATUS_PAUSE:
     case IVC_STATUS_STOP:
     case IVC_STATUS_WAITING:
+=======
+    case CHEST_RISE_STAUTS_RESET:
+        //also reset flow
+        total_pulses = 0;
+    case CHEST_RISE_STAUTS_PAUSE:
+    case CHEST_RISE_STAUTS_STOP:
+    case CHEST_RISE_STAUTS_WAITING:
+>>>>>>> Stashed changes
     default:
         //stop pressurizing but do not reset flow
         chest_rise_waiting = 1;
