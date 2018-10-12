@@ -108,19 +108,12 @@ spi_cb(struct spi_packet *p)
         //start task, should resume after a pause
         chest_rise_waiting = 0;
         break;
-<<<<<<< Updated upstream
-    case IVC_STATUS_RESET:
-    case IVC_STATUS_PAUSE:
-    case IVC_STATUS_STOP:
-    case IVC_STATUS_WAITING:
-=======
     case CHEST_RISE_STAUTS_RESET:
         //also reset flow
         total_pulses = 0;
     case CHEST_RISE_STAUTS_PAUSE:
     case CHEST_RISE_STAUTS_STOP:
     case CHEST_RISE_STAUTS_WAITING:
->>>>>>> Stashed changes
     default:
         //stop pressurizing but do not reset flow
         chest_rise_waiting = 1;
