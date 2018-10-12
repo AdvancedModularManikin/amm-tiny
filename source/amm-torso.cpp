@@ -30,6 +30,9 @@
 #define IVC_STATUS_STOP     3
 #define IVC_STATUS_RESET    4
 
+//how long must a breath last before we consider it to be effectively 0 bpm?
+#define MAX_BREATH_DUR 10000
+
 struct gpio_pin *rail_24v = &carrier_gpios[15];
 
 unsigned int bpm_to_ms(unsigned int bpm_)
@@ -69,30 +72,36 @@ void chest_rise_task(void *pvParameters)
     solenoid::off(left_intake);
     solenoid::off(right_intake);
     for (;;) {
-        breath_dur = bpm_to_ms(breath_bpm);
         //wait for start message
         //TODO use a semaphore or task notification
-//        if (!chest_rise_waiting) {
-            solenoid::on(left_intake);
-            solenoid::on(right_intake);
-            // wait 1.0 seconds
-            vTaskDelay(pdMS_TO_TICKS (breath_dur /5));
+        while (chest_rise_waiting) vTaskDelay(pdMS_TO_TICKS(100));
 
-            solenoid::off(left_intake);
-            solenoid::off(right_intake);
-            solenoid::on(left_exhaust);
-            solenoid::on(right_exhaust);
-            vTaskDelay(pdMS_TO_TICKS ((2 * breath_dur) /5));
-            solenoid::off(left_exhaust);
-            solenoid::off(right_exhaust);
-            vTaskDelay(pdMS_TO_TICKS ((2 * breath_dur) /5));
-//        };
+        breath_dur = bpm_to_ms(breath_bpm);
+        //if bpm is 0 we'd be waiting here for a long time
+        if (breath_dur > MAX_BREATH_DUR) {
+            vTaskDelay(pdMS_TO_TICKS(100));
+            continue;
+        }
+
+        solenoid::on(left_intake);
+        solenoid::on(right_intake);
+        // wait 1.0 seconds
+        vTaskDelay(pdMS_TO_TICKS (breath_dur /5));
+
+        solenoid::off(left_intake);
+        solenoid::off(right_intake);
+        solenoid::on(left_exhaust);
+        solenoid::on(right_exhaust);
+        vTaskDelay(pdMS_TO_TICKS ((2 * breath_dur) /5));
+        solenoid::off(left_exhaust);
+        solenoid::off(right_exhaust);
+        vTaskDelay(pdMS_TO_TICKS ((2 * breath_dur) /5));
     }
 }
 
 
 void
-bleeder_spi_cb(struct spi_packet *p)
+spi_cb(struct spi_packet *p)
 {
     switch (p->msg[0]) {
     case IVC_STATUS_START:
@@ -100,8 +109,6 @@ bleeder_spi_cb(struct spi_packet *p)
         chest_rise_waiting = 0;
         break;
     case IVC_STATUS_RESET:
-        //also reset flow
-        total_pulses = 0;
     case IVC_STATUS_PAUSE:
     case IVC_STATUS_STOP:
     case IVC_STATUS_WAITING:
@@ -126,7 +133,7 @@ int main(void) {
     polling_init();
     BaseType_t ret;
 
-    ret = xTaskCreate(spi_edma_task, "spi edma task", configMINIMAL_STACK_SIZE+200, (void*)bleeder_spi_cb, max_PRIORITY, NULL);
+    ret = xTaskCreate(spi_edma_task, "spi edma task", configMINIMAL_STACK_SIZE+200, (void*)spi_cb, max_PRIORITY, NULL);
     assert(ret != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY);
 
     //ret = xTaskCreate(carrier_pressure_task, "carrier_pressure_task", configMINIMAL_STACK_SIZE + 100, NULL, max_PRIORITY-1, NULL);
