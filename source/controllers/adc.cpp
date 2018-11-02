@@ -7,7 +7,7 @@
 #include "fsl_adc16.h"
 #include "../pressuresensor.h"
 
-#include "spi_remote.h"
+#include "spi_remote_api.h"
 #include "spi_chunk_defines.h"
 #include "spi_chunks_slave.h"
 
