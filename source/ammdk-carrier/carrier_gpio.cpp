@@ -21,21 +21,19 @@ struct gpio_pin carrier_gpios[CARRIER_GPIO_COUNT] = {
 	{GPIOB, PORTB, 19U, kCLOCK_PortB},
 	{GPIOB, PORTB, 20U, kCLOCK_PortB},
 	{GPIOB, PORTB, 21U, kCLOCK_PortB},
-	{GPIOB, PORTB, 22U, kCLOCK_PortB},
-	{GPIOB, PORTB, 23U, kCLOCK_PortB},
-	{GPIOC, PORTC, 00U, kCLOCK_PortC},
-  //solenoids
-	DECL(D, 4), //{.base = GPIOD, .pin_ix = 4},
-	DECL(D, 5), //{.base = GPIOD, .pin_ix = 5},
-	DECL(D, 6), //{.base = GPIOD, .pin_ix = 6},
-	DECL(D, 7), //{.base = GPIOD, .pin_ix = 7},
-	DECL(A, 10), //{.base = GPIOA, .pin_ix = 10},
-	DECL(A, 11), //{.base = GPIOA, .pin_ix = 11},
-	DECL(A, 12), //{.base = GPIOA, .pin_ix = 12},
-	DECL(A, 13), //{.base = GPIOA, .pin_ix = 13}
+	{GPIOB, PORTB, 22U, kCLOCK_PortB}, // J21_1
+	{GPIOB, PORTB, 23U, kCLOCK_PortB}, // J21_2
+	{GPIOC, PORTC, 00U, kCLOCK_PortC}, //J21_3
+	DECL(D, 4), // solenoids begin
+	DECL(D, 5),
+	DECL(D, 6),
+	DECL(D, 7),
+	DECL(A, 10),
+	DECL(A, 11),
+	DECL(A, 12),
+	DECL(A, 13), // solenoids end
 	DECL(A, 7), // 24V rail
 	DECL(B, 1), // motor enable
-
 	DECL(A, 24), // an LED on the main board. TODO different definitions for main and shield stuff that's combined into one
 #undef DECL
 };
