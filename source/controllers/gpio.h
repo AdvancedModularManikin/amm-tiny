@@ -15,3 +15,5 @@ void
 gpio_on(struct gpio_pin *p);
 void
 gpio_toggle(struct gpio_pin *p);
+void
+gpio_set_direction(struct gpio_pin *p, int in);

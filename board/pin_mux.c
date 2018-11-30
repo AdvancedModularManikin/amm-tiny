@@ -38,12 +38,6 @@
  * Code
  ******************************************************************************/
 
-void
-solenoid_init(clock_ip_name_t clock, PORT_Type *port, GPIO_Type *gpio, uint32_t pin, port_pin_config_t *settings) {
-	CLOCK_EnableClock(clock);
-	PORT_SetPinConfig(port, pin, settings);
-	GPIO_PinInit(gpio, pin, &(gpio_pin_config_t){kGPIO_DigitalOutput, 0});
-}
 /*!
  * @brief Initialize all pins used in this example
  *
@@ -95,20 +89,6 @@ void BOARD_InitPins(void)
     //DONE PORTB 18,19 solenoid control
     //DONE PORTC 10,11 solenoid control
 
-
-	//solenoid GPIOs, TODO make it take a solenoid struct
-	port_pin_config_t solenoid_settings = {0};
-	solenoid_settings.pullSelect = kPORT_PullDown;
-	solenoid_settings.mux = kPORT_MuxAsGpio;
-
-	solenoid_init(kCLOCK_PortD, PORTD, GPIOD, 4U, &solenoid_settings);
-	solenoid_init(kCLOCK_PortD, PORTD, GPIOD, 5U, &solenoid_settings);
-	solenoid_init(kCLOCK_PortD, PORTD, GPIOD, 6U, &solenoid_settings);
-	solenoid_init(kCLOCK_PortD, PORTD, GPIOD, 7U, &solenoid_settings);
-	solenoid_init(kCLOCK_PortA, PORTA, GPIOA, 10U, &solenoid_settings);
-	solenoid_init(kCLOCK_PortA, PORTA, GPIOA, 11U, &solenoid_settings);
-	solenoid_init(kCLOCK_PortA, PORTA, GPIOA, 12U, &solenoid_settings);
-	solenoid_init(kCLOCK_PortA, PORTA, GPIOA, 13U, &solenoid_settings);
 
 	CLOCK_EnableClock(kCLOCK_PortD);
     /* SPI on D0-D3 */

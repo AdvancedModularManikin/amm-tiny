@@ -14,10 +14,10 @@ gpio_handle_slave(struct gpio_cmd *cmd,
 	size_t gpio_num)
 {
 	if (cmd->id >= gpio_num) {gpio_bad_chunks++; return;}
-	
+
 	int ret;
 	uint8_t buf[5]; // TODO assert CHUNK_LEN_GPIO_S2M == 5
-	
+
 	switch (cmd->cmd) {
 	case OP_SET:
 		switch(cmd->val) {
@@ -43,6 +43,15 @@ gpio_handle_slave(struct gpio_cmd *cmd,
 		buf[4] = ret;
 		send_chunk(buf, 5);
 		return;
+	case OP_SET_META:
+		gpio_set_direction(&carrier_gpios[cmd->id], cmd->val);
+		buf[0] = 0;
+		buf[1] = CHUNK_TYPE_GPIO;
+		buf[2] = cmd->id;
+		buf[3] = OP_SET_META;
+		send_chunk(buf, 4);
+		return;
+		//TODO OP_GET_META. perhaps return a packet with OP_NOT_UNDERSTOOD
 	default:
 		return;
 	}
@@ -73,4 +82,12 @@ void
 gpio_toggle(struct gpio_pin *p)
 {
 	GPIO_TogglePinsOutput(p->base, 1U << p->pin_ix);
+}
+void
+gpio_set_direction(struct gpio_pin *p, int in)
+{
+	gpio_pin_config_t input = {kGPIO_DigitalInput, 0};
+	gpio_pin_config_t output = {kGPIO_DigitalOutput, 0};
+	
+	GPIO_PinInit(p->base, p->pin_ix, in ? &input : &output);
 }
