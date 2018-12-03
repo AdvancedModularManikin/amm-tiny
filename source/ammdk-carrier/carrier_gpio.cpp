@@ -5,16 +5,6 @@
 #include "carrier_gpio.h"
 
 struct gpio_pin carrier_gpios[CARRIER_GPIO_COUNT] = {
-/*
-1 PTB18	GPIO 1
-2 PTB19	GPIO 2
-3 PTB20	GPIO 3
-4 	PTB21	GPIO 4
-5 PTB22	GPIO 5
-6 PTB23	GPIO 6
-7 PTC0
-
-	*/
 #define DECL(letter, number) {GPIO ## letter , PORT ## letter , number , kCLOCK_Port ## letter}
 
 	{GPIOB, PORTB, 18U, kCLOCK_PortB},
@@ -24,14 +14,14 @@ struct gpio_pin carrier_gpios[CARRIER_GPIO_COUNT] = {
 	{GPIOB, PORTB, 22U, kCLOCK_PortB}, // J21_1
 	{GPIOB, PORTB, 23U, kCLOCK_PortB}, // J21_2
 	{GPIOC, PORTC, 00U, kCLOCK_PortC}, //J21_3
-	DECL(D, 4), // solenoids begin
-	DECL(D, 5),
-	DECL(D, 6),
-	DECL(D, 7),
-	DECL(A, 10),
-	DECL(A, 11),
-	DECL(A, 12),
-	DECL(A, 13), // solenoids end
+	DECL(D, 4), // J4 solenoids begin
+	DECL(D, 5), // J5
+	DECL(D, 6), // J6
+	DECL(D, 7), // J7
+	DECL(A, 10), // J8
+	DECL(A, 11), // J9
+	DECL(A, 12), // J10
+	DECL(A, 13), // J11 solenoids end
 	DECL(A, 7), // 24V rail
 	DECL(B, 1), // motor enable
 	DECL(A, 24), // an LED on the main board. TODO different definitions for main and shield stuff that's combined into one

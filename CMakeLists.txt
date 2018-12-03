@@ -304,6 +304,13 @@ SET(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} muldefs")
 
 SET(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -specs=nosys.specs")
 
+#for creating linker maps. Haven't found a way to clean the produced files and it's not regenerated if deleted.
+#SET(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -Xlinker")
+#SET(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --cref")
+#SET(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -Wl,-Map=output.map")
+
+add_subdirectory(spi_proto)
+
 include_directories(${ProjDirPath}/board/)
 include_directories(${ProjDirPath}/k66f-reqs/CMSIS/)
 include_directories(${ProjDirPath}/k66f-reqs/drivers)
@@ -318,65 +325,33 @@ include_directories(${ProjDirPath}/k66f-reqs/utilities/)
 
 set(BOARD_CFG
 "${ProjDirPath}/board/board.c"
-"${ProjDirPath}/board/board.h"
 "${ProjDirPath}/board/clock_config.c"
-"${ProjDirPath}/board/clock_config.h"
 "${ProjDirPath}/board/pin_mux.c"
-"${ProjDirPath}/board/pin_mux.h"
 )
 
 set(FSL_DRIVERS
 "${ProjDirPath}/k66f-reqs/drivers/fsl_adc16.c"
-"${ProjDirPath}/k66f-reqs/drivers/fsl_adc16.h"
 "${ProjDirPath}/k66f-reqs/drivers/fsl_clock.c"
-"${ProjDirPath}/k66f-reqs/drivers/fsl_clock.h"
 "${ProjDirPath}/k66f-reqs/drivers/fsl_common.c"
-"${ProjDirPath}/k66f-reqs/drivers/fsl_common.h"
 "${ProjDirPath}/k66f-reqs/drivers/fsl_dac.c"
-"${ProjDirPath}/k66f-reqs/drivers/fsl_dac.h"
 "${ProjDirPath}/k66f-reqs/drivers/fsl_dmamux.c"
-"${ProjDirPath}/k66f-reqs/drivers/fsl_dmamux.h"
 "${ProjDirPath}/k66f-reqs/drivers/fsl_dspi.c"
-"${ProjDirPath}/k66f-reqs/drivers/fsl_dspi.h"
 "${ProjDirPath}/k66f-reqs/drivers/fsl_dspi_edma.c"
-"${ProjDirPath}/k66f-reqs/drivers/fsl_dspi_edma.h"
 "${ProjDirPath}/k66f-reqs/drivers/fsl_dspi_freertos.c"
-"${ProjDirPath}/k66f-reqs/drivers/fsl_dspi_freertos.h"
 "${ProjDirPath}/k66f-reqs/drivers/fsl_edma.c"
-"${ProjDirPath}/k66f-reqs/drivers/fsl_edma.h"
 "${ProjDirPath}/k66f-reqs/drivers/fsl_gpio.c"
-"${ProjDirPath}/k66f-reqs/drivers/fsl_gpio.h"
 "${ProjDirPath}/k66f-reqs/drivers/fsl_i2c.c"
-"${ProjDirPath}/k66f-reqs/drivers/fsl_i2c.h"
 "${ProjDirPath}/k66f-reqs/drivers/fsl_i2c_freertos.c"
-"${ProjDirPath}/k66f-reqs/drivers/fsl_i2c_freertos.h"
 "${ProjDirPath}/k66f-reqs/drivers/fsl_lpuart.c"
-"${ProjDirPath}/k66f-reqs/drivers/fsl_lpuart.h"
-"${ProjDirPath}/k66f-reqs/drivers/fsl_port.h"
 "${ProjDirPath}/k66f-reqs/drivers/fsl_smc.c"
-"${ProjDirPath}/k66f-reqs/drivers/fsl_smc.h"
 "${ProjDirPath}/k66f-reqs/drivers/fsl_uart.c"
-"${ProjDirPath}/k66f-reqs/drivers/fsl_uart.h"
 )
 
 set(FREERTOS_SOURCE
 "${ProjDirPath}/k66f-reqs/freertos/Source/croutine.c"
 "${ProjDirPath}/k66f-reqs/freertos/Source/event_groups.c"
-"${ProjDirPath}/k66f-reqs/freertos/Source/include/FreeRTOS.h"
-"${ProjDirPath}/k66f-reqs/freertos/Source/include/StackMacros.h"
-"${ProjDirPath}/k66f-reqs/freertos/Source/include/croutine.h"
-"${ProjDirPath}/k66f-reqs/freertos/Source/include/event_groups.h"
-"${ProjDirPath}/k66f-reqs/freertos/Source/include/list.h"
-"${ProjDirPath}/k66f-reqs/freertos/Source/include/mpu_wrappers.h"
-"${ProjDirPath}/k66f-reqs/freertos/Source/include/portable.h"
-"${ProjDirPath}/k66f-reqs/freertos/Source/include/projdefs.h"
-"${ProjDirPath}/k66f-reqs/freertos/Source/include/queue.h"
-"${ProjDirPath}/k66f-reqs/freertos/Source/include/semphr.h"
-"${ProjDirPath}/k66f-reqs/freertos/Source/include/task.h"
-"${ProjDirPath}/k66f-reqs/freertos/Source/include/timers.h"
 "${ProjDirPath}/k66f-reqs/freertos/Source/list.c"
 "${ProjDirPath}/k66f-reqs/freertos/Source/portable/GCC/ARM_CM4F/port.c"
-"${ProjDirPath}/k66f-reqs/freertos/Source/portable/GCC/ARM_CM4F/portmacro.h"
 "${ProjDirPath}/k66f-reqs/freertos/Source/portable/MemMang/heap_4.c"
 "${ProjDirPath}/k66f-reqs/freertos/Source/queue.c"
 "${ProjDirPath}/k66f-reqs/freertos/Source/tasks.c"
@@ -386,144 +361,100 @@ set(FREERTOS_SOURCE
 set(K66F_STARTUP
 "${ProjDirPath}/k66f-reqs/startup/startup_MK66F18.S"
 "${ProjDirPath}/k66f-reqs/startup/system_MK66F18.c"
-"${ProjDirPath}/k66f-reqs/startup/system_MK66F18.h"
 )
 
-set(SPI_PROTO_SOURCES
-"${ProjDirPath}/spi_proto/src/crc16.c"
-"${ProjDirPath}/spi_proto/src/crc16.h"
+
+add_library(spiprotok66f STATIC
 "${ProjDirPath}/source/spi_edma_task.cpp"
-"${ProjDirPath}/source/spi_edma_task.h"
-"${ProjDirPath}/spi_proto/src/spi_proto.c"
-"${ProjDirPath}/spi_proto/src/spi_chunks.cpp"
-"${ProjDirPath}/spi_proto/src/spi_proto.h"
 "${ProjDirPath}/source/spi_proto_slave.cpp"
-"${ProjDirPath}/source/spi_proto_slave.h"
 "${ProjDirPath}/source/spi_chunks_slave.cpp"
-"${ProjDirPath}/source/spi_chunks_slave.h"
 )
 
 add_executable(amm-tiny.elf
 ${BOARD_CFG}
 ${FSL_DRIVERS}
 ${FREERTOS_SOURCE}
-${SPI_PROTO_SOURCES}
 ${K66F_STARTUP}
-"${ProjDirPath}/source/FreeRTOSConfig.h"
 "${ProjDirPath}/source/action.cpp"
-"${ProjDirPath}/source/action.h"
 "${ProjDirPath}/source/ammdk-carrier/carrier_gpio.cpp"
-"${ProjDirPath}/source/ammdk-carrier/carrier_gpio.h"
 "${ProjDirPath}/source/ammdk-carrier/dac.cpp"
-"${ProjDirPath}/source/ammdk-carrier/dac.h"
 "${ProjDirPath}/source/ammdk-carrier/maxon.cpp"
-"${ProjDirPath}/source/ammdk-carrier/maxon.h"
 "${ProjDirPath}/source/ammdk-carrier/solenoid.cpp"
-"${ProjDirPath}/source/ammdk-carrier/solenoid.h"
 "${ProjDirPath}/source/button.cpp"
-"${ProjDirPath}/source/button.h"
 "${ProjDirPath}/source/controllers/adc.cpp"
-"${ProjDirPath}/source/controllers/adc.h"
 "${ProjDirPath}/source/controllers/dac.cpp"
-"${ProjDirPath}/source/controllers/dac.h"
 "${ProjDirPath}/source/controllers/gpio.cpp"
-"${ProjDirPath}/source/controllers/gpio.h"
 "${ProjDirPath}/source/flowsensor.cpp"
-"${ProjDirPath}/source/flowsensor.h"
 "${ProjDirPath}/source/amm-tiny.cpp"
 "${ProjDirPath}/source/maxon.cpp"
-"${ProjDirPath}/source/maxon.h"
 "${ProjDirPath}/source/mule-1/air_tank.cpp"
-"${ProjDirPath}/source/mule-1/air_tank.h"
 "${ProjDirPath}/source/pressure_adc.cpp"
-"${ProjDirPath}/source/pressure_adc.h"
 "${ProjDirPath}/source/pressuresensor.cpp"
-"${ProjDirPath}/source/pressuresensor.h"
 "${ProjDirPath}/source/sensirion.cpp"
-"${ProjDirPath}/source/sensirion.h"
 "${ProjDirPath}/source/solenoid.cpp"
-"${ProjDirPath}/source/solenoid.h"
 "${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.c"
-"${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.h"
 "${ProjDirPath}/k66f-reqs/utilities/fsl_sbrk.c"
 )
+target_link_libraries(amm-tiny.elf PUBLIC spiprotok66f spiproto)
+#an example of how to get the linker maps (they're all named output.map so they clash :< )
+#add_custom_command(TARGET amm-tiny.elf POST_BUILD
+#    COMMAND mv build/output.map amm-tiny.elf.map
+#    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+#    COMMENT "grabbing linker map, amm-tiny.elf"
+#)
 
 add_executable(fluidmanager.elf
 ${BOARD_CFG}
 ${FSL_DRIVERS}
 ${FREERTOS_SOURCE}
-${SPI_PROTO_SOURCES}
 ${K66F_STARTUP}
 "${ProjDirPath}/source/FreeRTOSConfig.h"
 "${ProjDirPath}/source/ammdk-carrier/carrier_gpio.cpp"
-"${ProjDirPath}/source/ammdk-carrier/carrier_gpio.h"
 "${ProjDirPath}/source/ammdk-carrier/maxon.cpp"
-"${ProjDirPath}/source/ammdk-carrier/maxon.h"
 "${ProjDirPath}/source/ammdk-carrier/solenoid.cpp"
-"${ProjDirPath}/source/ammdk-carrier/solenoid.h"
 "${ProjDirPath}/source/controllers/gpio.cpp"
-"${ProjDirPath}/source/controllers/gpio.h"
 "${ProjDirPath}/source/fluidmanager.cpp"
 "${ProjDirPath}/source/maxon.cpp"
-"${ProjDirPath}/source/maxon.h"
 "${ProjDirPath}/source/mule-1/air_tank.cpp"
-"${ProjDirPath}/source/mule-1/air_tank.h"
 "${ProjDirPath}/source/pressuresensor.cpp"
-"${ProjDirPath}/source/pressuresensor.h"
 "${ProjDirPath}/source/solenoid.cpp"
-"${ProjDirPath}/source/solenoid.h"
 "${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.c"
-"${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.h"
 "${ProjDirPath}/k66f-reqs/utilities/fsl_sbrk.c"
 )
+target_link_libraries(fluidmanager.elf PUBLIC spiprotok66f spiproto)
 
 add_executable(ivc.elf
 ${BOARD_CFG}
 ${FSL_DRIVERS}
 ${FREERTOS_SOURCE}
-${SPI_PROTO_SOURCES}
 ${K66F_STARTUP}
-"${ProjDirPath}/source/FreeRTOSConfig.h"
 "${ProjDirPath}/source/ammdk-carrier/carrier_gpio.cpp"
-"${ProjDirPath}/source/ammdk-carrier/carrier_gpio.h"
 "${ProjDirPath}/source/ammdk-carrier/solenoid.cpp"
-"${ProjDirPath}/source/ammdk-carrier/solenoid.h"
 "${ProjDirPath}/source/controllers/gpio.cpp"
-"${ProjDirPath}/source/controllers/gpio.h"
 "${ProjDirPath}/source/flowsensor.cpp"
-"${ProjDirPath}/source/flowsensor.h"
 "${ProjDirPath}/source/ivc.cpp"
 "${ProjDirPath}/source/pressuresensor.cpp"
-"${ProjDirPath}/source/pressuresensor.h"
 "${ProjDirPath}/source/solenoid.cpp"
-"${ProjDirPath}/source/solenoid.h"
 "${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.c"
-"${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.h"
 "${ProjDirPath}/k66f-reqs/utilities/fsl_sbrk.c"
 )
+target_link_libraries(ivc.elf PUBLIC spiprotok66f spiproto)
 
 add_executable(heartrateLED.elf
 ${BOARD_CFG}
 ${FSL_DRIVERS}
 ${FREERTOS_SOURCE}
-${SPI_PROTO_SOURCES}
 ${K66F_STARTUP}
-"${ProjDirPath}/source/FreeRTOSConfig.h"
 "${ProjDirPath}/source/ammdk-carrier/carrier_gpio.cpp"
-"${ProjDirPath}/source/ammdk-carrier/carrier_gpio.h"
 "${ProjDirPath}/source/ammdk-carrier/maxon.cpp"
-"${ProjDirPath}/source/ammdk-carrier/maxon.h"
 "${ProjDirPath}/source/ammdk-carrier/solenoid.cpp"
-"${ProjDirPath}/source/ammdk-carrier/solenoid.h"
 "${ProjDirPath}/source/controllers/gpio.cpp"
-"${ProjDirPath}/source/controllers/gpio.h"
 "${ProjDirPath}/source/heartrateLED.cpp"
 "${ProjDirPath}/source/pressuresensor.cpp"
-"${ProjDirPath}/source/pressuresensor.h"
 "${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.c"
-"${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.h"
 "${ProjDirPath}/k66f-reqs/utilities/fsl_sbrk.c"
 )
+target_link_libraries(heartrateLED.elf PUBLIC spiprotok66f spiproto)
 
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -T${ProjDirPath}/MK66FN2M0xxx18_flash.ld -static")
 
@@ -586,21 +517,21 @@ target_link_libraries(ivc.elf optimized nosys)
 
 TARGET_LINK_LIBRARIES(ivc.elf -Wl,--end-group)
 
-TARGET_LINK_LIBRARIES(fluidmanager.elf -Wl,--start-group)
-target_link_libraries(fluidmanager.elf debug m)
+TARGET_LINK_LIBRARIES(heartrateLED.elf -Wl,--start-group)
+target_link_libraries(heartrateLED.elf debug m)
 
-target_link_libraries(fluidmanager.elf debug c)
+target_link_libraries(heartrateLED.elf debug c)
 
-target_link_libraries(fluidmanager.elf debug gcc)
+target_link_libraries(heartrateLED.elf debug gcc)
 
-target_link_libraries(fluidmanager.elf debug nosys)
+target_link_libraries(heartrateLED.elf debug nosys)
 
-target_link_libraries(fluidmanager.elf optimized m)
+target_link_libraries(heartrateLED.elf optimized m)
 
-target_link_libraries(fluidmanager.elf optimized c)
+target_link_libraries(heartrateLED.elf optimized c)
 
-target_link_libraries(fluidmanager.elf optimized gcc)
+target_link_libraries(heartrateLED.elf optimized gcc)
 
-target_link_libraries(fluidmanager.elf optimized nosys)
+target_link_libraries(heartrateLED.elf optimized nosys)
 
-TARGET_LINK_LIBRARIES(fluidmanager.elf -Wl,--end-group)
+TARGET_LINK_LIBRARIES(heartrateLED.elf -Wl,--end-group)
