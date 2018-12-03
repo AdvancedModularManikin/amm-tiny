@@ -104,7 +104,6 @@ void BOARD_InitPins(void)
     button_settings.mux = kPORT_MuxAsGpio;
 
     CLOCK_EnableClock(kCLOCK_PortA);
-    PORT_SetPinConfig(BOARD_SW3_PORT, BOARD_SW3_GPIO_PIN, &button_settings);
     //strangely no SW2 defines in board.h
     PORT_SetPinConfig(PORTD, 11U, &button_settings);
 	
