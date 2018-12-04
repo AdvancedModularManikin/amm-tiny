@@ -66,7 +66,7 @@ gpio_handle_slave(struct gpio_cmd *cmd,
 int
 gpio_read(struct gpio_pin *p)
 {
-	return GPIO_ReadPinInput(p->base, 1U << p->pin_ix);
+	return GPIO_ReadPinInput(p->base, p->pin_ix);
 }
 void
 gpio_off(struct gpio_pin *p)
