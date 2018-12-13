@@ -52,7 +52,6 @@ slave_spi_proto_rcv_msg(struct slave_spi_proto &p, unsigned char *buf, unsigned 
 {
 	//parse an spi_packet out of getbuf
 
-	//TODO confirm that any values larger than 16 bits are appropriately encoded to network order
 	if (len < sizeof(struct spi_packet)) return -1;
 	struct spi_packet pack = *((struct spi_packet *)buf);
 
