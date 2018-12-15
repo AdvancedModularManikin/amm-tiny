@@ -525,13 +525,13 @@ ${K66F_STARTUP}
 "${ProjDirPath}/k66f-reqs/utilities/fsl_sbrk.c"
 )
 
-add_executable(ammdk_adc_tester.elf
+add_executable(CREST_adc_tester.elf
 ${BOARD_CFG}
 ${FSL_DRIVERS}
 ${FREERTOS_SOURCE}
 ${SPI_PROTO_SOURCES}
 ${K66F_STARTUP}
-"${ProjDirPath}/source/adc_tester.cpp"
+"${ProjDirPath}/source/CREST_adc_tester.cpp"
 "${ProjDirPath}/k66f-reqs/utilities/fsl_debug_console.c"
 "${ProjDirPath}/k66f-reqs/utilities/fsl_sbrk.c"
 )
@@ -616,13 +616,13 @@ target_link_libraries(fluidmanager.elf optimized nosys)
 
 TARGET_LINK_LIBRARIES(fluidmanager.elf -Wl,--end-group)
 
-TARGET_LINK_LIBRARIES(ammdk_adc_tester.elf -Wl,--start-group)
-target_link_libraries(ammdk_adc_tester.elf debug m)
-target_link_libraries(ammdk_adc_tester.elf debug c)
-target_link_libraries(ammdk_adc_tester.elf debug gcc)
-target_link_libraries(ammdk_adc_tester.elf debug nosys)
-target_link_libraries(ammdk_adc_tester.elf optimized m)
-target_link_libraries(ammdk_adc_tester.elf optimized c)
-target_link_libraries(ammdk_adc_tester.elf optimized gcc)
-target_link_libraries(ammdk_adc_tester.elf optimized nosys)
-TARGET_LINK_LIBRARIES(ammdk_adc_tester.elf -Wl,--end-group)
+TARGET_LINK_LIBRARIES(CREST_adc_tester.elf -Wl,--start-group)
+target_link_libraries(CREST_adc_tester.elf debug m)
+target_link_libraries(CREST_adc_tester.elf debug c)
+target_link_libraries(CREST_adc_tester.elf debug gcc)
+target_link_libraries(CREST_adc_tester.elf debug nosys)
+target_link_libraries(CREST_adc_tester.elf optimized m)
+target_link_libraries(CREST_adc_tester.elf optimized c)
+target_link_libraries(CREST_adc_tester.elf optimized gcc)
+target_link_libraries(CREST_adc_tester.elf optimized nosys)
+TARGET_LINK_LIBRARIES(CREST_adc_tester.elf -Wl,--end-group)
