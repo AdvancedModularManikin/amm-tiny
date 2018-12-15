@@ -30,7 +30,7 @@ struct gpio_pin carrier_gpios[CARRIER_GPIO_COUNT] = {
 
 void carrier_gpio_init(void)
 {
-	gpio_pin_config_t in = {kGPIO_DigitalInput, 0};
+	gpio_pin_config_t in = {kGPIO_DigitalOutput, 0};
 	for (int i=0;i<CARRIER_GPIO_COUNT;i++) {
 	    port_pin_config_t button_settings = {0};
 	    button_settings.pullSelect = kPORT_PullUp;
