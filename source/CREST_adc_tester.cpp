@@ -56,6 +56,40 @@
 /* Task priorities. */
 #define max_PRIORITY (configMAX_PRIORITIES - 1)
 
+//relocated pin_mux.c here to ensure it's not doing anything extraneous and get rid of coupling between executables in this codebase. non-main files shouldn't do hardware pokes unless they're only used by one executable
+#include "fsl_device_registers.h"
+#include "fsl_port.h"
+#include "fsl_gpio.h"
+#include "pin_mux.h"
+#include "board.h"
+
+
+void BOARD_InitPins(void)
+{
+    /* Initialize UART0 pins below */
+    /* Ungate the port clock */
+    CLOCK_EnableClock(kCLOCK_PortB);
+    /* Affects PORTB_PCR16 register */
+    PORT_SetPinMux(PORTB, 16u, kPORT_MuxAlt3);
+    /* Affects PORTB_PCR17 register */
+    PORT_SetPinMux(PORTB, 17u, kPORT_MuxAlt3);
+
+    CLOCK_EnableClock(kCLOCK_PortD);
+    /* SPI on D0-D3 */
+    PORT_SetPinMux(PORTD, 0U, kPORT_MuxAlt2);
+    PORT_SetPinMux(PORTD, 1U, kPORT_MuxAlt2);
+    PORT_SetPinMux(PORTD, 2U, kPORT_MuxAlt2);
+    PORT_SetPinMux(PORTD, 3U, kPORT_MuxAlt2);
+
+    //I2C0 pins. If you remove this the spi stops working
+    CLOCK_EnableClock(kCLOCK_PortC);
+    port_pin_config_t i2c1_pin_config = {0};
+    i2c1_pin_config.mux = kPORT_MuxAlt2;
+    i2c1_pin_config.openDrainEnable = kPORT_OpenDrainEnable;
+    PORT_SetPinConfig(PORTC, 10U, &i2c1_pin_config); // I2C0_SCL
+    PORT_SetPinConfig(PORTC, 11U, &i2c1_pin_config); // I2C0_SDA
+}
+
 void ammtinycb(struct spi_packet *p)
 {
 }
@@ -83,46 +117,47 @@ struct adctest {
 #define ADC_LINE(IX, NUMBER) {ADC ## IX , IX , 0 , NUMBER , 0 , {0}, 0, kADC16_ChannelMuxA}
 #define ADC_LINE_MUX(IX, NUMBER, MUXLETTER) {ADC ## IX, IX, 0, NUMBER , 0, {0}, 0, kADC16_ChannelMux ## MUXLETTER}
 
+//The labels below are for the AMMDK 2.0
 struct adctest adcs[] = {
-  //TODO ADC0_DM0, ADC1_DM3
+  ADC_LINE(0, 19), //ADC0_DM0    U11 (also ADC1_DM3. ADC0_DM0 accessible as channel 0b10011)
   //TODO ADC1_DM0, ADC0_DM3
-  //TODO ADC1_DP0, ADC0_DP3
+  ADC_LINE(0,  3), //ADC0_DP3    U10 (also ADC1_DP0. with DIFF=0 measures ADC0_DP3 ADC0 channel 0b00011)
   //TODO CMP0_IN0
   //TODO CMP2_IN0
   //TODO CMP2_IN1
   //TODO CMP3_IN1
-  ADC_LINE(0, 8), //ADC0_SE8, ADC1_SE8
-  ADC_LINE(0, 9), //ADC0_SE9, ADC1_SE9
-  ADC_LINE(0, 10), //ADC0_SE10
-  ADC_LINE(0, 11), //ADC0_SE11
-  ADC_LINE(0, 12), //ADC0_SE12
-  ADC_LINE(0, 13), //ADC0_SE13
-  ADC_LINE(0, 14), //ADC0_SE14
-  ADC_LINE(0, 15), //ADC0_SE15
-  ADC_LINE(0, 16), //ADC0_SE16, CMP1_IN2, ADC0_SE21
-  ADC_LINE(0, 17), //ADC0_SE17
-  ADC_LINE(0, 18), //ADC0_SE18
-  ADC_LINE(0, 23), //ADC0_SE23
-  ADC_LINE(1, 10), //ADC1_SE10
-  ADC_LINE(1, 11), //ADC1_SE11
-  ADC_LINE(1, 12), //ADC1_SE12
-  ADC_LINE(1, 13), //ADC1_SE13
-  ADC_LINE(1, 14), //ADC1_SE14
-  ADC_LINE(1, 15), //ADC1_SE15
-  ADC_LINE(1, 16), //ADC1_SE16, CMP2_IN2, ADC0_SE22
-  ADC_LINE(1, 17), //ADC1_SE17
-  ADC_LINE(1, 18), //ADC1_SE18, CMP1_IN5, CMP0_IN5
-  ADC_LINE(1, 23), //ADC1_SE23
-  ADC_LINE_MUX(0, 4, B), //ADC0_SE4b
-  ADC_LINE_MUX(0, 6, B), //ADC0_SE6b
-  ADC_LINE_MUX(0, 7, B), //ADC0_SE7b
-  ADC_LINE_MUX(1, 4, A), //ADC1_SE4a
-  ADC_LINE_MUX(1, 5, A), //ADC1_SE5a
-  ADC_LINE_MUX(1, 5, B), //ADC1_SE5b, CMP0_IN3
-  ADC_LINE_MUX(1, 6, A), //ADC1_SE6a
-  ADC_LINE_MUX(1, 6, B), //ADC1_SE6b
-  ADC_LINE_MUX(1, 7, A), //ADC1_SE7a
-  ADC_LINE_MUX(1, 7, B), //ADC1_SE7b
+  //ADC_LINE(0,  8), //ADC0_SE8  U7_MOTOR_PWM (also ADC1_SE8)
+  //ADC_LINE(0,  9), //ADC0_SE9  U7_MOTOR_ENABLE (also ADC1_SE9)
+  //ADC_LINE(0, 10), //ADC0_SE10 J6_8
+  //ADC_LINE(0, 11), //ADC0_SE11 J6_6
+  ADC_LINE(0, 12), //ADC0_SE12 U7_MOTOR_STATUS
+  //ADC_LINE(0, 13), //ADC0_SE13 U7_MOTOR_IO
+  ADC_LINE(0, 14), //ADC0_SE14 J9_7
+  //ADC_LINE(0, 15), //ADC0_SE15 J6_7
+  //ADC_LINE(0, 16), //ADC0_SE16 J16_36 N/A (also CMP1_IN2, ADC0_SE21)
+  //ADC_LINE(0, 17), //ADC0_SE17 J4_2
+  ADC_LINE(0, 18), //ADC0_SE18 U8
+  //ADC_LINE(0, 23), //ADC0_SE23 J17_35 N/A
+  ADC_LINE(1, 10), //ADC1_SE10 U7_MOTOR_SPEED_OUT
+  ADC_LINE(1, 11), //ADC1_SE11 U3
+  ADC_LINE(1, 12), //ADC1_SE12 U4
+  ADC_LINE(1, 13), //ADC1_SE13 U5
+  ADC_LINE(1, 14), //ADC1_SE14 U6
+  ADC_LINE(1, 15), //ADC1_SE15 J22_2
+  ADC_LINE(1, 16), //ADC1_SE16 J22_3 (also ADC0_SE22)
+  //ADC_LINE(1, 17), //ADC1_SE17 J6_3
+  ADC_LINE(1, 18), //ADC1_SE18 U9
+  //ADC_LINE(1, 23), //ADC1_SE23 U7_MOTOR_SPEED_IN
+  //ADC_LINE_MUX(0, 4, B), //ADC0_SE4b J17_14 N/A
+  //ADC_LINE_MUX(0, 6, B), //ADC0_SE6b J4_7
+  //ADC_LINE_MUX(0, 7, B), //ADC0_SE7b J4_6
+  //ADC_LINE_MUX(1, 4, A), //ADC1_SE4a J17_23 N/A
+  //ADC_LINE_MUX(1, 5, A), //ADC1_SE5a J17_24 SPI MOSI (so N/A)
+  ADC_LINE_MUX(1, 5, B), //ADC1_SE5b J8_7
+  //ADC_LINE_MUX(1, 6, A), //ADC1_SE6a J17_21 SPI SCLK (so N/A)
+  ADC_LINE_MUX(1, 6, B), //ADC1_SE6b J8_4 (I2C1_SCL)
+  //ADC_LINE_MUX(1, 7, A), //ADC1_SE7a J17_26 SPI MISO (so N/A)
+  ADC_LINE_MUX(1, 7, B), //ADC1_SE7b J8_1 (I2C1_SDA)
 };
 
 adc16_config_t adc16ConfigStructs[2];
@@ -202,6 +237,8 @@ adc_step(void)
         }
 		adcs[i].last_result = ADC16_GetChannelConversionValue(adcs[i].base, adcs[i].channelgroup);
     //PRINTF("ADC %02d Value: %d\r\n", i, adcs[i].last_result);
+    }
+  for (unsigned int i = 0; i < ADC_NUM; i++) {
         unsigned char buf[10];
         memset(buf, 0, 10);
         buf[0] = adcs[i].adcix;
@@ -209,7 +246,11 @@ adc_step(void)
         buf[2] = adcs[i].muxMode;
         buf[3] = adcs[i].last_result >> 8u;
         buf[4] = adcs[i].last_result & 0xff;
-        slave_send_message(spi_proto::p, (unsigned char*) buf, 10);
+        buf[5] = i;
+        int ret;
+        do {
+          ret = slave_send_message(spi_proto::p, (unsigned char*) buf, 10);
+        } while (ret);
     }
 }
 

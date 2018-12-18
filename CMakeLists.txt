@@ -526,7 +526,10 @@ ${K66F_STARTUP}
 )
 
 add_executable(CREST_adc_tester.elf
-${BOARD_CFG}
+"${ProjDirPath}/board/board.c"
+"${ProjDirPath}/board/board.h"
+"${ProjDirPath}/board/clock_config.c"
+"${ProjDirPath}/board/clock_config.h"
 ${FSL_DRIVERS}
 ${FREERTOS_SOURCE}
 ${SPI_PROTO_SOURCES}
