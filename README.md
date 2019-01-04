@@ -86,3 +86,13 @@ If you are running gdb on a remote machine either:
 If the connection is refused try ssh port fowarding with
 `ssh amm@som-ip -L 3344:localhost:3333`
 then you can do `target remote localhost:3344` in `gdb`.
+
+# Documentation
+
+See [documentation.md](documentation.md) and the [spi documentation](https://github.com/peterohanley/spi_proto).
+
+## Examples
+
+[`heartrateLED.cpp`](source/heartrateLED.cpp) and its [twin](https://github.com/AdvancedModularManikin/DDS/blob/master/AMM_Modules/src/HeartRateLED.cpp) in the DDS repo offer an example of the datagram API.
+
+[`click-test.cpp`](https://github.com/peterohanley/spi_proto/blob/master/test/click-test.cpp) offers an example of the use of the remote API.
