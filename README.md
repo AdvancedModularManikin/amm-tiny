@@ -27,7 +27,7 @@ Once the code is compiled, it needs to be flashed onto the k66f.
 
 ## Via CLI
 
-For conveince, the provided [`flash.sh`](flash.sh) script handles file type conversion and verification.
+For convenience, the provided [`flash.sh`](flash.sh) script handles file type conversion and verification.
 
     $ ./flash.sh debug/amm-tiny.elf
 
@@ -50,7 +50,7 @@ Start a `gdb` session (described below), and use the following commands:
 To change which file `gdb` will load:
 ```
 (gdb) interrupt 
-(gdb) debug/new-file.elf
+(gdb) file debug/new-file.elf
 (gdb) load
 (gdb) monitor reset halt
 ```
