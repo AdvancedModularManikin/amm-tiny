@@ -47,6 +47,13 @@ Start a `gdb` session (described below), and use the following commands:
 (gdb) load
 (gdb) monitor reset halt
 ```
+To change which file `gdb` will load:
+```
+(gdb) interrupt 
+(gdb) debug/new-file.elf
+(gdb) load
+(gdb) monitor reset halt
+```
 
 Then, to restart the k66f, run one of:
 
