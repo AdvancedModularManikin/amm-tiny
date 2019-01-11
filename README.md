@@ -1,4 +1,4 @@
-This is the AMMDK k66f code, currently both the remote api k66f end and several application-specific endpoints.
+This repository contains the AMMDK k66f code. It currently includes both the endpoint for the remote api and several application-specific endpoints.
 
 # Usage
 
@@ -12,33 +12,43 @@ If you are using an AMMDK it should have come with these preinstalled. On OSX:
 
 This will also install `gdb`.
 
-# Compile
+# Compiling
 
     $ ./gencmake.sh && make
 
 Running `make` when `CMakelists.txt` has changed will crash due to no `ARMGCC_DIR` environment variable.
-You can fix this by setting ARMGCC_DIR in your environment to the value it takes in `gencmake.sh`.
-If the cmake cache goes out of sync, `clean.sh` will remove all build artifacts.
+You can fix this by setting ARMGCC_DIR in your environment to the value it takes in [`gencmake.sh`](gencmake.sh).
+If the cmake cache goes out of sync, [`clean.sh`](clean.sh) will remove all build artifacts.
 
-## To create a binary file for direct flashing
-Note that gdb can flash .elfs directly.
+By default, the code is built into a `debug/` directory.
+
+# Flashing
+Once the code is compiled, it needs to be flashed onto the k66f.
+
+## Via CLI
+
+For conveince, the provided [`flash.sh`](flash.sh) script handles file type conversion and verification.
+
+    $ ./flash.sh debug/amm-tiny.elf
+
+The [`flash.sh`](flash.sh) script accepts either `.elf` or `.bin` files.
+
+## Using `gdb`
+Note that `gdb` can flash `.elf`s directly.
 You need this only if you are using openOCD to flash.
 
 ```
 arm-none-eabi-objcopy -O binary amm-tiny.elf amm-tiny.bin
 ```
 
-# To flash
-
-If you are in a `gdb` session (described below) you can use the following commands:
+Start a `gdb` session (described below), and use the following commands:
 ```
 (gdb) interrupt 
 (gdb) load
 (gdb) monitor reset halt
 ```
 
-### To start
-One of:
+Then, to restart the k66f, run one of:
 
 ```
 (gdb) c # for continue, gdb understands unique prefixes
@@ -47,16 +57,11 @@ One of:
 (gdb) monitor go
 ```
 
-You can also use the `flash.sh` script provided.
-It accepts either `.elf` or `.bin` files.
-
-    $ ./flash.sh debug/amm-tiny.elf
-
 # Debug
 
 ## In brief
 
-In one terminal on the AMMDK, run `./launch_openocd.sh`.
+In one terminal on the AMMDK, run [`./launch_openocd.sh`](launch_openocd.sh).
 In another terminal, run `gdb-multiarch debug/$YOUR_FILE_HERE.elf`.
 At the `(gdb) ` prompt run:
 
