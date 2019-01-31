@@ -21,9 +21,8 @@ dac_handle_slave(struct dac_cmd *cmd, struct dac *dacs, size_t dac_num)
 	uint8_t buf[CHUNK_LEN_DAC_S2M];
 	switch (cmd->cmd) {
 	case OP_SET:
-		//dac_set(&dacs[cmd->id], cmd->val);
+		dac_set(&dacs[cmd->id], cmd->val);
 		last_dac_write = cmd->val;
-		DAC_SetBufferValue(DAC0, 0U, cmd->val);
 		buf[0] = 0;
 		buf[1] = CHUNK_TYPE_DAC;
 		buf[2] = cmd->id;

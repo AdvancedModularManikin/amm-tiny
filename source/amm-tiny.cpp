@@ -62,7 +62,8 @@
 #include <stdio.h>
 #include "action.h"
 #include "mule-1/air_tank.h"
-#include "ammdk-carrier/maxon.cpp"
+#include "ammdk-carrier/maxon.h"
+#include "ammdk-carrier/dac.h"
 
 /* Task priorities. */
 #define max_PRIORITY (configMAX_PRIORITIES - 1)
@@ -102,6 +103,7 @@ int main(void) {
   GPIO_PinInit(BOARD_LED_GREEN_GPIO, BOARD_LED_GREEN_GPIO_PIN, &digital_out);
 
   maxon_init();
+  dac_init();
   polling_init();
   BaseType_t ret;
   /* Create RTOS task */
