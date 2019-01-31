@@ -3,7 +3,7 @@
 #include "fsl_gpio.h"
 #include "ammdk-carrier/solenoid.h"
 #include "valve.h"
-#include "spi_remote.h"
+#include "spi_remote_api.h"
 
 unsigned int valve_bad_chunks = 0;
 

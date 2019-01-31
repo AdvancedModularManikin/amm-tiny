@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "motor.h"
-#include "spi_remote.h"
+#include "spi_remote_api.h"
 
 uint16_t motor_bad_chunks;
 void

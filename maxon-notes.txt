@@ -25,4 +25,4 @@ digital output 3: ready
 	active high
 digital output 4: commutation frequency
 
-analog out 1: actual speed, 0-3.3v, 0-3rpm (actually 0-4 but divided to 0-3.3)
+analog out 1: actual speed, 0-3.3v, 0-3krpm (actually 0-4 but divided to 0-3.3)

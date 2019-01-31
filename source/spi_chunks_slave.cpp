@@ -13,7 +13,7 @@
 #include "spi_proto_slave.h"
 #include "spi_chunks.h"
 #include "spi_chunk_defines.h"
-#include "spi_remote.h"
+#include "spi_remote_api.h"
 
 
 #define NUM_WAIT_CHUNKS 10

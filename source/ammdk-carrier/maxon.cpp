@@ -31,11 +31,8 @@ maxon_init(void)
     gpio_pin_config_t digital_in = {kGPIO_DigitalInput, (0)};
     GPIO_PinInit(GPIOB, 2U, &digital_in);
 	
-	//set up DAC0 as demo dac
-	dac_config_t dac0_config;
-	DAC_GetDefaultConfig(&dac0_config);
-	DAC_Init(DAC0, &dac0_config);
-	DAC_SetBufferReadPointer(DAC0, 0U);
+	//DAC0 enabled in dac file
+
 	/*
 	//enable the adc on B4 (ADC1_SE10)
     adc16_config_t adc16ConfigStruct;
