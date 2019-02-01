@@ -62,7 +62,8 @@ slave_spi_proto_rcv_msg(struct slave_spi_proto &p, unsigned char *buf, unsigned 
 void
 spi_proto_slave_initialize(struct slave_spi_proto *s)
 {
-	//TODO initialize the rest of slave_spi_proto (buffers, length)
+  //only s->proto has meaningul init but may as well init the whole struct
+  memset(s, 0, sizeof(struct slave_spi_proto));
 	spi_proto_initialize(&s->proto);
 }
 }
