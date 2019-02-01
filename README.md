@@ -1,5 +1,7 @@
 This repository contains the AMMDK k66f code. It currently includes both the endpoint for the remote api and several application-specific endpoints.
 
+This git repository uses submodules. After pulling code, run `git submodule update` to ensure the submodules are on the correct version.
+
 # Usage
 
 You need the [GNU ARM Toolchain](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm) which you can install from the [debian](https://packages.debian.org/buster/gcc-arm-none-eabi) repos. You also need embedded `gdb` and `openocd` > 0.10.0. To install build requirements and other development tools:
