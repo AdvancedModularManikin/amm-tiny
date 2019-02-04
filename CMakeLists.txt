@@ -433,8 +433,6 @@ ${K66F_STARTUP}
 "${ProjDirPath}/source/amm-tiny.cpp"
 "${ProjDirPath}/source/maxon.cpp"
 "${ProjDirPath}/source/maxon.h"
-"${ProjDirPath}/source/mule-1/air_tank.cpp"
-"${ProjDirPath}/source/mule-1/air_tank.h"
 "${ProjDirPath}/source/pressure_adc.cpp"
 "${ProjDirPath}/source/pressure_adc.h"
 "${ProjDirPath}/source/pressuresensor.cpp"

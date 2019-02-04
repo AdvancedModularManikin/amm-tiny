@@ -36,7 +36,7 @@ solenoid::toggle(struct solenoid &s) {
 
 volatile bool should_sol_n_be_on[SOLENOID_NUM] = {0};
 volatile bool is_sol_n_manual[SOLENOID_NUM] = {0};
-//TODO move 24v rail control here should_24v_be_on = false;
+//TODO this file and its header are only here for this function, tree-shake
 void
 solenoid_gdb_mirror_task(void *params)
 {
