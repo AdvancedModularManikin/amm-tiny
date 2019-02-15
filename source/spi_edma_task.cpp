@@ -151,24 +151,19 @@ spi_edma_task(void *pvParams)
 		, &dspiEdmaSlaveTxDataToTxRegHandle
 		);
 
-	uint8_t blank_msg[SPI_MSG_PAYLOAD_LEN];
 	for (;;) {
 		prepare_slave_chunks();
-		if (p.proto.num_unsent == 0) {
-			slave_send_message(p, blank_msg, 0); // TODO in theory middle arg can be NULL
-		}
 		slave_do_tick(p);
 		slaveXfer.txData = slaveTxData;
 		slaveXfer.rxData = slaveRxData;
 		slaveXfer.dataSize = TRANSFER_SIZE;
-		slaveXfer.configFlags = kDSPI_SlaveCtar0; // TODO check
+		slaveXfer.configFlags = kDSPI_SlaveCtar0;
 
 
 		if (kStatus_Success != DSPI_SlaveTransferEDMA(DSPI_SLAVE_BASEADDR, &g_dspi_edma_s_handle, &slaveXfer))
 		{
 		    PRINTF("There is error when start DSPI_SlaveTransferEDMA \r\n");
-			//TODO do something to mitigate this
-			//TODO 2 determine how to mitigate a total communication failure at runtime
+			//TODO any mitigation for a total communication failure at runtime?
 		}
 		
 		xSemaphoreTake(cb_msg.sem, portMAX_DELAY);
