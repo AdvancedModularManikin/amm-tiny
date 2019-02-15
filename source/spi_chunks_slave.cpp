@@ -19,7 +19,9 @@
 #define NUM_WAIT_CHUNKS 10
 struct waiting_chunk wait_chunks[NUM_WAIT_CHUNKS] = {0};
 
-unsigned int unknown_chunk_type_msg_count;
+//TODO unify names of logging variables
+unsigned int unknown_chunk_type_msg_count = 0
+  , too_short_chunk_msg_count = 0;
 
 //in slave because it is a convenience method
 int
@@ -45,8 +47,10 @@ chunk_dispatcher_slave(uint8_t *buf, size_t len)
 {
 	//call appropriate type function on chunk, or record if it's an unknown type
 	//TODO could potentially provide a histogram of how many bytes the unrecognized chunk was, would this be useful? just store an array and incremement the length index
-	if (len < 2) return -1; // length zero isn't a real chunk, length 1 can't carry data
-	//TODO log too-short chunks
+	if (len < 2) {
+    too_short_chunk_msg_count++;
+    return -1; // length zero isn't a real chunk, length 1 can't carry data
+  }
 	switch(buf[1]) {
 	case CHUNK_TYPE_GPIO:
 		if (len < CHUNK_LEN_GPIO_M2S) {short_chunks++;break;}
@@ -67,7 +71,6 @@ chunk_dispatcher_slave(uint8_t *buf, size_t len)
 		dac_handle_slave(&daccmd, carrier_dacs, DAC_NUM);
 		break;
 	case CHUNK_TYPE_ADC:
-	//TODO adapt adcs to use the same schema as the other handlers
 		if (len < CHUNK_LEN_ADC_M2S) {short_chunks++;break;}
 		// [LEN|TYPE|ID|CMD]
 		struct adc_cmd adccmd;
@@ -81,7 +84,7 @@ chunk_dispatcher_slave(uint8_t *buf, size_t len)
 		break;
 	//case CHUNK_TYPE_STRING
 	default:
-		unknown_chunk_type_msg_count++; // TODO think of better name
+		unknown_chunk_type_msg_count++;
 		return -1;
 	}
 	return 0;
