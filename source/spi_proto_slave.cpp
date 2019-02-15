@@ -17,7 +17,6 @@ extern "C" {
 #include "spi_chunks.h"
 }
 #include "spi_proto_slave.h"
-#include "mule-1/air_tank.h"
 #include "spi_chunks_slave.h"
 
 
@@ -52,7 +51,6 @@ slave_spi_proto_rcv_msg(struct slave_spi_proto &p, unsigned char *buf, unsigned 
 {
 	//parse an spi_packet out of getbuf
 
-	//TODO confirm that any values larger than 16 bits are appropriately encoded to network order
 	if (len < sizeof(struct spi_packet)) return -1;
 	struct spi_packet pack = *((struct spi_packet *)buf);
 
@@ -63,7 +61,8 @@ slave_spi_proto_rcv_msg(struct slave_spi_proto &p, unsigned char *buf, unsigned 
 void
 spi_proto_slave_initialize(struct slave_spi_proto *s)
 {
-	//TODO initialize the rest of slave_spi_proto (buffers, length)
+  //only s->proto has meaningul init but may as well init the whole struct
+  memset(s, 0, sizeof(struct slave_spi_proto));
 	spi_proto_initialize(&s->proto);
 }
 }

@@ -25,7 +25,6 @@
 #define TRANSFER_BAUDRATE (8388608U)
 
 
-//TODO consider architechtures other than a semaphore, if necessary (perhaps a flag and array that the callback can read from?)
 extern "C" {
 
 void
@@ -89,19 +88,18 @@ spi_edma_task(void *pvParams)
 
 	slaveRxChannel = 3U; // checked for SPI0
 	slaveTxChannel = 4U; // checked for SPI0
-	
-	//TODO need DMAMUX settings
+
 	DMAMUX_Init(DSPI_SLAVE_DMA_MUX_BASEADDR);
-	
-	DMAMUX_SetSource(DSPI_SLAVE_DMA_MUX_BASEADDR, slaveRxChannel, DSPI_SLAVE_DMA_RX_REQUEST_SOURCE); // TODO fixup names
+
+	DMAMUX_SetSource(DSPI_SLAVE_DMA_MUX_BASEADDR, slaveRxChannel, DSPI_SLAVE_DMA_RX_REQUEST_SOURCE);
 	DMAMUX_EnableChannel(DSPI_SLAVE_DMA_MUX_BASEADDR, slaveRxChannel);
-	
+
 	DMAMUX_SetSource(DSPI_SLAVE_DMA_MUX_BASEADDR, slaveTxChannel, DSPI_SLAVE_DMA_TX_REQUEST_SOURCE);
 	DMAMUX_EnableChannel(DSPI_SLAVE_DMA_MUX_BASEADDR, slaveTxChannel);
-	
+
 	EDMA_GetDefaultConfig(&userConfig);
 	EDMA_Init(DSPI_SLAVE_DMA_BASEADDR, &userConfig);
-	
+
 	/*DSPI init*/
 	dspi_slave_config_t slaveConfig;
 	dspi_transfer_t slaveXfer;
