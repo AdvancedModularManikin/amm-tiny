@@ -34,9 +34,25 @@ solenoid::toggle(struct solenoid &s) {
 	GPIO_TogglePinsOutput(s.base, 1 << s.pin_ix);
 }
 
+void
+carrier_board_test_task(void *params)
+{
+	//TODO init all solenoids
+	
+	for (;;) {
+		//blink them
+		for (int i = 0; i < 8; i++) {
+			solenoid::toggle(solenoids[i]);
+		}
+		vTaskDelay(500);
+	}
+	
+	vTaskSuspend(NULL);
+}
+
 volatile bool should_sol_n_be_on[SOLENOID_NUM] = {0};
 volatile bool is_sol_n_manual[SOLENOID_NUM] = {0};
-//TODO this file and its header are only here for this function, tree-shake
+//TODO move 24v rail control here should_24v_be_on = false;
 void
 solenoid_gdb_mirror_task(void *params)
 {

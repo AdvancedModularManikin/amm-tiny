@@ -61,6 +61,7 @@
 #include "maxon.h"
 #include <stdio.h>
 #include "action.h"
+#include "mule-1/air_tank.h"
 #include "ammdk-carrier/maxon.h"
 #include "ammdk-carrier/dac.h"
 

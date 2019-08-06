@@ -16,8 +16,7 @@ gpio_handle_slave(struct gpio_cmd *cmd,
 	if (cmd->id >= gpio_num) {gpio_bad_chunks++; return;}
 	
 	int ret;
-	static_assert((CHUNK_LEN_GPIO_S2M + 2) == 5, "CHUNK_LEN_GPIO_S2M+2 ~= 5");
-	uint8_t buf[5];
+	uint8_t buf[5]; // TODO assert CHUNK_LEN_GPIO_S2M == 5
 	
 	switch (cmd->cmd) {
 	case OP_SET:
